@@ -10,6 +10,7 @@ final readonly class PdoSchemaMigrator {
         '001_person_legacy_mapping' => ['mos_workspace','mos_person','mos_legacy_entity_map'],
         '002_evidence_event_outbox_inbox' => ['mos_evidence','mos_domain_event','mos_outbox','mos_inbox'],
         '003_contact_scan_cursor' => ['mos_contact_scan_cursor'],
+        '004_contact_source_reconciliation' => ['mos_source_reconciliation_case','mos_source_reconciliation_observation'],
     ];
     public function __construct(private PDO $db) {}
     public function migrate(): void {
