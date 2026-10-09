@@ -66,3 +66,11 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - PR #9 merged commit `11474dac28205d839c948bfb1ef7ff0a213b64aa`: Person lifecycle, source-scoped legacy mappings and planner. PHP 8.2/8.3 tests + lint pass: https://github.com/achirothmane/marketing-os/actions/runs/37868986534
 - M0 isolated MariaDB install smoke pending PR #10; no database proof at the time of this record.
 - Next C4-03 needs real DB uniqueness and concurrent transactions. Planning code cannot guarantee uniqueness on its own.
+
+## M0 isolated database installation proven — 2026-10-09
+- PR #10 merged commit `7b4cd1bf95df9f803ac2858d4205ca5c9cb49c69`.
+- GitHub Actions run: https://github.com/achirothmane/marketing-os/actions/runs/37869113329 — SUCCESS.
+- PHP 8.3 locked Composer install; Mautic `mautic:install` completed against isolated MariaDB 11.4.
+- Installer created 126 Mautic database tables; `bin/console --version` confirmed Mautic 7.2.1 application/prod CLI boot.
+- No real contacts or emails were used. CI database/admin credentials were ephemeral test-only values.
+- **NOT YET VERIFIED:** full upstream test suite, mail/worker runtime, upgrade and rollback, MOS Person/LegacyMap tables, idempotent Contact bridge and transactional outbox.

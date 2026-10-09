@@ -37,3 +37,5 @@ At each merged PR:
 - **2026-10-09:** PR #8 merged `1c0016c9066f36eb274ad0688ebfc89ada4f433d`. Composer install, PHP platform check, upstream Mautic Lead unit test, and contracts PASS in CI run 37868814299. This is *not* a DB install.
 - **2026-10-09:** PR #9 merged `11474dac28205d839c948bfb1ef7ff0a213b64aa`. C4-02 Person aggregate and legacy mapping domains verified on PHP 8.2/8.3 in CI run 37868986534. No SQL uniqueness or real Contact bridge yet.
 - **2026-10-09:** PR #10 opened to test isolated MariaDB 11.4 CLI install. Do not claim DB runtime PASS until workflow concludes.
+
+- **2026-10-09:** PR #10 merged (`7b4cd1bf95df9f803ac2858d4205ca5c9cb49c69`). Isolated MariaDB 11.4 installed using upstream `mautic:install`, 126 tables verified, CLI boot passed; workflow run 37869113329 SUCCESS. M0 installation baseline is now demonstrated, but full upstream regression, app deployment, and MOS domain persistence are still outstanding. Next C4-03 SQL/Doctrine persistence.
