@@ -59,3 +59,10 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Source-smoke CI SUCCESS: https://github.com/achirothmane/marketing-os/actions/runs/37868041910
 - Verified: upstream root source paths present; GPL LICENSE.txt present; composer validate; PHP entrypoint lint; PHP 8.3 canonical contracts (13/13).
 - NOT VERIFIED: Composer install/vendor, DB schema/migrations, server boot, upstream regression suite, C4 Contact integration.
+
+## M0 dependency baseline and C4-02 (2026-10-09)
+- PR #8 merged commit `1c0016c9066f36eb274ad0688ebfc89ada4f433d`: Composer install from lock, `composer check-platform-reqs`, upstream Lead unit test, contracts passed. CI https://github.com/achirothmane/marketing-os/actions/runs/37868814299
+- Upstream GPL-3.0 deprecated SPDX warning intentionally kept and recorded; `composer validate --no-check-publish` passes, strict mode failed because of the warning only.
+- PR #9 merged commit `11474dac28205d839c948bfb1ef7ff0a213b64aa`: Person lifecycle, source-scoped legacy mappings and planner. PHP 8.2/8.3 tests + lint pass: https://github.com/achirothmane/marketing-os/actions/runs/37868986534
+- M0 isolated MariaDB install smoke pending PR #10; no database proof at the time of this record.
+- Next C4-03 needs real DB uniqueness and concurrent transactions. Planning code cannot guarantee uniqueness on its own.
