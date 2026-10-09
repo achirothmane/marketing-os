@@ -1,0 +1,53 @@
+name: M0 Pinned Mautic Source Smoke
+
+on:
+  push:
+    branches: [feat/m0-import-mautic-7-2-1]
+    paths:
+      - '.github/workflows/m0-source-smoke.yml'
+      - 'docs/marketing-os/upstream/**'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'app/**'
+      - 'bin/**'
+      - 'config/**'
+      - 'plugins/**'
+      - 'packages/contracts/**'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+      - name: Verify immutable upstream provenance
+        run: |
+          test -f LICENSE.txt
+          test -f composer.json
+          test -f composer.lock
+          test -f bin/console
+          test -d app/bundles
+          test -f docs/marketing-os/upstream/MAUTIC-PROVENANCE.md
+          grep -q 8cbb7ef874d52a411ae5a884f979acf6cc320181 docs/marketing-os/upstream/MAUTIC-PROVENANCE.md
+          test -f docs/marketing-os/02-stage-register.md
+          test -f packages/contracts/tests/run.php
+      - name: Composer structural validation
+        run: composer validate --no-check-publish
+      - name: PHP entrypoints syntax
+        run: |
+          php -l bin/console
+          php -l index.php
+          php -l autoload.php
+      - name: Canonical contract tests
+        run: php packages/contracts/tests/run.php
