@@ -20,8 +20,11 @@
       "contracts_php83_13_tests": true,
       "composer_install": false,
       "upstream_integration_tests": false,
-      "db_runtime_tests": false
-    }
+      "db_runtime_tests": false,
+      "runtime_verified": false
+    },
+    "import_pr": "https://github.com/achirothmane/marketing-os/pull/6",
+    "main_source_import_sha": "8ed40e15d0b07ab90efee7ee1e89d9698b858d9c"
   },
   "implementation": {
     "c4_01": "MERGED_ISOLATED_CONTRACTS_CI_PASSED",
@@ -50,7 +53,7 @@
       "implemented": true,
       "verified": false,
       "shipped": false,
-      "merged_sha": null,
+      "merged_sha": "8ed40e15d0b07ab90efee7ee1e89d9698b858d9c",
       "ci_evidence": "https://github.com/achirothmane/marketing-os/actions/runs/37868041910"
     },
     "C3": {
