@@ -104,3 +104,9 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Proved: LEAD_POST_SAVE may fire with external transaction still ACTIVE; source rollback leaves no Contact in a separate reader and no MOS Person; committed LeadModel Contact is eventually imported by committed-source scanner.
 - MariaDB migration 003 adds durable workspace cursor; bounded manual SHADOW scans wrap to zero at end, recovering out-of-order transaction commits and missed callbacks.
 - **Not yet done:** registered operational Mautic plugin subscriber, automatically scheduled worker, real Messenger transport, C5 updates/deletes reconciliation or full C4 end-to-end.
+
+## C4-05C bounded recovery worker: verified local/runtime scope
+- PR #22 merged `dd5069c7dc4d18505eedb4a137bac73d94d19c9d`; CI https://github.com/achirothmane/marketing-os/actions/runs/37996553218 PASS, 8/8 new Mautic 7.2.1 MariaDB tests.
+- CLI `packages/identity/bin/run_scheduled_shadow_scan.php` is OFF unless both MOS_BRIDGE_MODE=SHADOW and MOS_SCHEDULED_SHADOW_ENABLED=1 are set.
+- Tested an actual PHP process exiting after importer commit but before scan cursor checkpoint; second process replays and preserves one Person/Event. Batch caps and DB lock contention verified.
+- Cron example exists in docs only: **not installed or running on any live host**. Real Messenger delivery, source change/deletion reconciliation and operational rollout remain pending. C4 full stage not verified.
