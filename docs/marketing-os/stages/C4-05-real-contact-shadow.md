@@ -1,6 +1,6 @@
 # C4-05 — Real persisted Mautic Contact shadow bridge
 
-**Status:** PR source, pending integrated Mautic 7.2.1 test results.
+**Status:** C4-05A merged/verified in its limited scope. PR #18 commit `7d205ed4ae365d495aaa1938a1875a4bfc52ed5a`; live Mautic 7.2.1 / MariaDB 11.4 CI https://github.com/achirothmane/marketing-os/actions/runs/37876095115 PASS 12/12. C4-05B and full C4 remain unverified.
 
 ## Why this first slice
 

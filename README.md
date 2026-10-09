@@ -1,6 +1,6 @@
 # Marketing OS — Marketing Automation Suite
 
-**Status (2026-10-09):** Mautic 7.2.1 source imported; basic install/DB smoke verified. C4-01–C4-04 isolated contracts, Person persistence and atomic Evidence/Event/Outbox/Inbox tests PASS. Real Mautic Contact listener, provider/queue integration and C4 end-to-end remain NOT VERIFIED.
+**Status (2026-10-09):** Mautic 7.2.1 source imported; basic install/DB smoke verified. C4-01–C4-04 passed scoped PHP/MariaDB tests. C4-05A real persisted Mautic Contact SHADOW import passed 12/12 integration checks (PR #18). Automatic Contact save-event subscriber, provider/queue integration and full C4 end-to-end remain NOT VERIFIED.
 
 This is the canonical repository for the self-hosted Marketing OS initiative, starting from the Mautic operational substrate and evolving toward canonical Identity, Consent, Audiences, Effects, Durable Workflows, Measurement, Economics and Experiments.
 
@@ -20,6 +20,6 @@ This is the canonical repository for the self-hosted Marketing OS initiative, st
 DESIGNED means specified in discussion. IMPLEMENTED requires merged code; VERIFIED requires reproducible tests on a known SHA; SHIPPED requires deployment proof. No stage is silently marked complete.
 
 ## Upstream source
-The repository started EMPTY but now contains the root Mautic 7.2.1 source snapshot (upstream SHA `8cbb7ef874d52a411ae5a884f979acf6cc320181`). This is a SOURCE IMPORT, not the full upstream git ancestry or an operational installation. See [upstream provenance](docs/marketing-os/upstream/MAUTIC-PROVENANCE.md). Distribution structure, Composer manifest validation, PHP entrypoint syntax and 13 canonical contract tests passed in [M0 source smoke CI](https://github.com/achirothmane/marketing-os/actions/runs/37868041910); full Composer dependency installation, database install and upstream functional/integration tests remain.
+The repository started EMPTY but now contains the root Mautic 7.2.1 source snapshot (upstream SHA `8cbb7ef874d52a411ae5a884f979acf6cc320181`). This is a SOURCE IMPORT, not the full upstream git ancestry or an operational installation. See [upstream provenance](docs/marketing-os/upstream/MAUTIC-PROVENANCE.md). Distribution structure, Composer manifest validation, PHP entrypoint syntax and 13 canonical contract tests passed in [M0 source smoke CI](https://github.com/achirothmane/marketing-os/actions/runs/37868041910); Composer install and isolated MariaDB installer smoke passed; full upstream functional/regression suite and operational deployment remain unverified.
 
 One central Dots coordinates long-running projects; this repo owns its own history, contracts and evidence.

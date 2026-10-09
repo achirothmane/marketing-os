@@ -58,7 +58,11 @@
     "c4_04": "MERGED_ATOMIC_EVIDENCE_EVENT_OUTBOX_INBOX_CI_PASSED",
     "c4_04_sha": "69ee68098110fc9478b5e0aed0b8ac732cd88a22",
     "c4_04_pr": "https://github.com/achirothmane/marketing-os/pull/15",
-    "c4_04_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37871039165"
+    "c4_04_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37871039165",
+    "c4_05a": "MERGED_REAL_PERSISTED_MAUTIC_CONTACT_SHADOW_IMPORT_CI_PASSED",
+    "c4_05a_sha": "7d205ed4ae365d495aaa1938a1875a4bfc52ed5a",
+    "c4_05a_pr": "https://github.com/achirothmane/marketing-os/pull/18",
+    "c4_05a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37876095115"
   },
   "stages": {
     "C1": {
@@ -151,10 +155,10 @@
     }
   },
   "next_gates": [
-    "C4_05_verified_mautic_contact_snapshot_adapter",
-    "C4_06_real_contact_integration_and_backfill_recovery",
-    "C4_07_queue_transport_adapter_messenger",
-    "full_upstream_regression_and_runtime_deployment"
+    "C4_05B_leadmodel_post_save_event_commit_timing_and_safe_hook",
+    "C4_06_backfill_and_recovery",
+    "C4_07_real_messenger_transport_and_inbox_projection",
+    "C4_full_end_to_end_and_upstream_regression"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -195,6 +199,14 @@
         "database_c4_03": 11,
         "database_c4_04": 14
       }
+    },
+    "C4_05A": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Real Mautic 7.2.1 leads-table observation via PDO, workspace HMAC-SHA256, SHADOW-only manual import via C4-04, verified on MariaDB 11.4; fixtures inserted directly by CI into actual Mautic table; NO LeadModel save-event hook, listener, transport worker or production activation",
+      "evidence_sha": "7d205ed4ae365d495aaa1938a1875a4bfc52ed5a",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37876095115",
+      "live_db_tests": 12
     }
   }
 }
