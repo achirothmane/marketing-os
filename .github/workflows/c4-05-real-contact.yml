@@ -98,7 +98,7 @@ jobs:
           test "$status" -eq 2
           test ! -s /tmp/c406-enabled.err
           php -r '$x=json_decode(file_get_contents("/tmp/c406-enabled.json"),true,512,JSON_THROW_ON_ERROR);if(!$x["review_required"]||$x["seen"]<1||!isset($x["status_counts"]["SOURCE_CHANGED"]))exit(1);'
-          if grep -Eiq '@example.invalid|ci-only-snapshot-secret|Changed|OneMoreChange' /tmp/c406-enabled.json; then
+          if grep -Eiq '@example.invalid|ci-only-snapshot-secret|OneMoreChange' /tmp/c406-enabled.json; then
             echo "FAIL: PII or secret leaked in source audit"; exit 1
           fi
       - name: Confirm default-off CLI blocks importing
