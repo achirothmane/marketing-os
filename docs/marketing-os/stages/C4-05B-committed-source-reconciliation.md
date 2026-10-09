@@ -1,6 +1,6 @@
 # C4-05B — Source transaction probe and bounded committed Contact reconciliation
 
-**Status:** proposed implementation; integration verification pending.
+**Status:** MERGED and VERIFIED for the described narrow source-commit/recovery scope. PR #20 commit `423ad96304d5e2a3f49bcd85b63ed38f4fe4b63b`; CI https://github.com/achirothmane/marketing-os/actions/runs/37880743889 PASSED (7 scanner + 3 true LeadModel probe tests), alongside original C4-05A 12 and C4-03/04 regression. No production activation.
 
 ## Source evidence
 
@@ -34,3 +34,8 @@ No persistent Mautic event listener is enabled. A scan is **not automatically sc
 - This does not wire a production event subscriber or a scheduled worker, and does not prove queue transport or automatic Inbox delivery.
 - SQL migration 003 must be tested with existing 001/002, and default-off behavior preserved.
 - C4 end-to-end still NOT VERIFIED; no production activation or marketing sends.
+
+## Verified evidence checkpoint
+- LEAD_POST_SAVE inside active outer transaction, source rollback unseen by independent DB reader, committed LeadModel import via idempotent scanner: PASS.
+- Delayed lower-ID commit, worker replay, incomplete Evidence and changed source evidence: PASS under MariaDB 11.4.
+- Real Contact EventSubscriber is NOT enabled. Scanner invocation is manual/opt-in. No background automation or outbound messaging.

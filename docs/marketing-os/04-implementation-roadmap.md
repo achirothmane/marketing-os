@@ -96,3 +96,11 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Installer used Mautic 7.2.1 / MariaDB 11.4; test fixture was inserted directly into REAL Mautic `leads` table (mandatory is_published=1, points=0), not via LeadModel save event.
 - Snapshot HMAC over allowlisted persisted values: no email/name/secret in MOS Event/Outbox payloads. SHADOW import persists MOS Person/Map/Evidence/DomainEvent/Outbox; replay reuses identity; source-change and missing evidence BLOCK for explicit future reconciliation.
 - CLI OFF by default; no automatic Contact subscriber, live outbound effects or real queue transport. C4 full stage remains NOT VERIFIED until LeadModel event/timing, transport/recovery and missed-event backfill tested.
+
+## C4-05B committed-source recovery and actual LeadModel transaction probe (2026-10-09)
+- PR #20 merged source SHA `423ad96304d5e2a3f49bcd85b63ed38f4fe4b63b`.
+- Mautic 7.2.1 / MariaDB 11.4 CI https://github.com/achirothmane/marketing-os/actions/runs/37880743889: C4-05A 12 tests PASS, C4-05B reconciler 7 tests PASS and **actual LeadModel save hook** 3 tests PASS.
+- C4-03/C4-04 DB regression also PASS (run https://github.com/achirothmane/marketing-os/actions/runs/37880743901), after adjusting version 003 migration count.
+- Proved: LEAD_POST_SAVE may fire with external transaction still ACTIVE; source rollback leaves no Contact in a separate reader and no MOS Person; committed LeadModel Contact is eventually imported by committed-source scanner.
+- MariaDB migration 003 adds durable workspace cursor; bounded manual SHADOW scans wrap to zero at end, recovering out-of-order transaction commits and missed callbacks.
+- **Not yet done:** registered operational Mautic plugin subscriber, automatically scheduled worker, real Messenger transport, C5 updates/deletes reconciliation or full C4 end-to-end.

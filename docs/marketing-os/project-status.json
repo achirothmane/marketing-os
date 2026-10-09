@@ -62,7 +62,11 @@
     "c4_05a": "MERGED_REAL_PERSISTED_MAUTIC_CONTACT_SHADOW_IMPORT_CI_PASSED",
     "c4_05a_sha": "7d205ed4ae365d495aaa1938a1875a4bfc52ed5a",
     "c4_05a_pr": "https://github.com/achirothmane/marketing-os/pull/18",
-    "c4_05a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37876095115"
+    "c4_05a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37876095115",
+    "c4_05b": "MERGED_COMMIT_SAFE_RESUMABLE_SWEEPER_LEADMODEL_HOOK_PROBE_CI_PASSED",
+    "c4_05b_sha": "423ad96304d5e2a3f49bcd85b63ed38f4fe4b63b",
+    "c4_05b_pr": "https://github.com/achirothmane/marketing-os/pull/20",
+    "c4_05b_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37880743889"
   },
   "stages": {
     "C1": {
@@ -155,10 +159,10 @@
     }
   },
   "next_gates": [
-    "C4_05B_leadmodel_post_save_event_commit_timing_and_safe_hook",
-    "C4_06_backfill_and_recovery",
-    "C4_07_real_messenger_transport_and_inbox_projection",
-    "C4_full_end_to_end_and_upstream_regression"
+    "C4_05C_operational_safe_scheduler_and_crash_recovery",
+    "C4_06_missed_hooks_backfill_and_source_updates_reconciliation",
+    "C4_07_real_messenger_transport_inbox_projection",
+    "C4_full_end_to_end_upstream_regression"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -207,6 +211,18 @@
       "evidence_sha": "7d205ed4ae365d495aaa1938a1875a4bfc52ed5a",
       "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37876095115",
       "live_db_tests": 12
+    },
+    "C4_05B": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Mautic 7.2.1 LeadModel event timing tested with active outer txn and rollback/commit; separate committed-source SHADOW scanner with ID cursor wraparound, MariaDB migration 003, catchup on late commits; NO operational event subscriber or scheduled worker, Messenger transport or full C4 pipeline",
+      "evidence_sha": "423ad96304d5e2a3f49bcd85b63ed38f4fe4b63b",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37880743889",
+      "tests": {
+        "live_source_scanner": 7,
+        "leadmodel_probe": 3
+      },
+      "upstream_runtime_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37880743901"
     }
   }
 }
