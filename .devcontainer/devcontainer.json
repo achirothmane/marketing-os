@@ -1,0 +1,42 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/base:debian-12",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest"
+        }
+    },
+    "portsAttributes": {
+        "80": {
+            "label": "Mautic (HTTP)"
+        },
+        "3306": {
+            "label": "Database"
+        },
+        "8027": {
+            "label": "Mailpit"
+        },
+        "8036": {
+            "label": "phpMyAdmin"
+        },
+        "8443": {
+            "label": "Mautic (HTTPS)"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "workbench.editorAssociations": {
+                    "*.md": "vscode.markdown.preview.editor"
+                }
+            }
+        },
+        "codespaces": {
+            "openFiles": [
+                ".devcontainer/CODESPACES.md"
+            ]
+        }
+    },
+    "postCreateCommand": ".devcontainer/setup-project.sh",
+    "postAttachCommand": ".devcontainer/post-attach.sh",
+    "updateContentCommand": ".devcontainer/prebuild-project.sh"
+}
