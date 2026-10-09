@@ -70,7 +70,11 @@
     "c4_05c": "MERGED_BOUNDED_OPTIN_SHADOW_WORKER_CRASH_RECOVERY_CI_PASSED",
     "c4_05c_sha": "dd5069c7dc4d18505eedb4a137bac73d94d19c9d",
     "c4_05c_pr": "https://github.com/achirothmane/marketing-os/pull/22",
-    "c4_05c_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37996553218"
+    "c4_05c_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37996553218",
+    "c4_06a": "MERGED_SOURCE_RECONCILIATION_OBSERVATION_ONLY_CI_PASSED",
+    "c4_06a_sha": "5e3fdd7e304399439909ea05b929787668c9be9f",
+    "c4_06a_pr": "https://github.com/achirothmane/marketing-os/pull/24",
+    "c4_06a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38001779877"
   },
   "stages": {
     "C1": {
@@ -163,10 +167,10 @@
     }
   },
   "next_gates": [
-    "C4_06_source_mutation_deletion_and_legacy_mapping_reconciliation",
-    "C4_07_real_messenger_transport_and_inbox_projection",
-    "C4_full_end_to_end_upstream_regression",
-    "deployment_and_alerting_after_security_review"
+    "C4_07_real_messenger_transport_and_atomic_inbox_projection",
+    "C4_06B_authorized_source_mutation_resolution_after_C5_C6",
+    "C4_full_end_to_end_recovery_regression",
+    "deployment_monitoring_and_secret_rotation"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -235,6 +239,15 @@
       "evidence_sha": "dd5069c7dc4d18505eedb4a137bac73d94d19c9d",
       "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37996553218",
       "tests": 8
+    },
+    "C4_06A": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Source HMAC change, missing candidate and legacy evidence gap observations in MariaDB 11.4 with 19 tests. Includes bounded existing-mapping audit and fail-closed CLI; never deletes/merges/erases Persons, resolves missing source or alters consent, no scheduler or Messenger",
+      "evidence_sha": "5e3fdd7e304399439909ea05b929787668c9be9f",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38001779877",
+      "tests": 19,
+      "classification_only": true
     }
   }
 }

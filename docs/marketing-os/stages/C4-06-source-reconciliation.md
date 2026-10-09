@@ -1,6 +1,6 @@
 # C4-06 — Source reconciliation observations (non-destructive)
 
-**Acceptance condition:** Real Mautic 7.2.1 / MariaDB 11.4 CI must pass before marking this narrow capability VERIFIED.
+**Status:** C4-06A observation/classification narrow capability VERIFIED. PR #24 merged `5e3fdd7e304399439909ea05b929787668c9be9f`; live Mautic 7.2.1 / MariaDB 11.4 CI https://github.com/achirothmane/marketing-os/actions/runs/38001779877 PASS (19/19 new tests). Full C4-06 authorized resolution NOT IMPLEMENTED.
 
 ## The boundary
 
