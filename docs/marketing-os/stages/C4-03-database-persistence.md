@@ -1,6 +1,6 @@
 # C4-03 — MariaDB persistence, scoped mapping and concurrency
 
-Status: C4-03 source is on PR #13; promote to VERIFIED only with passing GitHub Actions CI.
+Status: VERIFIED in isolated MariaDB 11.4 test scope. PR #13 merged as bb019fd6fe124fb6a36257acb15ebb077ea7a6d2; CI run 37869768883 passed all 38 tests. No real Mautic Contact bridge or C4-04 evidence/event/outbox yet.
 
 ## Storage boundary
 
@@ -39,3 +39,9 @@ Next: C4-04 must extend this single transaction to Evidence + DomainEvent + Outb
 ## Acceptance evidence
 
 Link exact PR #13 SHA, CI run, migration output, tested MariaDB version, concurrent test results and limitations here before marking verified. Domain design PASS is not database integration PASS.
+
+## Accepted evidence, 2026-10-09
+- Source merge: `bb019fd6fe124fb6a36257acb15ebb077ea7a6d2`
+- CI: https://github.com/achirothmane/marketing-os/actions/runs/37869768883
+- C4-01 13 PASS; C4-02 14 PASS; MariaDB integration 11 PASS; concurrency race 2 workers -> one Person.
+- Test DB had only four MOS-owned tables; no Mautic table changes.

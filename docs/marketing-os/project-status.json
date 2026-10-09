@@ -50,7 +50,11 @@
     "c4_02": "MERGED_DOMAIN_ONLY_CI_PASSED",
     "c4_02_sha": "11474dac28205d839c948bfb1ef7ff0a213b64aa",
     "c4_02_pr": "https://github.com/achirothmane/marketing-os/pull/9",
-    "c4_02_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37868986534"
+    "c4_02_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37868986534",
+    "c4_03": "MERGED_PDO_MARIADB_PERSISTENCE_CI_PASSED",
+    "c4_03_sha": "bb019fd6fe124fb6a36257acb15ebb077ea7a6d2",
+    "c4_03_pr": "https://github.com/achirothmane/marketing-os/pull/13",
+    "c4_03_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37869768883"
   },
   "stages": {
     "C1": {
@@ -143,10 +147,10 @@
     }
   },
   "next_gates": [
-    "C4_03_person_and_legacy_mapping_database_schema_with_uniqueness",
-    "C4_04_evidence_domain_event_outbox_inbox",
-    "C4_05_mautic_contact_adapter",
-    "full_upstream_functional_and_upgrade_regression"
+    "C4_04_atomic_evidence_event_outbox_inbox",
+    "C4_05_mautic_contact_bridge",
+    "C4_06_backfill_recovery_integrated_tests",
+    "upstream_regression_and_runtime_deployment"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -167,6 +171,13 @@
       "scope": "Person aggregate and scoped legacy-source domain; no database persistence or Mautic subscriber",
       "evidence_sha": "11474dac28205d839c948bfb1ef7ff0a213b64aa",
       "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37868986534"
+    },
+    "C4_03": {
+      "implemented": true,
+      "verified": true,
+      "scope": "PDO MariaDB 11.4 schema migration and tenant-safe Person/Legacy mapping persistence only; 11 DB tests incl 2-worker race; no Evidence/Event/Outbox integration",
+      "evidence_sha": "bb019fd6fe124fb6a36257acb15ebb077ea7a6d2",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37869768883"
     }
   }
 }

@@ -39,3 +39,5 @@ At each merged PR:
 - **2026-10-09:** PR #10 opened to test isolated MariaDB 11.4 CLI install. Do not claim DB runtime PASS until workflow concludes.
 
 - **2026-10-09:** PR #10 merged (`7b4cd1bf95df9f803ac2858d4205ca5c9cb49c69`). Isolated MariaDB 11.4 installed using upstream `mautic:install`, 126 tables verified, CLI boot passed; workflow run 37869113329 SUCCESS. M0 installation baseline is now demonstrated, but full upstream regression, app deployment, and MOS domain persistence are still outstanding. Next C4-03 SQL/Doctrine persistence.
+
+- **2026-10-09:** PR #13 merged `bb019fd6fe124fb6a36257acb15ebb077ea7a6d2`. C4-03 initial MariaDB 11.4 schema migration and PDO tenant-safe Person+Legacy source mapping persistence PASS. CI run 37869768883: contracts 13, identity 14, DB 11 tests all pass, including two independent PHP worker race, FK cross-workspace checks, rollback, CAS; four MOS-owned tables created without touching Mautic source tables. This is not yet Contact->Event->Outbox end-to-end. Next C4-04.
