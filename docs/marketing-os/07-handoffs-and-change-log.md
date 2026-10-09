@@ -31,3 +31,5 @@ At each merged PR:
 
 - **2026-10-09 (M0):** imported exact Mautic 7.2.1 source snapshot from upstream `8cbb7ef874d52a411ae5a884f979acf6cc320181` at repository root, preserving original project docs/contracts. Import run 37867965021 passed. Source smoke run 37868041910 passed Composer validate, entrypoint syntax, and standalone 13 PHP contract tests. Upstream Git ancestry NOT grafted. Runtime/vendor/DB/integration still unverified. See PR #6 and issue #3.
 - **Next:** verify install, runtime/DB and upstream regression baseline before C4-02 Contact domain adapter. Do not mark C4 end-to-end PASS.
+
+- **2026-10-09:** M0 upstream source import PR #6 merged to main commit `8ed40e15d0b07ab90efee7ee1e89d9698b858d9c`; Mautic 7.2.1 root paths verified present on main. `composer validate`, entrypoint PHP lint, and 13 canonical contract tests passed in GitHub Actions run 37868041910. No full composer install, DB install or upstream integration tests yet. Tracking issues #3 and #4 updated.
