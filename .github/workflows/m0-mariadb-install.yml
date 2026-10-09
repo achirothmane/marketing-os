@@ -1,0 +1,86 @@
+name: M0 Mautic MariaDB Installation Smoke
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/m0-mariadb-install.yml'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'app/**'
+      - 'config/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-root-password
+          MARIADB_DATABASE: mautic_ci
+          MARIADB_USER: mautic_ci
+          MARIADB_PASSWORD: ci-only-mautic-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+    env:
+      COMPOSER_MEMORY_LIMIT: "-1"
+      APP_ENV: prod
+      APP_DEBUG: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: bcmath, ctype, curl, dom, exif, fileinfo, gd, iconv, imap, intl, mbstring, mysqli, pdo_mysql, sodium, xml, zip
+          ini-values: memory_limit=2G, max_execution_time=600
+          coverage: none
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: composer-mariadb-php83-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-php83-
+      - name: Install locked dependencies
+        run: composer install --prefer-dist --no-progress --no-scripts --no-interaction --no-ansi
+      - name: Run Mautic installer against isolated MariaDB test database
+        shell: bash
+        run: |
+          set -euo pipefail
+          ADMIN_PASS="$(openssl rand -hex 18)Aa1!"
+          echo "::add-mask::$ADMIN_PASS"
+          php bin/console mautic:install 'http://127.0.0.1' --force --no-interaction \
+            --db_driver=pdo_mysql \
+            --db_host=127.0.0.1 \
+            --db_port=3306 \
+            --db_name=mautic_ci \
+            --db_user=mautic_ci \
+            --db_password=ci-only-mautic-password \
+            --db_backup_tables=false \
+            --admin_firstname=Test \
+            --admin_lastname=Operator \
+            --admin_username=ci_admin \
+            --admin_email=ci-admin@example.invalid \
+            --admin_password="$ADMIN_PASS"
+      - name: Verify installed DB schema contains source tables
+        run: |
+          php -r '
+            $db = new PDO("mysql:host=127.0.0.1;port=3306;dbname=mautic_ci", "mautic_ci", "ci-only-mautic-password", [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+            $n = (int)$db->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE()")->fetchColumn();
+            echo "Mautic tables: $n\n";
+            if ($n < 20) { fwrite(STDERR,"Incomplete installation schema\n"); exit(1); }
+          '
+      - name: Confirm Mautic CLI boots after installation
+        run: php bin/console --version --no-debug
+      - name: Canonical contracts still pass
+        run: php packages/contracts/tests/run.php
