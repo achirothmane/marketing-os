@@ -78,7 +78,11 @@
     "c4_07a": "MERGED_REAL_SYMFONY_MESSENGER_DOCTRINE_QUEUE_CI_PASSED",
     "c4_07a_sha": "47c5f83b06f43ac380864e05948c8efe2cf8b0e1",
     "c4_07a_pr": "https://github.com/achirothmane/marketing-os/pull/27",
-    "c4_07a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38003070002"
+    "c4_07a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38003070002",
+    "c4_07b1": "MERGED_BOUNDED_OPTIN_MESSENGER_WORKERS_AND_VALID_POINTER_QUARANTINE_CI_PASSED",
+    "c4_07b1_sha": "2ea70105f456e57c354bdbe67dabe7906b21a5fd",
+    "c4_07b1_pr": "https://github.com/achirothmane/marketing-os/pull/30",
+    "c4_07b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38004029403"
   },
   "stages": {
     "C1": {
@@ -171,11 +175,11 @@
     }
   },
   "next_gates": [
-    "C4_07B_operational_bounded_consumer_worker_supervision_poison_message_handling",
-    "C4_08_real_contact_to_real_queue_to_inbox_integration",
-    "C4_06B_authorized_source_mutation_after_C5_C6",
-    "C4_full_recovery_and_upstream_regression",
-    "deployment_monitoring_and_secret_rotation"
+    "C4_07B2_poison_wire_DLQ_worker_supervision_ops_readiness",
+    "C4_08_real_Mautic_Contact_to_Queue_to_Inbox_integration",
+    "C4_06B_authorized_mutation_after_C5_C6",
+    "C4_full_recovery_security_and_upstream_regression",
+    "production_deployment_approval"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -265,6 +269,19 @@
         "symfony_messenger": "7.4.12",
         "symfony_doctrine_messenger": "7.4.6"
       }
+    },
+    "C4_07B1": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Explicit migration 005, tenant-scoped Symfony Messenger Doctrine queue, MariaDB projection, manual double-opt-in bounded PUBLISH/CONSUME/HEALTH CLI with 1-100 limit, PII-free counters, and 3-attempt durable valid-pointer quarantine. MariaDB 11.4 checks 11/11 PASS. Does NOT include malformed-wire quarantine, deployed worker supervisor/scheduler, automated Mautic source->Messenger end-to-end, provider effects or production rollout.",
+      "evidence_sha": "2ea70105f456e57c354bdbe67dabe7906b21a5fd",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38004029403",
+      "tests": 11,
+      "caveats": [
+        "undecodable wire messages fail closed but lack transport-level DLQ",
+        "no deployed supervisor or automatic scheduler",
+        "not full C4"
+      ]
     }
   }
 }
