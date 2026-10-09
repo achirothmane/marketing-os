@@ -1,0 +1,86 @@
+name: C4-05 Real Mautic Contact Shadow Import
+on:
+  pull_request:
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-05-real-contact.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-05-real-contact.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-mautic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-root-password
+          MARIADB_DATABASE: mautic_ci
+          MARIADB_USER: mautic_ci
+          MARIADB_PASSWORD: ci-only-mautic-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+    env:
+      COMPOSER_MEMORY_LIMIT: "-1"
+      APP_ENV: prod
+      APP_DEBUG: "0"
+      MOS_TEST_DSN: "mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4"
+      MOS_TEST_DB_USER: mautic_ci
+      MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+      MOS_SNAPSHOT_HMAC_KEY: ci-only-snapshot-secret-32bytes-or-more-do-not-use-in-prod
+      MOS_BRIDGE_MODE: SHADOW
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: bcmath, ctype, curl, dom, exif, fileinfo, gd, iconv, imap, intl, mbstring, mysqli, pdo_mysql, sodium, xml, zip
+          ini-values: memory_limit=2G, max_execution_time=600
+          coverage: none
+      - name: Install pinned Mautic vendor dependencies
+        run: composer install --prefer-dist --no-progress --no-scripts --no-interaction --no-ansi
+      - name: Install Mautic 7.2.1 on ephemeral MariaDB
+        shell: bash
+        run: |
+          set -euo pipefail
+          ADMIN_PASS="$(openssl rand -hex 18)Aa1!"
+          echo "::add-mask::$ADMIN_PASS"
+          php bin/console mautic:install 'http://127.0.0.1' --force --no-interaction \
+            --db_driver=pdo_mysql --db_host=127.0.0.1 --db_port=3306 \
+            --db_name=mautic_ci --db_user=mautic_ci --db_password=ci-only-mautic-password \
+            --db_backup_tables=false --admin_firstname=Test --admin_lastname=Operator \
+            --admin_username=ci_admin --admin_email=ci-admin@example.invalid --admin_password="$ADMIN_PASS"
+      - name: PHP syntax + Canonical contracts
+        run: |
+          find packages/identity/src/Bridge packages/identity/tests/c4_05_real_mautic.php packages/identity/bin/import_mautic_contact.php -name '*.php' -print0 | xargs -0 -n1 php -l
+          php packages/contracts/tests/run.php
+      - name: Verify upstream mandatory Contact columns
+        run: |
+          php -r '$db=new PDO(getenv("MOS_TEST_DSN"),getenv("MOS_TEST_DB_USER"),getenv("MOS_TEST_DB_PASSWORD")); $s=$db->query("SELECT COLUMN_NAME,COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=\x27leads\x27 AND IS_NULLABLE=\x27NO\x27 AND COLUMN_DEFAULT IS NULL AND EXTRA NOT LIKE \x27%auto_increment%\x27 ORDER BY ORDINAL_POSITION"); foreach($s as $r)echo $r[0]." ".$r[1]."\n";'
+      - name: Run actual Mautic leads DB snapshot and MOS import tests
+        run: php packages/identity/tests/c4_05_real_mautic.php
+      - name: Confirm default-off CLI blocks importing
+        shell: bash
+        run: |
+          set -euo pipefail
+          if MOS_BRIDGE_MODE=OFF php packages/identity/bin/import_mautic_contact.php invalid 1 > /tmp/mos-output 2>&1; then
+            echo "SECURITY FAILURE: CLI ran while disabled"; exit 1
+          fi
+          grep -q 'blocked' /tmp/mos-output
+          if grep -Eiq 'fixture-.*@example.invalid|ci-only-snapshot-secret' /tmp/mos-output; then
+            echo "SECURITY FAILURE: leaked PII/secret";exit 1
+          fi
