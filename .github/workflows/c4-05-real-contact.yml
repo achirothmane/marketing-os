@@ -81,6 +81,26 @@ jobs:
         run: php packages/identity/tests/c4_05c_scheduled_worker.php
       - name: C4-06 source change, disappearance and legacy-evidence audit suite
         run: php packages/identity/tests/c4_06_source_audit.php
+      - name: C4-06 audit CLI disabled by default, signals review without leaking PII
+        shell: bash
+        run: |
+          set -euo pipefail
+          WS="$(php -r '$db=new PDO(getenv("MOS_TEST_DSN"),getenv("MOS_TEST_DB_USER"),getenv("MOS_TEST_DB_PASSWORD"));echo $db->query("SELECT workspace_id FROM mos_source_reconciliation_case WHERE status=\x27SOURCE_CHANGED\x27 LIMIT 1")->fetchColumn();')"
+          test -n "$WS"
+          if MOS_SOURCE_AUDIT_ENABLED=0 php packages/identity/bin/audit_mautic_source.php "$WS" 0 500 > /tmp/c406-disabled.out 2>&1; then
+            echo "FAIL: source audit ran while disabled"; exit 1
+          fi
+          test ! -s /tmp/c406-disabled.out || grep -q 'refused' /tmp/c406-disabled.out
+          set +e
+          MOS_SOURCE_AUDIT_ENABLED=1 php packages/identity/bin/audit_mautic_source.php "$WS" 0 500 > /tmp/c406-enabled.json 2>/tmp/c406-enabled.err
+          status="$?"
+          set -e
+          test "$status" -eq 2
+          test ! -s /tmp/c406-enabled.err
+          php -r '$x=json_decode(file_get_contents("/tmp/c406-enabled.json"),true,512,JSON_THROW_ON_ERROR);if(!$x["review_required"]||$x["seen"]<1||!isset($x["status_counts"]["SOURCE_CHANGED"]))exit(1);'
+          if grep -Eiq '@example.invalid|ci-only-snapshot-secret|Changed|OneMoreChange' /tmp/c406-enabled.json; then
+            echo "FAIL: PII or secret leaked in source audit"; exit 1
+          fi
       - name: Confirm default-off CLI blocks importing
         shell: bash
         run: |
