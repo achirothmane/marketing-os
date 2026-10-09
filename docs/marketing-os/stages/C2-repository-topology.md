@@ -1,5 +1,5 @@
 # C2 — Repository and Module Topology
-Status: DESIGNED. Mautic source import NOT VERIFIED.
+Status: DESIGNED; M0 pinned source snapshot IMPORTED and source-smoke VERIFIED. Full Mautic runtime/DB and upstream regression NOT VERIFIED.
 Source period: early October 2026.
 
 ## Core layout decision
@@ -23,4 +23,4 @@ Mautic Lead/Doctrine entities inside domain Person model. Business logic inside 
 Pin an exact compatible upstream Mautic 7.x commit, record its SHA/license, perform root import to existing GitHub repo, baseline Composer and tests, then register local contract packages without moving upstream files.
 
 ## Current known issue
-marketing-os existed as an EMPTY repository on 2026-10-09. This documentation commit does not magically make it a hard fork. The source import remains the first integration gate.
+marketing-os was EMPTY on 2026-10-09 before initial docs. Later M0 imported pinned Mautic 7.2.1 source (upstream commit 8cbb7ef874d52a411ae5a884f979acf6cc320181) into root. This is a SOURCE SNAPSHOT import, not full git ancestry, and not proof of runtime compatibility.

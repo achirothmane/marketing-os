@@ -2,7 +2,7 @@
 
 **Repository:** `achirothmane/marketing-os`  
 **Date of baseline:** 2026-10-09  
-**State:** architecture documented; the upstream Mautic source and Marketing OS runtime are **not yet imported/implemented**.
+**State:** architecture documented; the pinned Mautic 7.2.1 SOURCE SNAPSHOT is imported; source-smoke CI passed; the Marketing OS runtime/integration is **not yet implemented or tested**.
 
 This directory is the durable, version-controlled source of record for the Marketing Automation Suite / Marketing OS initiative, from the initial architecture through the C11 experiment design and subsequent executable work. Design decisions must never be mistaken for merged code or passing integration tests.
 
@@ -28,4 +28,4 @@ This directory is the durable, version-controlled source of record for the Marke
 
 ## Historical distinction
 
-This repository was observed empty on 2026-10-09 before this initialization. It was not then an imported Mautic hard fork, and no C3–C11 implementation PRs were present. Preserve the original upstream Mautic root layout when importing source; do not nest Mautic under `upstream/mautic/`.
+This repository was observed empty on 2026-10-09 before initialization. Its subsequent M0 import is a pinned upstream source snapshot, without full upstream Git ancestry. C4-01 contracts passed standalone CI; the C4 end-to-end slice and later engines remain unverified. See upstream provenance. Preserve the original upstream Mautic root layout when importing source; do not nest Mautic under `upstream/mautic/`.

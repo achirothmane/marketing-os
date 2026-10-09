@@ -69,7 +69,7 @@ DO NOT create every empty path during initialization. Add real packages as execu
 - Data Engine (separate repository) provides generic data-processing; do not copy its ontology into Marketing OS.
 
 ## Open source/upstream compatibility
-As of baseline, repository marketing-os was created EMPTY; it has not yet received the upstream Mautic source. Upstream targeted branch is mautic/mautic 7.x, but a specific immutable upstream commit, dependency lock, and local CI baseline MUST be selected before calling this a hard fork. Because this GitHub repo already exists, do not assume GitHub's ordinary Fork button can reuse its name. Import through a traceable Git upstream integration method with license notices intact; record both upstream commit and integration commit in an ADR.
+Historical baseline: marketing-os was created EMPTY. M0 imported a pinned Mautic 7.2.1 source snapshot (upstream SHA `8cbb7ef874d52a411ae5a884f979acf6cc320181`) into root via controlled GitHub Actions, with license and source provenance recorded in `upstream/MAUTIC-PROVENANCE.md`. Full upstream Git ancestry was NOT imported. Source-smoke checks passed; Composer dependency installation, upstream functional/integration tests, and actual runtime still need evidence.
 
 ## Initial runtime data flow
     Mautic Contact

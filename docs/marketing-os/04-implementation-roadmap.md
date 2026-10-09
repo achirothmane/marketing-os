@@ -4,12 +4,12 @@
 Current highest-priority goal: reproducible Contact -> Canonical Person -> Evidence -> DomainEvent -> transactional Outbox -> Inbox Consumer. C5–C11 remain preserved designs, NOT a mandate to implement ten engines in parallel.
 
 ## First prerequisite — proper upstream source import
-Current repository was empty at baseline, not an actual fork. Preserve Mautic upstream root and history when importing to this already-created repo. Steps:
-1. Choose and pin a specific Mautic 7.x release/commit compatible with the deployment; capture its commit SHA.
-2. Record upstream URL, license/attribution and import method in an ADR.
-3. Import files into repository root without nesting. Reconcile any README collision; preserve existing docs/marketing-os.
-4. Verify Composer install/lock integrity and minimal upstream automated tests.
-5. Configure upgrades, test containers and rollback before touching upstream behaviors.
+Repository was empty at baseline. M0 source snapshot from pinned Mautic 7.2.1 has now been imported into root. Full upstream Git history was not imported; source provenance is pinned and documented. Steps:
+1. [DONE] Choose and pin Mautic 7.2.1 release SHA `8cbb7ef874d52a411ae5a884f979acf6cc320181`; deployment compatibility itself still requires validation.
+2. [DONE] Record upstream URL, GPL license/attribution and pinned snapshot method in provenance record.
+3. [DONE] Import source into root, preserve owner README/docs/contracts and exclude upstream CI workflows.
+4. [PARTIAL] Composer manifest validation, entrypoint syntax and canonical contracts passed; dependency installation and meaningful upstream tests have NOT yet run.
+5. [TODO] Configure baseline install/tests, DB fixtures, CI upgrades and rollback before touching upstream behaviors.
 Do not label fork complete until code and upstream ref appear in Git.
 
 ## C4-01 local seed
@@ -52,3 +52,10 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - GitHub Actions run: https://github.com/achirothmane/marketing-os/actions/runs/37867114064
 - PHP 8.2 and 8.3 jobs both succeeded; each ran syntax lint and 13 contract tests.
 - This is isolated package verification, NOT Composer-root Mautic integration or Contact->Outbox acceptance.
+
+## M0 source import proof (2026-10-09)
+- Upstream Mautic 7.2.1 SHA 8cbb7ef874d52a411ae5a884f979acf6cc320181.
+- Source import job SUCCESS: https://github.com/achirothmane/marketing-os/actions/runs/37867965021
+- Source-smoke CI SUCCESS: https://github.com/achirothmane/marketing-os/actions/runs/37868041910
+- Verified: upstream root source paths present; GPL LICENSE.txt present; composer validate; PHP entrypoint lint; PHP 8.3 canonical contracts (13/13).
+- NOT VERIFIED: Composer install/vendor, DB schema/migrations, server boot, upstream regression suite, C4 Contact integration.

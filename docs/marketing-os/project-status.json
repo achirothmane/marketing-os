@@ -7,8 +7,21 @@
   "upstream": {
     "project": "mautic/mautic",
     "target_branch": "7.x",
-    "pinned_commit": null,
-    "imported": false
+    "pinned_commit": "8cbb7ef874d52a411ae5a884f979acf6cc320181",
+    "imported": true,
+    "tag": "7.2.1",
+    "import_method": "exact-source-snapshot-not-full-upstream-git-ancestry",
+    "license": "GPL-3.0",
+    "source_smoke": {
+      "passed": true,
+      "workflow_run": "https://github.com/achirothmane/marketing-os/actions/runs/37868041910",
+      "composer_validate": true,
+      "php_entrypoint_syntax": true,
+      "contracts_php83_13_tests": true,
+      "composer_install": false,
+      "upstream_integration_tests": false,
+      "db_runtime_tests": false
+    }
   },
   "implementation": {
     "c4_01": "MERGED_ISOLATED_CONTRACTS_CI_PASSED",
@@ -34,11 +47,11 @@
     },
     "C2": {
       "design": "DESIGNED",
-      "implemented": false,
+      "implemented": true,
       "verified": false,
       "shipped": false,
       "merged_sha": null,
-      "ci_evidence": null
+      "ci_evidence": "https://github.com/achirothmane/marketing-os/actions/runs/37868041910"
     },
     "C3": {
       "design": "DESIGNED",
@@ -114,10 +127,9 @@
     }
   },
   "next_gates": [
-    "import_pinned_mautic_root",
-    "baseline_upstream_tests",
-    "commit_c4_01_contracts",
-    "contact_person_event_outbox_inbox_integration"
+    "install_dependencies_and_establish_upstream_runtime_test_baseline",
+    "C4_02_person_and_legacy_contact_mappings",
+    "C4_evidence_event_outbox_inbox_integration"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",

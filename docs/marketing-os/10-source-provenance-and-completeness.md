@@ -10,12 +10,12 @@
 This repository captures the material technical and governance decisions from the available context in organized, searchable form. It is a **structured reconstruction**, not a word-for-word transcript of every past ChatGPT message. Do not claim the complete verbal 3,063-feature list or any missing discussion is fully transcribed. When original prompts/files become available, attach them as dated annexes and update source mappings without silently modifying earlier decisions.
 
 ## Claims we explicitly cannot make today
-- Upstream Mautic imported into marketing-os.
-- A working Marketing OS deployed.
+- Upstream Mautic imported into marketing-os. (This was false at baseline; M0 now imports a pinned source snapshot, but no full ancestry.)
+- A working Marketing OS deployed. (Still false.)
 - C4 end-to-end Contact->Person test passed on real Mautic.
 - Any C5–C11 engine implemented/merged.
 - Customer demand or financial profit validated.
-- Source MTE v0.8 code present inside this repo.
+- Source MTE v0.8 code present inside this repo. (Still false.)
 
 ## How to avoid losing project memory
 1. Keep this directory in Git and update through PR review.
@@ -31,3 +31,9 @@ This repository captures the material technical and governance decisions from th
 - Exact source and enumeration for all ~3,063 idea catalog entries.
 - Original MTE v0.8 source SHA and reproducible tests, if in another repository.
 - C4-01 canonical source is now committed and PHP contract CI succeeded on PR #2; remaining work is root Composer integration and actual Mautic tests.
+
+## Updated M0 source evidence
+- Imported source pinned to Mautic 7.2.1 tag SHA `8cbb7ef874d52a411ae5a884f979acf6cc320181`.
+- CI import run 37867965021: success; source smoke 37868041910: success.
+- Full git ancestry is not present; license is retained and exact upstream source is referenced.
+- Composer install, DB and upstream tests remain unverified.
