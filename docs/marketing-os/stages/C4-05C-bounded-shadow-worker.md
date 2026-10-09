@@ -1,6 +1,6 @@
 # C4-05C — Opt-in bounded Contact reconciliation worker
 
-Status: proposed until CI passes. No cron job or production service has been installed.
+Status: MERGED and CI VERIFIED for isolated bounded-worker scope. PR #22 merge `dd5069c7dc4d18505eedb4a137bac73d94d19c9d`; https://github.com/achirothmane/marketing-os/actions/runs/37996553218 PASS (8/8 new tests). No cron job or production service has been installed.
 
 ## Runtime contract
 

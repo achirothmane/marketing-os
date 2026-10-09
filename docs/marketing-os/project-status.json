@@ -66,7 +66,11 @@
     "c4_05b": "MERGED_COMMIT_SAFE_RESUMABLE_SWEEPER_LEADMODEL_HOOK_PROBE_CI_PASSED",
     "c4_05b_sha": "423ad96304d5e2a3f49bcd85b63ed38f4fe4b63b",
     "c4_05b_pr": "https://github.com/achirothmane/marketing-os/pull/20",
-    "c4_05b_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37880743889"
+    "c4_05b_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37880743889",
+    "c4_05c": "MERGED_BOUNDED_OPTIN_SHADOW_WORKER_CRASH_RECOVERY_CI_PASSED",
+    "c4_05c_sha": "dd5069c7dc4d18505eedb4a137bac73d94d19c9d",
+    "c4_05c_pr": "https://github.com/achirothmane/marketing-os/pull/22",
+    "c4_05c_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37996553218"
   },
   "stages": {
     "C1": {
@@ -159,10 +163,10 @@
     }
   },
   "next_gates": [
-    "C4_05C_operational_safe_scheduler_and_crash_recovery",
-    "C4_06_missed_hooks_backfill_and_source_updates_reconciliation",
-    "C4_07_real_messenger_transport_inbox_projection",
-    "C4_full_end_to_end_upstream_regression"
+    "C4_06_source_mutation_deletion_and_legacy_mapping_reconciliation",
+    "C4_07_real_messenger_transport_and_inbox_projection",
+    "C4_full_end_to_end_upstream_regression",
+    "deployment_and_alerting_after_security_review"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -223,6 +227,14 @@
         "leadmodel_probe": 3
       },
       "upstream_runtime_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37880743901"
+    },
+    "C4_05C": {
+      "implemented": true,
+      "verified": true,
+      "scope": "CLI cron-ready bounded SHADOW sweeper with double opt-in, per-Workspace advisory lock, bounded batches, post-import/pre-cursor abrupt crash and idempotent replay, installed Mautic 7.2.1/MariaDB 11.4 CI verified; no cron deployment, Messenger transport or automatic Mautic subscriber",
+      "evidence_sha": "dd5069c7dc4d18505eedb4a137bac73d94d19c9d",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37996553218",
+      "tests": 8
     }
   }
 }
