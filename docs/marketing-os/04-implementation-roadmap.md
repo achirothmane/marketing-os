@@ -90,3 +90,9 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Concurrent import of one simulated Contact from 2 PHP workers => exactly 1 Person/Evidence/Event/Outbox. ACK-lost delivery leaves pending event; inbox dedup suppresses second projection, handler failure rolls back inbox marker.
 - **Safety boundary:** Digest is asserted by caller and must be attached to a genuine Mautic snapshot in C4-05; legacy C4-03 mapping-only registry bypass still exists for tests and MUST NOT be used by production adapter. No real Contact event, real Messenger transport or email send.
 - Next: C4-05 verified Mautic Contact snapshot adapter, then actual integration/recovery. No C4 end-to-end PASS.
+
+## C4-05A source-backed Mautic Contact observation verified (2026-10-09)
+- PR #18 merged `7d205ed4ae365d495aaa1938a1875a4bfc52ed5a`, CI https://github.com/achirothmane/marketing-os/actions/runs/37876095115 PASS (12/12 live Mautic table bridge tests; all earlier scoped PR checks pass).
+- Installer used Mautic 7.2.1 / MariaDB 11.4; test fixture was inserted directly into REAL Mautic `leads` table (mandatory is_published=1, points=0), not via LeadModel save event.
+- Snapshot HMAC over allowlisted persisted values: no email/name/secret in MOS Event/Outbox payloads. SHADOW import persists MOS Person/Map/Evidence/DomainEvent/Outbox; replay reuses identity; source-change and missing evidence BLOCK for explicit future reconciliation.
+- CLI OFF by default; no automatic Contact subscriber, live outbound effects or real queue transport. C4 full stage remains NOT VERIFIED until LeadModel event/timing, transport/recovery and missed-event backfill tested.
