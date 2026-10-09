@@ -1,5 +1,5 @@
 # C4 — First Executable Vertical Slice
-Status: DESIGNED; previous local contract seed tested independently (13 tests), no confirmed integration in this GitHub repo.
+Status: C4-01 source MERGED and isolated PHP CI VERIFIED (PR #2, commit 33fb9f490bcf85bc02a0a4635cd74cc27871ef1f, workflow run 37867114064); rest of C4 end-to-end NOT IMPLEMENTED/VERIFIED.
 Priority: FIRST executable milestone after upstream import and baseline test.
 
 ## Goal
@@ -30,3 +30,8 @@ Shadow mode OFF/SHADOW/ACTIVE; start SHADOW. Status and backlog metrics; avoid e
 
 ## Local seed limitation
 The prior archive packages/contracts contains 18 files with UUIDv7, typed IDs, actor/clock, event/evidence, knowledge state, Money, CLI tests and README. Need commit actual files and run tests in repo; local PASS does not imply Mautic integration.
+
+## Verified provenance of first code
+- Local bootstrap archive existed with 13 tests; its contracts were reconstructed as a standalone package and committed via PR #2.
+- GitHub CI PHP 8.2 and 8.3: SUCCESS for syntax and 13 behavior tests.
+- C4-02 Person/mapping, transaction outbox/inbox and Mautic bridge remain future work.
