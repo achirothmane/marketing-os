@@ -1,5 +1,5 @@
 # C4 — First Executable Vertical Slice
-Status: C4-01 source MERGED and isolated PHP CI VERIFIED (PR #2, commit 33fb9f490bcf85bc02a0a4635cd74cc27871ef1f, workflow run 37867114064); C4-02 domain MERGED/CI VERIFIED (PR #9); rest of C4 end-to-end NOT IMPLEMENTED/VERIFIED..
+Status: C4-01/02/03/04 source merged and CI verified for their respective local/MariaDB scopes; full Mautic Contact->Inbox vertical slice NOT verified (C4-05 onward remains).
 Priority: FIRST executable milestone after upstream import and baseline test.
 
 ## Goal

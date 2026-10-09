@@ -1,6 +1,6 @@
 # Marketing OS — Marketing Automation Suite
 
-**Status (2026-10-09):** Project record preserved; pinned Mautic 7.2.1 source imported and source-smoke CI verified; C4-01 contracts pass PHP CI. Runtime install, database integration and C4–C11 end-to-end engines are NOT verified.
+**Status (2026-10-09):** Mautic 7.2.1 source imported; basic install/DB smoke verified. C4-01–C4-04 isolated contracts, Person persistence and atomic Evidence/Event/Outbox/Inbox tests PASS. Real Mautic Contact listener, provider/queue integration and C4 end-to-end remain NOT VERIFIED.
 
 This is the canonical repository for the self-hosted Marketing OS initiative, starting from the Mautic operational substrate and evolving toward canonical Identity, Consent, Audiences, Effects, Durable Workflows, Measurement, Economics and Experiments.
 

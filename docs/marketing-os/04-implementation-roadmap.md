@@ -81,3 +81,12 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Checksum migration, scoped source uniqueness, composite cross-workspace FKs, duplicate rollback, optimistic CAS, two independent PHP workers racing same Contact ID; exactly 4 new MOS tables in isolated schema.
 - Still absent: Evidence persistence + DomainEvent + transactional Outbox/Inbox and real Mautic Contact subscriber. DO NOT claim C4 end-to-end or send external emails.
 - Next executable task: C4-04 atomic Evidence/Event/Outbox/Inbox within Person registration transaction, then C4-05 Mautic Contact adapter.
+
+## C4-04 atomic Evidence/Event/Outbox/Inbox verified (2026-10-09)
+- PR #15 merged: https://github.com/achirothmane/marketing-os/pull/15 at SHA `69ee68098110fc9478b5e0aed0b8ac732cd88a22`.
+- CI: https://github.com/achirothmane/marketing-os/actions/runs/37871039165 on MariaDB 11.4; **52/52 tests PASS** (13 contracts, 14 identity, 11 C4-03 DB, 14 C4-04 DB). M0 smoke + C4-02 tests also passed for PR head.
+- Migration 002 adds Evidence, DomainEvent, Outbox, Inbox; migrator protects 001/002 checksums, 8 MOS-owned tables total.
+- New importer atomically writes Person+Map+Evidence digest+DomainEvent+Outbox; five pre-commit failure-injection tests roll back all new rows.
+- Concurrent import of one simulated Contact from 2 PHP workers => exactly 1 Person/Evidence/Event/Outbox. ACK-lost delivery leaves pending event; inbox dedup suppresses second projection, handler failure rolls back inbox marker.
+- **Safety boundary:** Digest is asserted by caller and must be attached to a genuine Mautic snapshot in C4-05; legacy C4-03 mapping-only registry bypass still exists for tests and MUST NOT be used by production adapter. No real Contact event, real Messenger transport or email send.
+- Next: C4-05 verified Mautic Contact snapshot adapter, then actual integration/recovery. No C4 end-to-end PASS.
