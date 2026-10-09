@@ -62,8 +62,8 @@ jobs:
           php packages/identity/tests/run.php
       - name: MariaDB integration and race tests
         run: php packages/identity/tests/db_integration.php
-      - name: Assert exactly eight owned schema tables
+      - name: Assert exactly nine owned schema tables
         run: |
-          php -r '$db=new PDO(getenv("MOS_TEST_DSN"),getenv("MOS_TEST_DB_USER"),getenv("MOS_TEST_DB_PASSWORD"));$n=(int)$db->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()")->fetchColumn();if($n!==8){fwrite(STDERR,"Unexpected tables: ".$n);exit(1);}echo "Eight MOS-owned tables; no Mautic tables touched.\n";'
+          php -r '$db=new PDO(getenv("MOS_TEST_DSN"),getenv("MOS_TEST_DB_USER"),getenv("MOS_TEST_DB_PASSWORD"));$n=(int)$db->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()")->fetchColumn();if($n!==9){fwrite(STDERR,"Unexpected tables: ".$n);exit(1);}echo "Nine MOS-owned tables; no Mautic tables touched.\n";'
       - name: C4-04 Evidence, outbox, inbox, transaction and lost-ACK tests
         run: php packages/identity/tests/c4_04_integration.php
