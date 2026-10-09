@@ -16,6 +16,13 @@ final class Person {
     public static function create(WorkspaceId $workspaceId, ?PersonId $id=null): self {
         return new self($id??PersonId::generate(),$workspaceId,PersonState::ACTIVE,1,null);
     }
+    /** Strict hydration boundary for persisted state; not a public arbitrary mutation API. */
+    public static function restore(WorkspaceId $workspaceId, PersonId $id, PersonState $state, int $version, ?PersonId $mergedInto): self {
+        if($version<1)throw new DomainException('Invalid version.');
+        if(($state===PersonState::MERGED)!==($mergedInto!==null))throw new DomainException('Merged state and target disagree.');
+        if($mergedInto!==null&&$id->equals($mergedInto))throw new DomainException('Self-merge invalid.');
+        return new self($id,$workspaceId,$state,$version,$mergedInto);
+    }
     public function state(): PersonState { return $this->state; }
     public function version(): int { return $this->version; }
     public function mergedInto(): ?PersonId { return $this->mergedInto; }
@@ -30,10 +37,10 @@ final class Person {
         $this->mergedInto=$target->id;
         $this->version++;
     }
-    /** Only a lifecycle marker; this does NOT erase actual stored PII. */
+    /** Lifecycle marker only; does NOT erase actual PII. */
     public function markErased(int $expectedVersion): void {
         $this->requireVersion($expectedVersion);
-        if($this->state===PersonState::ERASED)throw new DomainException('Already erased.');
+        if($this->state!==PersonState::ACTIVE)throw new DomainException('Only ACTIVE Person can use this lifecycle marker.');
         $this->state=PersonState::ERASED;
         $this->version++;
     }

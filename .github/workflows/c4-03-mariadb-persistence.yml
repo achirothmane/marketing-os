@@ -1,0 +1,67 @@
+name: C4-03 MariaDB Person and Mapping Persistence
+
+on:
+  pull_request:
+    paths:
+      - 'packages/identity/**'
+      - 'packages/contracts/**'
+      - '.github/workflows/c4-03-mariadb-persistence.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/identity/**'
+      - 'packages/contracts/**'
+      - '.github/workflows/c4-03-mariadb-persistence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mariadb:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-root-password
+          MARIADB_DATABASE: mautic_ci
+          MARIADB_USER: mautic_ci
+          MARIADB_PASSWORD: ci-only-mautic-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+    env:
+      MOS_TEST_DSN: "mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4"
+      MOS_TEST_DB_USER: mautic_ci
+      MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, mysqli, mbstring
+          coverage: none
+      - name: Lint domain and persistence
+        run: find packages/identity/src packages/identity/tests packages/identity/bin packages/contracts/src -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Assert empty test database
+        run: |
+          php -r '$db=new PDO(getenv("MOS_TEST_DSN"),getenv("MOS_TEST_DB_USER"),getenv("MOS_TEST_DB_PASSWORD"));if((int)$db->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()")->fetchColumn()!==0)exit(1);'
+      - name: Apply and reapply checksum migration
+        run: |
+          php packages/identity/bin/migrate.php
+          php packages/identity/bin/migrate.php
+      - name: Contract and domain regression
+        run: |
+          php packages/contracts/tests/run.php
+          php packages/identity/tests/run.php
+      - name: MariaDB integration and race tests
+        run: php packages/identity/tests/db_integration.php
+      - name: Assert only four owned tables created
+        run: |
+          php -r '$db=new PDO(getenv("MOS_TEST_DSN"),getenv("MOS_TEST_DB_USER"),getenv("MOS_TEST_DB_PASSWORD"));$n=(int)$db->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE()")->fetchColumn();if($n!==4){fwrite(STDERR,"Unexpected tables: ".$n);exit(1);}echo "Only four MOS-owned tables; no Mautic tables touched.\n";'
