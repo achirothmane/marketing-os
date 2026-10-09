@@ -31,8 +31,8 @@ function countC405(PDO $db,string $table):int{
 function seededContact(PDO $db,string $email):int{
   // Inserts into Mautic's REAL persisted Lead table in the disposable CI install.
   // Do not confuse this with the LeadModel save event; it is not dispatched here.
-  $s=$db->prepare("INSERT INTO leads (email,firstname,lastname,date_added)
-    VALUES(?,'Fixture','Person',UTC_TIMESTAMP())");
+  $s=$db->prepare("INSERT INTO leads (email,firstname,lastname,date_added,is_published)
+    VALUES(?,'Fixture','Person',UTC_TIMESTAMP(),1)");
   $s->execute([$email]);
   return (int)$db->lastInsertId();
 }
