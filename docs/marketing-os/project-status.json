@@ -54,7 +54,11 @@
     "c4_03": "MERGED_PDO_MARIADB_PERSISTENCE_CI_PASSED",
     "c4_03_sha": "bb019fd6fe124fb6a36257acb15ebb077ea7a6d2",
     "c4_03_pr": "https://github.com/achirothmane/marketing-os/pull/13",
-    "c4_03_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37869768883"
+    "c4_03_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37869768883",
+    "c4_04": "MERGED_ATOMIC_EVIDENCE_EVENT_OUTBOX_INBOX_CI_PASSED",
+    "c4_04_sha": "69ee68098110fc9478b5e0aed0b8ac732cd88a22",
+    "c4_04_pr": "https://github.com/achirothmane/marketing-os/pull/15",
+    "c4_04_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37871039165"
   },
   "stages": {
     "C1": {
@@ -147,10 +151,10 @@
     }
   },
   "next_gates": [
-    "C4_04_atomic_evidence_event_outbox_inbox",
-    "C4_05_mautic_contact_bridge",
-    "C4_06_backfill_recovery_integrated_tests",
-    "upstream_regression_and_runtime_deployment"
+    "C4_05_verified_mautic_contact_snapshot_adapter",
+    "C4_06_real_contact_integration_and_backfill_recovery",
+    "C4_07_queue_transport_adapter_messenger",
+    "full_upstream_regression_and_runtime_deployment"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -178,6 +182,19 @@
       "scope": "PDO MariaDB 11.4 schema migration and tenant-safe Person/Legacy mapping persistence only; 11 DB tests incl 2-worker race; no Evidence/Event/Outbox integration",
       "evidence_sha": "bb019fd6fe124fb6a36257acb15ebb077ea7a6d2",
       "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37869768883"
+    },
+    "C4_04": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Isolated MariaDB 11.4 evidence-backed synthetic Contact import with atomic Person+Map+Evidence+Event+Outbox and at-least-once relay/idempotent inbox; NOT real Mautic Contact listener or external transport",
+      "evidence_sha": "69ee68098110fc9478b5e0aed0b8ac732cd88a22",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37871039165",
+      "passed_tests": {
+        "contracts": 13,
+        "identity": 14,
+        "database_c4_03": 11,
+        "database_c4_04": 14
+      }
     }
   }
 }

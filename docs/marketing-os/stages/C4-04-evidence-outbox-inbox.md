@@ -45,3 +45,8 @@ Run `php packages/identity/tests/c4_04_integration.php` on an **isolated, dispos
 ## Next
 
 C4-05 Mautic Contact adapter: collect a real allowlisted snapshot, link its digest/evidence, import via C4-04, register an actual queue transport, and add the observed Contact->Person->Evidence->Event->Outbox->Inbox test. No bulk user contact ingestion or marketing sends are authorized before C6 permissions and C8 effect gates.
+
+## Verified implementation record (2026-10-09)
+- GitHub PR #15 merged SHA `69ee68098110fc9478b5e0aed0b8ac732cd88a22`.
+- CI https://github.com/achirothmane/marketing-os/actions/runs/37871039165: 14/14 C4-04 DB tests; 52/52 total across contracts, identity and two database suites; M0 source smoke passed.
+- The verified scope is synthetic legacy-contact import on MariaDB with real DB transactions and in-process delivery callbacks, NOT a real Mautic bridge or remote message transport.

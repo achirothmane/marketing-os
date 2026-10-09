@@ -8,7 +8,7 @@
 | C1 | Convergence: compress broad capability catalog into shared engines/kernel/packs | concept | DESIGNED | NOT APPLICABLE (architecture) |
 | C2 | Repository topology and pinned Mautic source import | C1 | DESIGNED + SOURCE IMPORTED | SOURCE, COMPOSER, LEAD UNIT + MARIA DB INSTALL PASS (126 tables); FULL REGRESSION UNVERIFIED |
 | C3 | Canonical data model, evidence/events, Person, legacy mapping, outbox/inbox | C2 | DESIGNED | NOT VERIFIED |
-| C4 | Contact -> Person -> evidence -> event -> outbox -> consumer vertical slice | C3 | DESIGNED; C4-01/02 contracts and C4-03 MariaDB persistence MERGED, CI PASSED (PRs #2, #9, #13) | C4 end-to-end NOT VERIFIED |
+| C4 | Contact -> Person -> evidence -> event -> outbox -> consumer vertical slice | C3 | DESIGNED; C4-01/02/03/04 MERGED, scoped CI PASSED (PRs #2, #9, #13, #15) | C4 end-to-end NOT VERIFIED: real Mautic Contact bridge and queue transport outstanding |
 | C5 | Identity synchronization, fact authority, observations/conflicts, merge/split and DNC distinction | C4 | DESIGNED | NOT IMPLEMENTED |
 | C6 | Purpose-aware policy, consent, suppression, preferences, contactability | C5 | DESIGNED | NOT IMPLEMENTED |
 | C7 | Audience definitions, UNKNOWN membership, transitions and frozen snapshots | C5/C6 data contracts | DESIGNED | NOT IMPLEMENTED |
