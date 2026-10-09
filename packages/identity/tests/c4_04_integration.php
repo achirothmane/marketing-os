@@ -38,11 +38,11 @@ function totals404(PDO $db):array {
     return array_map(fn($name)=>count404($db,$name),
         ['mos_person','mos_legacy_entity_map','mos_evidence','mos_domain_event','mos_outbox']);
 }
-c404('migrations 001 and 002 can replay with immutable checksums',function()use($db){
+c404('migrations 001, 002 and 003 can replay with immutable checksums',function()use($db){
     $m=new PdoSchemaMigrator($db);
     $m->migrate();$m->migrate();
     $q=$db->query("SELECT COUNT(*) FROM mos_schema_migration")->fetchColumn();
-    assert404((int)$q===2);
+    assert404((int)$q===3);
 });
 c404('new isolated workspace',function()use($store,$w){
     $store->createWorkspace($w);
