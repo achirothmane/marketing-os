@@ -1,0 +1,14 @@
+{
+  "name": "marketing-os/identity",
+  "description": "Canonical Person and legacy source mapping domain contracts",
+  "type": "library",
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": ">=8.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "MarketingOS\\Identity\\": "src/"
+    }
+  }
+}
