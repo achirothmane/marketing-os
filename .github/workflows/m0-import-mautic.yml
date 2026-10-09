@@ -1,0 +1,92 @@
+name: M0 Import Pinned Mautic Source
+
+on:
+  push:
+    branches:
+      - feat/m0-import-mautic-7-2-1
+    paths:
+      - .github/workflows/m0-import-mautic.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout Marketing OS
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up PHP for contracts verification
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Import pinned upstream into repository root
+        shell: bash
+        env:
+          UPSTREAM_SHA: 8cbb7ef874d52a411ae5a884f979acf6cc320181
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          echo "Fetching exact Mautic upstream SHA: $UPSTREAM_SHA"
+          git fetch --no-tags --depth=1 https://github.com/mautic/mautic.git "$UPSTREAM_SHA"
+          actual="$(git rev-parse FETCH_HEAD)"
+          test "$actual" = "$UPSTREAM_SHA"
+
+          mkdir -p docs/marketing-os/upstream
+          git show "FETCH_HEAD:README.md" > docs/marketing-os/upstream/MAUTIC-README.md
+          git checkout FETCH_HEAD -- .
+
+          # Preserve all Marketing OS source and documentation already committed.
+          git restore --source=HEAD --staged --worktree -- README.md docs/marketing-os packages/contracts
+
+          # Do not activate dozens of unrelated Mautic repository CI workflows.
+          # Original upstream .github contents remain available at pinned commit URL.
+          git rm -r -q --cached --ignore-unmatch .github || true
+          rm -rf .github
+          git restore --source=HEAD --staged --worktree -- .github
+
+          cat > docs/marketing-os/upstream/MAUTIC-PROVENANCE.md <<'EOF'
+          # M0 - Mautic source import provenance
+
+          - Upstream: https://github.com/mautic/mautic
+          - Tag: 7.2.1 (published 2026-09-23)
+          - Immutable pinned commit: 8cbb7ef874d52a411ae5a884f979acf6cc320181
+          - Source snapshot: https://github.com/mautic/mautic/tree/8cbb7ef874d52a411ae5a884f979acf6cc320181
+          - License: GPL-3.0; see imported LICENSE.txt and upstream copyright notices.
+          - Import method: pinned Git source snapshot committed to Marketing OS history. This is NOT a Git ancestry merge of the full upstream Mautic history. Exact SHA is retained for provenance and upgrade comparisons.
+          - Existing Marketing OS README, docs/marketing-os and packages/contracts intentionally preserved.
+          - Upstream .github is intentionally excluded to prevent unreviewed CI workflows from running. Marketing OS .github is retained.
+          - Composer install, database migration, upstream runtime tests, deployment and Marketing OS integration are separately required.
+          - For upgrades, diff exact pinned commits; resolve owner-managed paths and test before merging.
+          EOF
+
+          git add -A
+          test -f LICENSE.txt
+          test -f composer.json
+          test -f composer.lock
+          test -f bin/console
+          test -d app/bundles
+          test -f docs/marketing-os/02-stage-register.md
+          test -f packages/contracts/tests/run.php
+          test -f .github/workflows/contracts-ci.yml
+
+          echo "Checking isolated canonical contracts..."
+          php packages/contracts/tests/run.php
+
+          echo "Root source diff summary:"
+          git diff --cached --stat | tail -n 15
+
+          git commit -m "chore(M0): import Mautic 7.2.1 pinned source snapshot"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+
+          echo "M0 source import pushed; full Mautic runtime tests remain pending."
