@@ -1,0 +1,35 @@
+name: C4-02 Identity Domain
+on:
+  push:
+    paths:
+      - 'packages/identity/**'
+      - 'packages/contracts/**'
+      - '.github/workflows/c4-02-identity.yml'
+  pull_request:
+    paths:
+      - 'packages/identity/**'
+      - 'packages/contracts/**'
+      - '.github/workflows/c4-02-identity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.2','8.3']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint identity and contracts
+        run: find packages/identity/src packages/identity/tests packages/contracts/src -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Canonical contracts
+        run: php packages/contracts/tests/run.php
+      - name: Identity lifecycle and mapping tests
+        run: php packages/identity/tests/run.php
