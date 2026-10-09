@@ -74,3 +74,10 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Installer created 126 Mautic database tables; `bin/console --version` confirmed Mautic 7.2.1 application/prod CLI boot.
 - No real contacts or emails were used. CI database/admin credentials were ephemeral test-only values.
 - **NOT YET VERIFIED:** full upstream test suite, mail/worker runtime, upgrade and rollback, MOS Person/LegacyMap tables, idempotent Contact bridge and transactional outbox.
+
+## C4-03 verified database persistence — 2026-10-09
+- PR #13 merged: https://github.com/achirothmane/marketing-os/pull/13, commit `bb019fd6fe124fb6a36257acb15ebb077ea7a6d2`.
+- CI run https://github.com/achirothmane/marketing-os/actions/runs/37869768883: 13 C4-01 tests, 14 C4-02 tests, 11 MariaDB 11.4 tests passed.
+- Checksum migration, scoped source uniqueness, composite cross-workspace FKs, duplicate rollback, optimistic CAS, two independent PHP workers racing same Contact ID; exactly 4 new MOS tables in isolated schema.
+- Still absent: Evidence persistence + DomainEvent + transactional Outbox/Inbox and real Mautic Contact subscriber. DO NOT claim C4 end-to-end or send external emails.
+- Next executable task: C4-04 atomic Evidence/Event/Outbox/Inbox within Person registration transaction, then C4-05 Mautic Contact adapter.
