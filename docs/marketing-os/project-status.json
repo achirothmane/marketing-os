@@ -24,7 +24,13 @@
       "runtime_verified": false,
       "phpunit_lead_test": true,
       "composer_check_platform_reqs": true,
-      "composer_install_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37868814299"
+      "composer_install_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37868814299",
+      "db_install_smoke": true,
+      "db_install_tables": 126,
+      "db_install_ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37869113329",
+      "db_install_merge_sha": "7b4cd1bf95df9f803ac2858d4205ca5c9cb49c69",
+      "cli_boot_after_install": true,
+      "full_upstream_regression_suite": false
     },
     "import_pr": "https://github.com/achirothmane/marketing-os/pull/6",
     "main_source_import_sha": "8ed40e15d0b07ab90efee7ee1e89d9698b858d9c"
@@ -137,9 +143,10 @@
     }
   },
   "next_gates": [
-    "M0_mariadb_install_smoke_PR10",
-    "C4_03_person_legacy_map_database_schema_and_concurrency",
-    "C4_04_evidence_domain_event_outbox_inbox"
+    "C4_03_person_and_legacy_mapping_database_schema_with_uniqueness",
+    "C4_04_evidence_domain_event_outbox_inbox",
+    "C4_05_mautic_contact_adapter",
+    "full_upstream_functional_and_upgrade_regression"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
