@@ -66,7 +66,7 @@ jobs:
             --admin_username=ci_admin --admin_email=ci-admin@example.invalid --admin_password="$ADMIN_PASS"
       - name: PHP syntax + Canonical contracts
         run: |
-          find packages/identity/src/Bridge packages/identity/tests/c4_05_real_mautic.php packages/identity/tests/c4_05b_reconcile.php packages/identity/tests/c4_05b_leadmodel_probe.php packages/identity/bin/import_mautic_contact.php packages/identity/bin/reconcile_mautic_contacts.php -name '*.php' -print0 | xargs -0 -n1 php -l
+          find packages/identity/src/Bridge packages/identity/tests/c4_05_real_mautic.php packages/identity/tests/c4_05b_reconcile.php packages/identity/tests/c4_05b_leadmodel_probe.php packages/identity/tests/c4_05c_scheduled_worker.php packages/identity/tests/c4_05c_crash_worker.php packages/identity/bin/import_mautic_contact.php packages/identity/bin/run_scheduled_shadow_scan.php packages/identity/bin/reconcile_mautic_contacts.php -name '*.php' -print0 | xargs -0 -n1 php -l
           php packages/contracts/tests/run.php
       - name: Verify upstream mandatory Contact columns
         run: |
@@ -77,6 +77,8 @@ jobs:
         run: php packages/identity/tests/c4_05b_reconcile.php
       - name: C4-05B actual LeadModel post-save transaction probe
         run: php packages/identity/tests/c4_05b_leadmodel_probe.php
+      - name: C4-05C bounded worker, hard-crash recovery and CLI gating
+        run: php packages/identity/tests/c4_05c_scheduled_worker.php
       - name: Confirm default-off CLI blocks importing
         shell: bash
         run: |
