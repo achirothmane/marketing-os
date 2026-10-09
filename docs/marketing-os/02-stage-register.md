@@ -6,9 +6,9 @@
 | Stage | Purpose | Dependency | Design status | Runtime verification |
 |---|---|---|---|---|
 | C1 | Convergence: compress broad capability catalog into shared engines/kernel/packs | concept | DESIGNED | NOT APPLICABLE (architecture) |
-| C2 | Repository topology and pinned Mautic source import | C1 | DESIGNED + SOURCE IMPORTED | SOURCE SMOKE PASS; FULL UPSTREAM RUNTIME NOT VERIFIED |
+| C2 | Repository topology and pinned Mautic source import | C1 | DESIGNED + SOURCE IMPORTED | SOURCE + COMPOSER INSTALL + ONE LEAD UNIT TEST PASS; DATABASE INSTALL NOT VERIFIED |
 | C3 | Canonical data model, evidence/events, Person, legacy mapping, outbox/inbox | C2 | DESIGNED | NOT VERIFIED |
-| C4 | Contact -> Person -> evidence -> event -> outbox -> consumer vertical slice | C3 | DESIGNED; C4-01 contracts MERGED and PHP CI passed (PR #2) | C4 end-to-end NOT VERIFIED |
+| C4 | Contact -> Person -> evidence -> event -> outbox -> consumer vertical slice | C3 | DESIGNED; C4-01 and C4-02 domain slices MERGED, PHP CI passed (PRs #2, #9) | C4 end-to-end NOT VERIFIED |
 | C5 | Identity synchronization, fact authority, observations/conflicts, merge/split and DNC distinction | C4 | DESIGNED | NOT IMPLEMENTED |
 | C6 | Purpose-aware policy, consent, suppression, preferences, contactability | C5 | DESIGNED | NOT IMPLEMENTED |
 | C7 | Audience definitions, UNKNOWN membership, transitions and frozen snapshots | C5/C6 data contracts | DESIGNED | NOT IMPLEMENTED |

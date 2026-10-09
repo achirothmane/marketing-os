@@ -33,3 +33,7 @@ At each merged PR:
 - **Next:** verify install, runtime/DB and upstream regression baseline before C4-02 Contact domain adapter. Do not mark C4 end-to-end PASS.
 
 - **2026-10-09:** M0 upstream source import PR #6 merged to main commit `8ed40e15d0b07ab90efee7ee1e89d9698b858d9c`; Mautic 7.2.1 root paths verified present on main. `composer validate`, entrypoint PHP lint, and 13 canonical contract tests passed in GitHub Actions run 37868041910. No full composer install, DB install or upstream integration tests yet. Tracking issues #3 and #4 updated.
+
+- **2026-10-09:** PR #8 merged `1c0016c9066f36eb274ad0688ebfc89ada4f433d`. Composer install, PHP platform check, upstream Mautic Lead unit test, and contracts PASS in CI run 37868814299. This is *not* a DB install.
+- **2026-10-09:** PR #9 merged `11474dac28205d839c948bfb1ef7ff0a213b64aa`. C4-02 Person aggregate and legacy mapping domains verified on PHP 8.2/8.3 in CI run 37868986534. No SQL uniqueness or real Contact bridge yet.
+- **2026-10-09:** PR #10 opened to test isolated MariaDB 11.4 CLI install. Do not claim DB runtime PASS until workflow concludes.

@@ -18,10 +18,13 @@
       "composer_validate": true,
       "php_entrypoint_syntax": true,
       "contracts_php83_13_tests": true,
-      "composer_install": false,
+      "composer_install": true,
       "upstream_integration_tests": false,
       "db_runtime_tests": false,
-      "runtime_verified": false
+      "runtime_verified": false,
+      "phpunit_lead_test": true,
+      "composer_check_platform_reqs": true,
+      "composer_install_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37868814299"
     },
     "import_pr": "https://github.com/achirothmane/marketing-os/pull/6",
     "main_source_import_sha": "8ed40e15d0b07ab90efee7ee1e89d9698b858d9c"
@@ -37,7 +40,11 @@
       "8.2",
       "8.3"
     ],
-    "c4_01_tests": "13 passed"
+    "c4_01_tests": "13 passed",
+    "c4_02": "MERGED_DOMAIN_ONLY_CI_PASSED",
+    "c4_02_sha": "11474dac28205d839c948bfb1ef7ff0a213b64aa",
+    "c4_02_pr": "https://github.com/achirothmane/marketing-os/pull/9",
+    "c4_02_ci": "https://github.com/achirothmane/marketing-os/actions/runs/37868986534"
   },
   "stages": {
     "C1": {
@@ -130,9 +137,9 @@
     }
   },
   "next_gates": [
-    "install_dependencies_and_establish_upstream_runtime_test_baseline",
-    "C4_02_person_and_legacy_contact_mappings",
-    "C4_evidence_event_outbox_inbox_integration"
+    "M0_mariadb_install_smoke_PR10",
+    "C4_03_person_legacy_map_database_schema_and_concurrency",
+    "C4_04_evidence_domain_event_outbox_inbox"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -146,6 +153,13 @@
       "scope": "standalone contracts only",
       "evidence_sha": "33fb9f490bcf85bc02a0a4635cd74cc27871ef1f",
       "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37867114064"
+    },
+    "C4_02": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Person aggregate and scoped legacy-source domain; no database persistence or Mautic subscriber",
+      "evidence_sha": "11474dac28205d839c948bfb1ef7ff0a213b64aa",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37868986534"
     }
   }
 }
