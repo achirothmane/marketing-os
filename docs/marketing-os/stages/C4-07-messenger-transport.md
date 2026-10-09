@@ -1,6 +1,6 @@
 # C4-07A — Durable Messenger transport for MOS Domain Events
 
-**Status:** Implementation on feature branch; requires a green MariaDB CI run before promoting or merging.
+**Status:** C4-07A source MERGED and CI-VERIFIED (within isolated MariaDB scope). PR #27 merged `47c5f83b06f43ac380864e05948c8efe2cf8b0e1`; https://github.com/achirothmane/marketing-os/actions/runs/38003070002 passed 10/10 Messenger transport tests plus 27 contract/domain regression tests. Full C4 remains unverified.
 
 ## Architecture
 
