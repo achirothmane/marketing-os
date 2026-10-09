@@ -74,7 +74,11 @@
     "c4_06a": "MERGED_SOURCE_RECONCILIATION_OBSERVATION_ONLY_CI_PASSED",
     "c4_06a_sha": "5e3fdd7e304399439909ea05b929787668c9be9f",
     "c4_06a_pr": "https://github.com/achirothmane/marketing-os/pull/24",
-    "c4_06a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38001779877"
+    "c4_06a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38001779877",
+    "c4_07a": "MERGED_REAL_SYMFONY_MESSENGER_DOCTRINE_QUEUE_CI_PASSED",
+    "c4_07a_sha": "47c5f83b06f43ac380864e05948c8efe2cf8b0e1",
+    "c4_07a_pr": "https://github.com/achirothmane/marketing-os/pull/27",
+    "c4_07a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38003070002"
   },
   "stages": {
     "C1": {
@@ -167,9 +171,10 @@
     }
   },
   "next_gates": [
-    "C4_07_real_messenger_transport_and_atomic_inbox_projection",
-    "C4_06B_authorized_source_mutation_resolution_after_C5_C6",
-    "C4_full_end_to_end_recovery_regression",
+    "C4_07B_operational_bounded_consumer_worker_supervision_poison_message_handling",
+    "C4_08_real_contact_to_real_queue_to_inbox_integration",
+    "C4_06B_authorized_source_mutation_after_C5_C6",
+    "C4_full_recovery_and_upstream_regression",
     "deployment_monitoring_and_secret_rotation"
   ],
   "coordination": {
@@ -248,6 +253,18 @@
       "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38001779877",
       "tests": 19,
       "classification_only": true
+    },
+    "C4_07A": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Durable Symfony Messenger DoctrineTransport on MariaDB 11.4 with PII-free JSON pointers, real queue persistence, independent receiver, atomic Inbox projection and broker ACK; 10/10 integration tests; no Mautic DI registration or supervised continuous worker, actual Contact integration or production deployment",
+      "evidence_sha": "47c5f83b06f43ac380864e05948c8efe2cf8b0e1",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38003070002",
+      "tests": 10,
+      "dependencies": {
+        "symfony_messenger": "7.4.12",
+        "symfony_doctrine_messenger": "7.4.6"
+      }
     }
   }
 }
