@@ -1,0 +1,17 @@
+{
+  "name": "marketing-os/contracts",
+  "description": "Canonical value contracts for Marketing OS",
+  "type": "library",
+  "license": "GPL-3.0-or-later",
+  "require": {
+    "php": ">=8.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "MarketingOS\\Contracts\\": "src/"
+    }
+  },
+  "scripts": {
+    "test": "php tests/run.php"
+  }
+}
