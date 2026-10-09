@@ -5,6 +5,7 @@ namespace MarketingOS\Identity\Persistence;
 use PDO;
 use RuntimeException;
 use MarketingOS\Contracts\Id\UuidV7;
+use MarketingOS\Contracts\Id\WorkspaceId;
 
 /**
  * At-least-once transport relay. Must NEVER assume an ACK-lost delivery
@@ -14,11 +15,13 @@ final readonly class PdoOutboxPublisher {
     public function __construct(private PDO $db) {}
 
     /** @param callable(array):void $deliver */
-    public function publishOne(callable $deliver,int $leaseSeconds=30): ?string {
+    public function publishOne(callable $deliver,int $leaseSeconds=30, ?WorkspaceId $onlyWorkspace=null): ?string {
         if($leaseSeconds<1||$leaseSeconds>3600)throw new \InvalidArgumentException('Invalid lease duration.');
-        $q=$this->db->query("SELECT workspace_id,event_id FROM mos_outbox
-            WHERE published_at IS NULL AND (lease_expires_at IS NULL OR lease_expires_at<=UTC_TIMESTAMP(6))
+        $q=$this->db->prepare("SELECT workspace_id,event_id FROM mos_outbox
+            WHERE published_at IS NULL AND (lease_expires_at IS NULL OR lease_expires_at<=UTC_TIMESTAMP(6))".
+            ($onlyWorkspace!==null?" AND workspace_id=?":"")."
             ORDER BY created_at,event_id LIMIT 12");
+        $q->execute($onlyWorkspace!==null?[(string)$onlyWorkspace]:[]);
         foreach($q->fetchAll(PDO::FETCH_ASSOC) as $candidate) {
             $owner=(string)UuidV7::generate();
             $s=$this->db->prepare("UPDATE mos_outbox SET lease_owner=?,

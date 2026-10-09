@@ -1,0 +1,61 @@
+name: C4-07B Bounded Tenant Messenger Workers
+on:
+  pull_request:
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b-workers.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b-workers.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-workers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-root-password
+          MARIADB_DATABASE: mautic_ci
+          MARIADB_USER: mautic_ci
+          MARIADB_PASSWORD: ci-only-mautic-password
+        ports: [3306:3306]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+    env:
+      COMPOSER_MEMORY_LIMIT: "-1"
+      MOS_TEST_DSN: mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4
+      MOS_TEST_DB_USER: mautic_ci
+      MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+      MOS_QUEUE_ENABLED: '0'
+      MOS_QUEUE_MODE: 'OFF'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: bcmath, ctype, curl, dom, exif, fileinfo, gd, iconv, imap, intl, mbstring, mysqli, pdo_mysql, sodium, xml, zip
+          coverage: none
+      - name: Install pinned dependencies
+        run: composer install --prefer-dist --no-progress --no-scripts --no-interaction --no-ansi
+      - name: PHP lint
+        run: |
+          find packages/identity/src/Transport packages/identity/bin -name '*.php' -print0 | xargs -0 -n1 php -l
+          php -l packages/identity/tests/c4_07b_workers.php
+      - name: C4-01 and C4-02 regression
+        run: |
+          php packages/contracts/tests/run.php
+          php packages/identity/tests/run.php
+      - name: Bounded tenant Messenger integration and poison tests
+        run: php packages/identity/tests/c4_07b_workers.php
