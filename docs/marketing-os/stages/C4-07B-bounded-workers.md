@@ -1,6 +1,6 @@
 # C4-07B — Bounded MariaDB Messenger workers and poison handling
 
-**Status:** Proposed implementation pending CI/merge. Do not classify full C4 as complete.
+**Status:** C4-07B1 narrow capability MERGED/CI VERIFIED. PR #30 commit `2ea70105f456e57c354bdbe67dabe7906b21a5fd`; MariaDB 11.4 CI https://github.com/achirothmane/marketing-os/actions/runs/38004029403 PASS 11/11. Full C4 and C4-07B operational supervision/undecodable-wire quarantine remain OPEN.
 
 ## Implementation
 
@@ -32,3 +32,9 @@ Requires **both** `MOS_QUEUE_ENABLED=1` and `MOS_QUEUE_MODE=SHADOW`; default OFF
 MariaDB 11.4 tests should cover migrations/replay, workspace queue scoping, durable projection before ACK, replay deduplication, 3-attempt quarantine with stable error classification, re-delivered quarantined event, CLI OFF rejection, explicit HEALTH diagnostics, and preserved C4-01/02 tests.
 
 Do not change status to PASS until exact GitHub Actions result and PR merge SHA are recorded.
+
+## Verified acceptance evidence — 2026-10-09
+- PR #30 merged `2ea70105f456e57c354bdbe67dabe7906b21a5fd`; 11/11 tests PASS in https://github.com/achirothmane/marketing-os/actions/runs/38004029403.
+- Other latest PR-head workflows M0, C4-02, C4-03/04, C4-05, C4-07A all SUCCESS.
+- Observed and repaired failure: C4-06A existing regression expected exactly four migration versions; migration 005 made it five. Updated assertion without changing reconciler behavior. Re-ran full PR-head checks successfully.
+- This is **manual bounded operations ONLY**, not a supervised production service; unknown/invalid wire payload DLQ and crash-exit supervision remain separate.
