@@ -19,7 +19,7 @@
 | ADR-014 | Separate Data Engine service/repository and Marketing OS semantics | Avoid leaking unrelated data model into customer policy |
 
 ## Material unresolved choices
-- UPSTREAM_IMPORT: specific Mautic 7.x commit/release, importer procedure for already-existing repository, Composer lock and license validation.
+- UPSTREAM_IMPORT: pinned Mautic 7.2.1 upstream source snapshot imported at 8cbb7ef874d52a411ae5a884f979acf6cc320181; **not** full Git ancestry. Remaining: dependency installation, DB/runtime tests and long-term upstream upgrade strategy.
 - STORAGE: MySQL/MariaDB version, binary UUID ordering, datetime(6) mapping, FK/index limits and cross-workspace key scheme.
 - TENANCY: workspace creation/bootstrap, HMAC salt isolation, encryption key ID and rotation, secure PII destruction.
 - IDENTITY: shared email observation schema versus verified 1:1 identity, merge/split rules, legal deletion.
@@ -33,3 +33,6 @@
 
 ## Change control
 Any change to an accepted decision gets: date, triggering evidence, old/new rule, affected stages, required migration, tests, rollback and ADR update. Mark decisions SUPERSEDED, never erase earlier rationale. Prior 'design PASS' in chat is not code verification.
+
+## ADR-015 — Pinned upstream source snapshot, rather than full ancestry graft (2026-10-09)
+The existing repository already contained original project documentation and canonical contracts, so the importer fetched exact Mautic 7.2.1 SHA and committed its root source tree on an isolated feature branch. Upstream GPL/README retained; upstream CI workflows intentionally excluded. This is a source-import derivative, NOT GitHub-native fork lineage and NOT a full ancestry merge. The immutable SHA is the source comparison anchor for upgrades. If complete upstream Git history is later needed, migrate deliberately with a reviewed Git history strategy, not an untested forced history rewrite. Import CI success is only a source-smoke check; it does not certify runtime correctness.

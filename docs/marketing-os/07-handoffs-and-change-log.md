@@ -28,3 +28,6 @@ At each merged PR:
 - **2026-10-09:** PR #1 documentation archive merged into main (e67b8e49745eff6545b8b7624b9d791df6900fd3); 25 files, detailed C1–C11 stages, governance, timeline, machine-readable checkpoint.
 - **2026-10-09:** PR #2 isolated C4-01 typed contracts merged (33fb9f490bcf85bc02a0a4635cd74cc27871ef1f); GitHub Actions run 37867114064 passed on PHP 8.2/8.3. This is NOT the C4 vertical slice; M0 upstream source import (issue #3) remains blocking.
 - **2026-10-09:** Master execution issue #4 opened for durable stage tracking. The next handoff is M0 and then C4-02, not C12 design.
+
+- **2026-10-09 (M0):** imported exact Mautic 7.2.1 source snapshot from upstream `8cbb7ef874d52a411ae5a884f979acf6cc320181` at repository root, preserving original project docs/contracts. Import run 37867965021 passed. Source smoke run 37868041910 passed Composer validate, entrypoint syntax, and standalone 13 PHP contract tests. Upstream Git ancestry NOT grafted. Runtime/vendor/DB/integration still unverified. See PR #6 and issue #3.
+- **Next:** verify install, runtime/DB and upstream regression baseline before C4-02 Contact domain adapter. Do not mark C4 end-to-end PASS.
