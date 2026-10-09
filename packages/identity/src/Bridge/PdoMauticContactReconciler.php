@@ -24,7 +24,7 @@ final readonly class PdoMauticContactReconciler {
     ) {}
 
     /** @return array{seen:int,created:int,reused:int,blocked:int,wrapped:bool,cursor:int,reason_counts:array<string,int>} */
-    public function scanOnce(WorkspaceId $workspace,int $batchSize=100):array {
+    public function scanOnce(WorkspaceId $workspace,int $batchSize=100,?callable $checkpoint=null):array {
         if($batchSize<1||$batchSize>1000)throw new InvalidArgumentException('Batch size must be 1..1000.');
         if($this->db->inTransaction())throw new RuntimeException('Must scan only outside source transactions.');
         $lockName='mos_c405b_'.substr(hash('sha256',(string)$workspace),0,32);
@@ -61,6 +61,9 @@ final readonly class PdoMauticContactReconciler {
                     $reasons[$kind]=($reasons[$kind]??0)+1;
                 }
             }
+            // Testing failure injection: all imports are individually committed, but cursor
+            // is still old. A crash/restart MUST replay rather than create duplicates.
+            if($checkpoint!==null)$checkpoint('after_import_before_cursor');
             // Failures to update cursor cause safe replay; importer deduplicates.
             $wrapped=$ids===[];
             $next=$wrapped?0:max($ids);
