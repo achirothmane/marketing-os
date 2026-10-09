@@ -12,6 +12,13 @@ final readonly class PdoMauticContactSnapshotReader {
         if(!preg_match('/^[A-Za-z0-9_]{0,32}$/D',$tablePrefix))throw new InvalidArgumentException('Invalid table prefix.');
         $this->table=$tablePrefix.'leads';
     }
+    /** Bounded, ID-only committed-source discovery; no PII in scan results. */
+    public function contactIdsAfter(int $after,int $limit):array {
+        if($after<0 || $limit<1 || $limit>1000)throw new InvalidArgumentException('Invalid scan window.');
+        $stmt=$this->db->prepare('SELECT id FROM '.$this->table.' WHERE id>? ORDER BY id ASC LIMIT '.$limit);
+        $stmt->execute([$after]);
+        return array_map('intval',$stmt->fetchAll(PDO::FETCH_COLUMN));
+    }
     public function fingerprint(WorkspaceId $workspace,int $id):string {
         if($id<1)throw new InvalidArgumentException('Contact ID must be positive.');
         $s=$this->db->prepare('SELECT id,email,firstname,lastname,date_added,date_modified FROM '.$this->table.' WHERE id=?');
