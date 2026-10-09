@@ -8,7 +8,7 @@
 | C1 | Convergence: compress broad capability catalog into shared engines/kernel/packs | concept | DESIGNED | NOT APPLICABLE (architecture) |
 | C2 | Repository topology and pinned Mautic source import | C1 | DESIGNED + SOURCE IMPORTED | SOURCE, COMPOSER, LEAD UNIT + MARIA DB INSTALL PASS (126 tables); FULL REGRESSION UNVERIFIED |
 | C3 | Canonical data model, evidence/events, Person, legacy mapping, outbox/inbox | C2 | DESIGNED | NOT VERIFIED |
-| C4 | Contact -> Person -> evidence -> event -> outbox -> consumer vertical slice | C3 | DESIGNED; C4-01/02/03/04, C4-05A and C4-05B recovery merged, scoped CI PASSED (PRs #2, #9, #13, #15, #18, #20) | C4 end-to-end NOT VERIFIED: LeadModel save-event timing PROVEN; no operational subscriber/scheduler or real queue transport |
+| C4 | Contact -> Person -> evidence -> event -> outbox -> consumer vertical slice | C3 | DESIGNED; C4-01/02/03/04, C4-05A/B/C and C4-06A observations merged, scoped CI PASSED (PRs #2, #9, #13, #15, #18, #20, #22, #24) | C4 end-to-end NOT VERIFIED: LeadModel save timing tested; C4-06A source observations verified; no operational subscriber/scheduler, queue transport or authorized delete handling |
 | C5 | Identity synchronization, fact authority, observations/conflicts, merge/split and DNC distinction | C4 | DESIGNED | NOT IMPLEMENTED |
 | C6 | Purpose-aware policy, consent, suppression, preferences, contactability | C5 | DESIGNED | NOT IMPLEMENTED |
 | C7 | Audience definitions, UNKNOWN membership, transitions and frozen snapshots | C5/C6 data contracts | DESIGNED | NOT IMPLEMENTED |

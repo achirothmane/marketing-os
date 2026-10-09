@@ -110,3 +110,10 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - CLI `packages/identity/bin/run_scheduled_shadow_scan.php` is OFF unless both MOS_BRIDGE_MODE=SHADOW and MOS_SCHEDULED_SHADOW_ENABLED=1 are set.
 - Tested an actual PHP process exiting after importer commit but before scan cursor checkpoint; second process replays and preserves one Person/Event. Batch caps and DB lock contention verified.
 - Cron example exists in docs only: **not installed or running on any live host**. Real Messenger delivery, source change/deletion reconciliation and operational rollout remain pending. C4 full stage not verified.
+
+## C4-06A source observation and safe review cases (2026-10-09)
+- PR #24 merged SHA `5e3fdd7e304399439909ea05b929787668c9be9f`; https://github.com/achirothmane/marketing-os/actions/runs/38001779877 PASS, 19/19 new tests against Mautic 7.2.1/MariaDB 11.4. Other scoped CI workflows passed on PR head.
+- Migration 004 creates current source observation cases and append-only material observation history. Detects HMAC divergence, missing in one observation, repeated missing separated by minimum 60s and preexisting legacy mapping missing Evidence.
+- Existing mapping audit catches source IDs absent from live leads, unlike source-only ingestion scans. Transactional case and history updates roll back together on injected failure. No original Person/Event/Outbox mutation; source reappearance recorded as observation only.
+- CLI requires MOS_BRIDGE_MODE=SHADOW and MOS_SOURCE_AUDIT_ENABLED=1. Discrepancy returns review-required exit 2, with PII-free aggregate summary. This was tested in CI.
+- This is OBSERVATION/CLASSIFICATION only, not consent-aware deletion, data retention enforcement, key-rotation migration, C4 full end-to-end or Messenger transport. Next C4-07; later C4-06B authorized resolution after C5/C6.
