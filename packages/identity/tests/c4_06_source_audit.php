@@ -41,9 +41,9 @@ function auditCase406(PDO $db,WorkspaceId $w,int $id):array{
  return $r;
 }
 $id=add406($db);$bridge->importPersisted($w,$id);
-chk406('migration 004 replays with immutable checksums',function()use($db){
+chk406('migrations 004 and 005 replay with immutable checksums',function()use($db){
  (new PdoSchemaMigrator($db))->migrate();
- yes406((int)$db->query("SELECT COUNT(*) FROM mos_schema_migration")->fetchColumn()===4);
+ yes406((int)$db->query("SELECT COUNT(*) FROM mos_schema_migration")->fetchColumn()===5);
 });
 chk406('matching persisted source generates one observed MATCH case',function()use($auditor,$db,$w,$id){
  $r=$auditor->auditOne($w,$id);
