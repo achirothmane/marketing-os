@@ -106,5 +106,22 @@ ckC('scheduled CLI is disabled unless both explicit opt-ins are present',functio
  fclose($pipes[1]);fclose($pipes[2]);$exit=proc_close($proc);
  assureC($exit===1 && $stdout==='' && str_contains($stderr,'refused'));
 });
+ckC('enabled scheduled CLI runs bounded scan and reports PII-free JSON',function()use($w){
+ $cmd=escapeshellarg(PHP_BINARY).' '.escapeshellarg(dirname(__DIR__).'/bin/run_scheduled_shadow_scan.php').' '.escapeshellarg((string)$w);
+ $env=getenv();
+ $env['MOS_BRIDGE_MODE']='SHADOW';
+ $env['MOS_SCHEDULED_SHADOW_ENABLED']='1';
+ $env['MOS_SCAN_BATCH_SIZE']='1000';
+ $env['MOS_SCAN_MAX_BATCHES']='5';
+ $env['MOS_SCAN_MAX_SECONDS']='20';
+ $proc=proc_open($cmd,[0=>['pipe','r'],1=>['pipe','w'],2=>['pipe','w']],$pipes,null,$env);
+ if(!is_resource($proc))throw new RuntimeException('Cannot start enabled CLI');
+ fclose($pipes[0]);$stdout=stream_get_contents($pipes[1]);$stderr=stream_get_contents($pipes[2]);
+ fclose($pipes[1]);fclose($pipes[2]);$exit=proc_close($proc);
+ assureC($exit===0 && $stderr==='');
+ $out=json_decode($stdout,true,512,JSON_THROW_ON_ERROR);
+ assureC($out['batches']<=5 && $out['blocked']===0 && $out['wrapped']);
+ assureC(!str_contains($stdout,'@example.invalid') && !str_contains($stdout,getenv('MOS_SNAPSHOT_HMAC_KEY')));
+});
 echo "C4-05C SUMMARY $passed passed, $failed failed\n";
 exit($failed===0?0:1);
