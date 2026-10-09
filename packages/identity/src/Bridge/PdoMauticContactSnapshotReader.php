@@ -20,11 +20,17 @@ final readonly class PdoMauticContactSnapshotReader {
         return array_map('intval',$stmt->fetchAll(PDO::FETCH_COLUMN));
     }
     public function fingerprint(WorkspaceId $workspace,int $id):string {
+        $value=$this->fingerprintOrNull($workspace,$id);
+        if($value===null)throw new RuntimeException('CONTACT_NOT_FOUND_OR_NOT_PERSISTED');
+        return $value;
+    }
+    /** Null means this committed read did not find the source row; NOT proof of deletion. */
+    public function fingerprintOrNull(WorkspaceId $workspace,int $id):?string {
         if($id<1)throw new InvalidArgumentException('Contact ID must be positive.');
         $s=$this->db->prepare('SELECT id,email,firstname,lastname,date_added,date_modified FROM '.$this->table.' WHERE id=?');
         $s->execute([$id]);
         $row=$s->fetch(PDO::FETCH_ASSOC);
-        if($row===false)throw new RuntimeException('CONTACT_NOT_FOUND_OR_NOT_PERSISTED');
+        if($row===false)return null;
         $payload=json_encode([
           'schema'=>'mautic-lead-v1','workspace'=>(string)$workspace,'id'=>(string)$row['id'],
           'email'=>$row['email'],'firstname'=>$row['firstname'],'lastname'=>$row['lastname'],
