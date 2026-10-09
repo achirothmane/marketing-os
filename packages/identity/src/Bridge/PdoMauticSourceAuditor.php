@@ -28,7 +28,7 @@ final readonly class PdoMauticSourceAuditor {
     }
 
     /** @return array{status:string,revision:int,missing_observations:int,changed:bool} */
-    public function auditOne(WorkspaceId $workspace,int $contactId):array {
+    public function auditOne(WorkspaceId $workspace,int $contactId,?callable $checkpoint=null):array {
         if($contactId<=0)throw new InvalidArgumentException('Contact ID must be positive.');
         if($this->db->inTransaction())throw new RuntimeException('Nested audit transaction refused.');
         // The read is an observation from a separate committed-source perspective.
@@ -97,6 +97,7 @@ final readonly class PdoMauticSourceAuditor {
                     (string)$workspace,$system,$type,$sourceId,$revision-1]);
                 if($update->rowCount()!==1)throw new RuntimeException('Audit revision conflict.');
             }
+            if($checkpoint!==null)$checkpoint('after_case_before_observation');
             $history=$this->db->prepare("INSERT INTO mos_source_reconciliation_observation
                 (workspace_id,source_system,source_entity_type,source_external_id,
                  status,observed_fingerprint,observed_at,revision)
