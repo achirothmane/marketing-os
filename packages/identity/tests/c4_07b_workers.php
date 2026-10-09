@@ -130,5 +130,34 @@ caseB('explicit HEALTH mode returns bounded PII-free counters',function()use($a)
     verifyB($data['mode']==='HEALTH' && $data['counters']['quarantine_depth']===1);
     verifyB(!str_contains(implode(' ',$lines),'@') && !str_contains(implode(' ',$lines),'email'));
 });
+caseB('manual SHADOW CLI publishes and consumes a bounded event',function()use($a,$importer,$db){
+    $event=$importer->import($a,89123,hash('sha256','manual-cli-fixture-89123'))->eventId;
+    verifyB($event!==null);
+    $cli=escapeshellarg(PHP_BINARY).' '.
+      escapeshellarg(dirname(__DIR__).'/bin/messenger_shadow_worker.php').' '.escapeshellarg((string)$a);
+    $oldEnabled=getenv('MOS_QUEUE_ENABLED');$oldMode=getenv('MOS_QUEUE_MODE');
+    putenv('MOS_QUEUE_ENABLED=1');putenv('MOS_QUEUE_MODE=SHADOW');
+    try {
+        exec($cli.' PUBLISH 1 2>&1',$sent,$sendCode);
+        verifyB($sendCode===0);
+        $msg=json_decode(implode("\n",$sent),true,512,JSON_THROW_ON_ERROR);
+        verifyB($msg['counters']['published']===1);
+        exec($cli.' CONSUME 1 2>&1',$consumed,$consumeCode);
+        verifyB($consumeCode===0);
+        $msg=json_decode(implode("\n",$consumed),true,512,JSON_THROW_ON_ERROR);
+        verifyB($msg['counters']['processed']===1);
+        $q=$db->prepare('SELECT COUNT(*) FROM mos_identity_projection WHERE workspace_id=? AND imported_event_id=?');
+        $q->execute([(string)$a,(string)$event]);
+        verifyB((int)$q->fetchColumn()===1);
+    }finally{
+        $oldEnabled===false?putenv('MOS_QUEUE_ENABLED'):putenv('MOS_QUEUE_ENABLED='.$oldEnabled);
+        $oldMode===false?putenv('MOS_QUEUE_MODE'):putenv('MOS_QUEUE_MODE='.$oldMode);
+    }
+});
+caseB('CLI rejects unbounded limits before any queue effect',function()use($a){
+    $cli=escapeshellarg(PHP_BINARY).' '.escapeshellarg(dirname(__DIR__).'/bin/messenger_shadow_worker.php').' '.escapeshellarg((string)$a);
+    exec('MOS_QUEUE_ENABLED=1 MOS_QUEUE_MODE=SHADOW '.$cli.' CONSUME 101 2>&1',$lines,$code);
+    verifyB($code===2 && str_contains(implode(' ',$lines),'LIMIT_EXCEEDED'));
+});
 echo "C4-07B SUMMARY $pass passed, $fail failed\n";
 exit($fail===0?0:1);
