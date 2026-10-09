@@ -40,7 +40,7 @@ final class Person {
     /** Lifecycle marker only; does NOT erase actual PII. */
     public function markErased(int $expectedVersion): void {
         $this->requireVersion($expectedVersion);
-        if($this->state===PersonState::ERASED)throw new DomainException('Already erased.');
+        if($this->state!==PersonState::ACTIVE)throw new DomainException('Only ACTIVE Person can use this lifecycle marker.');
         $this->state=PersonState::ERASED;
         $this->version++;
     }
