@@ -1,0 +1,59 @@
+name: M0 Composer Installation Baseline
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/m0-composer-install.yml'
+      - 'composer.json'
+      - 'composer.lock'
+      - 'packages/contracts/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install-and-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      COMPOSER_MEMORY_LIMIT: "-1"
+      COMPOSER_NO_INTERACTION: "1"
+    steps:
+      - name: Checkout pinned Marketing OS source
+        uses: actions/checkout@v4
+      - name: PHP and required extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: bcmath, ctype, curl, dom, exif, fileinfo, gd, iconv, imap, intl, mbstring, mysqli, pdo_mysql, sodium, xml, zip
+          coverage: none
+          ini-values: memory_limit=2G
+      - name: Composer and lock verification
+        run: |
+          php -v
+          composer --version
+          # Mautic 7.2.1 pins GPL-3.0, a deprecated SPDX identifier; preserve upstream composer.json.
+          # Composer default mode validates lock consistency while reporting this non-blocking warning.
+          composer validate --no-check-publish
+      - name: Restore Composer download cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: composer-php83-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-php83-
+      - name: Install exact locked PHP dependencies (no upstream install side effects)
+        run: composer install --prefer-dist --no-progress --no-scripts --no-interaction --no-ansi
+      - name: Verify PHP extension/platform requirements
+        run: composer check-platform-reqs
+      - name: Verify pinned Mautic test runner
+        run: |
+          test -f vendor/autoload.php
+          test -f bin/phpunit
+          php bin/phpunit --version
+      - name: Canonical contracts regression
+        run: php packages/contracts/tests/run.php
+      - name: One upstream pure PHP unit test
+        run: php bin/phpunit -d memory_limit=2G --bootstrap vendor/autoload.php --configuration app/phpunit.xml.dist app/bundles/LeadBundle/Tests/Entity/LeadTest.php
