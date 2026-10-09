@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "project": "Marketing Automation Suite / Marketing OS",
+  "repository": "achirothmane/marketing-os",
+  "recorded_on": "2026-10-09",
+  "repo_state_at_initial_inspection": "EMPTY",
+  "upstream": {
+    "project": "mautic/mautic",
+    "target_branch": "7.x",
+    "pinned_commit": null,
+    "imported": false
+  },
+  "implementation": {
+    "c4_01": "LOCAL_SEED_RECORDED_NOT_MERGED",
+    "mautic_integration_verified": false,
+    "production_deployed": false
+  },
+  "stages": {
+    "C1": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C2": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C3": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C4": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C5": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C6": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C7": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C8": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C9": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C10": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    },
+    "C11": {
+      "design": "DESIGNED",
+      "implemented": false,
+      "verified": false,
+      "shipped": false,
+      "merged_sha": null,
+      "ci_evidence": null
+    }
+  },
+  "next_gates": [
+    "import_pinned_mautic_root",
+    "baseline_upstream_tests",
+    "commit_c4_01_contracts",
+    "contact_person_event_outbox_inbox_integration"
+  ],
+  "coordination": {
+    "model": "SINGLE_CENTRAL_DOTS",
+    "reporting_file": "docs/marketing-os/07-handoffs-and-change-log.md"
+  },
+  "claims_caveat": "Chat design approval is not evidence of implementation or revenue."
+}
