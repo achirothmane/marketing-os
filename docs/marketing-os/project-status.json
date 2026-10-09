@@ -11,9 +11,17 @@
     "imported": false
   },
   "implementation": {
-    "c4_01": "LOCAL_SEED_RECORDED_NOT_MERGED",
+    "c4_01": "MERGED_ISOLATED_CONTRACTS_CI_PASSED",
     "mautic_integration_verified": false,
-    "production_deployed": false
+    "production_deployed": false,
+    "c4_01_sha": "33fb9f490bcf85bc02a0a4635cd74cc27871ef1f",
+    "c4_01_pr": "https://github.com/achirothmane/marketing-os/pull/2",
+    "c4_01_ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37867114064",
+    "c4_01_ci_php": [
+      "8.2",
+      "8.3"
+    ],
+    "c4_01_tests": "13 passed"
   },
   "stages": {
     "C1": {
@@ -115,5 +123,14 @@
     "model": "SINGLE_CENTRAL_DOTS",
     "reporting_file": "docs/marketing-os/07-handoffs-and-change-log.md"
   },
-  "claims_caveat": "Chat design approval is not evidence of implementation or revenue."
+  "claims_caveat": "Chat design approval is not evidence of implementation or revenue.",
+  "submilestones": {
+    "C4_01": {
+      "implemented": true,
+      "verified": true,
+      "scope": "standalone contracts only",
+      "evidence_sha": "33fb9f490bcf85bc02a0a4635cd74cc27871ef1f",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/37867114064"
+    }
+  }
 }

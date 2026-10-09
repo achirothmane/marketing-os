@@ -24,3 +24,7 @@ At each merged PR:
 3. Append timestamped concise changelog/handoff with next blocker here.
 4. Add/update stage-specific acceptance tests and affected cross-stage dependencies.
 5. Record any external evidence, competitive findings, or demand signal separately rather than passing them off as implementation.
+
+- **2026-10-09:** PR #1 documentation archive merged into main (e67b8e49745eff6545b8b7624b9d791df6900fd3); 25 files, detailed C1–C11 stages, governance, timeline, machine-readable checkpoint.
+- **2026-10-09:** PR #2 isolated C4-01 typed contracts merged (33fb9f490bcf85bc02a0a4635cd74cc27871ef1f); GitHub Actions run 37867114064 passed on PHP 8.2/8.3. This is NOT the C4 vertical slice; M0 upstream source import (issue #3) remains blocking.
+- **2026-10-09:** Master execution issue #4 opened for durable stage tracking. The next handoff is M0 and then C4-02, not C12 design.

@@ -45,3 +45,10 @@ If any gate fails, record failure and stop promotion. Every PR must link exact f
 
 ## First reusable evidence record
 Record PR, author, SHA, affected domains, migrations, tests, results, known limitations, and next blocker in 07-handoffs-and-change-log.md or an associated durable link. Do not replace history with only a current-state README.
+
+## Verified C4-01 checkpoint — 2026-10-09
+- PR #2 merged: https://github.com/achirothmane/marketing-os/pull/2
+- Commit: 33fb9f490bcf85bc02a0a4635cd74cc27871ef1f
+- GitHub Actions run: https://github.com/achirothmane/marketing-os/actions/runs/37867114064
+- PHP 8.2 and 8.3 jobs both succeeded; each ran syntax lint and 13 contract tests.
+- This is isolated package verification, NOT Composer-root Mautic integration or Contact->Outbox acceptance.

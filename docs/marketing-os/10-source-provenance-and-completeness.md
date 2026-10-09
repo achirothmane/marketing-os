@@ -30,4 +30,4 @@ This repository captures the material technical and governance decisions from th
 - Full original Layer 1–13 titles and exact sequence, if they differ from the reconstructed architecture map.
 - Exact source and enumeration for all ~3,063 idea catalog entries.
 - Original MTE v0.8 source SHA and reproducible tests, if in another repository.
-- C4-01 local archive file contents must be committed as source and tested by GitHub Actions.
+- C4-01 canonical source is now committed and PHP contract CI succeeded on PR #2; remaining work is root Composer integration and actual Mautic tests.
