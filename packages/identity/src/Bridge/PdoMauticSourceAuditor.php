@@ -64,7 +64,7 @@ final readonly class PdoMauticSourceAuditor {
                     $last=new DateTimeImmutable($previous['last_observed_at'],new DateTimeZone('UTC'));
                     $gap=$now->getTimestamp()-$last->getTimestamp();
                     $absence=(int)$previous['missing_observations'];
-                    if($gap >= $this->missingConfirmGapSeconds)$absence++;
+                    if($gap >= $this->missingConfirmGapSeconds)$absence=min(2,$absence+1);
                 }
                 $status=$absence>=2?'SOURCE_MISSING_REPEATED':'SOURCE_MISSING_ONCE';
             }else{
