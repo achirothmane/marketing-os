@@ -117,3 +117,10 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Existing mapping audit catches source IDs absent from live leads, unlike source-only ingestion scans. Transactional case and history updates roll back together on injected failure. No original Person/Event/Outbox mutation; source reappearance recorded as observation only.
 - CLI requires MOS_BRIDGE_MODE=SHADOW and MOS_SOURCE_AUDIT_ENABLED=1. Discrepancy returns review-required exit 2, with PII-free aggregate summary. This was tested in CI.
 - This is OBSERVATION/CLASSIFICATION only, not consent-aware deletion, data retention enforcement, key-rotation migration, C4 full end-to-end or Messenger transport. Next C4-07; later C4-06B authorized resolution after C5/C6.
+
+## C4-08 real source-to-durable-Inbox integrated checkpoint (2026-10-10)
+- PR #33 merged `6c298593c1a3d0165779c046819b9c9964dbf8b5`, https://github.com/achirothmane/marketing-os/actions/runs/38028110845: 13 integration checks PASS on installed Mautic 7.2.1 and MariaDB 11.4.
+- Confirmed all persisted data stages in one *integration* test with separate PUBLISH/CONSUME subprocesses: genuine Mautic leads row (test-only SQL) -> workspace-scoped HMAC -> Person+LegacyMap+Evidence+DomainEvent+Outbox COMMIT -> Messenger queue -> Inbox+Projection COMMIT -> transport ACK.
+- Child processes exit(77) after queue enqueue before outbox publication ACK and after Inbox commit before broker ACK: after simulated lease expiry, replay produces one local projection.
+- Source transaction rollback cannot be seen by independent observer, and changed source gets explicit BLOCK. Multi-workspace same Contact ID stays isolated. No external sends.
+- Boundaries: no actual persistent deployed worker orchestration, unsafe/malformed-wire DLQ, source field mutation reconciliation/consent or commercial sends. Full C4 and C5–C11 remain NOT SHIPPED; next C4-07B2 and C4-08B.

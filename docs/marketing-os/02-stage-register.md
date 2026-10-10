@@ -38,3 +38,7 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 - known failures and exceptions
 - upgrade/regression outcomes
 - state: DESIGNED / IMPLEMENTED / VERIFIED / SHIPPED.
+
+## 2026-10-10 — C4-08 integrated Shadow proof
+- [x] Real Mautic 7.2.1 persisted Contact->Evidence/Event->Outbox->Messenger->Inbox/Projection, opt-in SHADOW across independent PHP subprocesses. PR #33, https://github.com/achirothmane/marketing-os/actions/runs/38028110845, 13/13 PASS.
+- [ ] Supervised background workers, invalid-wire DLQ, automatic LeadModel/sweeper pipeline, full production runbook, C5/C6/C8 controls. Therefore top-level C4 status remains NOT VERIFIED as a deployed operational system.
