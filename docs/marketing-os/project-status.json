@@ -86,7 +86,11 @@
     "c4_08": "MERGED_REAL_MAUTIC_PERSISTED_CONTACT_TO_DURABLE_MESSENGER_TO_INBOX_INTEGRATION_CI_PASSED",
     "c4_08_sha": "6c298593c1a3d0165779c046819b9c9964dbf8b5",
     "c4_08_pr": "https://github.com/achirothmane/marketing-os/pull/33",
-    "c4_08_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38028110845"
+    "c4_08_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38028110845",
+    "c4_07b2": "MERGED_ENCRYPTED_MALFORMED_WIRE_ARCHIVE_AND_BOUNDED_SHADOW_SUPERVISOR_CI_PASSED",
+    "c4_07b2_sha": "655cfc0213f0425a7b5469c90691ec20e121e5ff",
+    "c4_07b2_pr": "https://github.com/achirothmane/marketing-os/pull/35",
+    "c4_07b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38035922092"
   },
   "stages": {
     "C1": {
@@ -179,11 +183,11 @@
     }
   },
   "next_gates": [
-    "C4_07B2_malformed_wire_DLQ_and_supervised_workers",
-    "C4_08B_scheduled_source_to_queue_recovery_under_worker_supervision",
+    "C4_08B_scheduled_source_scan_to_messenger_inbox_end_to_end",
+    "C4_07B3_deployable_supervision_runbook_key_rotation_DLQ_review",
     "C4_06B_source_mutation_authority_after_C5_C6",
-    "C4_full_security_upgrade_and_runbook_regression",
-    "C5_C6_C8_consent_and_external_effect_gates"
+    "C4_full_security_upgrade_and_runtime_regression",
+    "C5_C6_C8_policy_and_external_effect_gates"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -299,6 +303,21 @@
         "automatic Mautic event ingestion and global operational recovery unverified",
         "C5/C6/C8 authorization and sending gates unimplemented",
         "full upstream regression and deployment not verified"
+      ]
+    },
+    "C4_07B2": {
+      "implemented": true,
+      "verified": true,
+      "scope": "MariaDB 11.4 encrypted archive-before-delete for malformed/foreign-workspace Symfony Messenger wires, versioned schema 006, XChaCha20-Poly1305 sealed body+headers, ciphertext SHA256 only, explicit key, tenant lock/lease safety and bounded SHADOW child-process coordinator; 12/12 integration tests; all PR-head M0 and C4 regressions pass",
+      "evidence_sha": "655cfc0213f0425a7b5469c90691ec20e121e5ff",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38035922092",
+      "tests": 12,
+      "remaining": [
+        "external durable key management, rotation and review/redrive policy",
+        "no deployed systemd/Kubernetes long-running supervisor",
+        "oversize payloads intentionally retained and block supervisor",
+        "no full production-level authorization/queue fairness/recovery tests",
+        "C5/C6/C8 business gates and actual campaign sends unimplemented"
       ]
     }
   }

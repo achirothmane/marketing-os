@@ -1,6 +1,6 @@
 # C4-07B2 — Encrypted malformed-wire quarantine and bounded SHADOW coordination
 
-**Status:** PR implementation only. Do not call verified without successful CI and merge evidence.
+**Status:** VERIFIED for isolated MariaDB 11.4 and finite SHADOW supervisor scope. PR #35 merged `655cfc0213f0425a7b5469c90691ec20e121e5ff`, [CI 12/12 PASS](https://github.com/achirothmane/marketing-os/actions/runs/38035922092). Production supervision, key rotation, DLQ review/redrive and full C4 remain UNVERIFIED.
 
 ## Root cause
 
@@ -26,3 +26,9 @@ All prior C4 acceptance suites must pass after migration 006; update prior fixed
 ## Remaining work
 
 This is an operator-invoked finite SHADOW coordinator, not a production daemon or comprehensive service supervisor. A production rollout still requires external secret management, authenticated key rotation, per-tenant DB credentials/authorization, malformed message operational review / redrive policy, actual scheduled worker supervision and disaster recovery. C4-08 proof is integrated but uses test-only SQL fixtures in Mautic; C5/C6/C8 gates remain. No external sends, CRM effects or authorization to contact recipients.
+
+## Accepted checkpoint — 2026-10-10
+- Source merge `655cfc0213f0425a7b5469c90691ec20e121e5ff`, [CI https://github.com/achirothmane/marketing-os/actions/runs/38035922092](https://github.com/achirothmane/marketing-os/actions/runs/38035922092): 12/12 wire tests; all PR-head legacy Mautic/C4 workflows successful.
+- Crypto stores ciphertext digest, encrypted original raw header/body, nonce and reason code. The operator secret never appears in event payloads or logs.
+- Tests inject archive identity collision and verify source retention, tamper ciphertext authentication failure, live lease skipping and stoppage for oversized payloads. Operator-only CLI can run a finite full WIRE_SCAN→PUBLISH→CONSUME cycle.
+- This does NOT constitute a deployed persistent supervisor, safe automatic re-drive or commercial send readiness.
