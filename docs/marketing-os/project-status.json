@@ -90,7 +90,11 @@
     "c4_07b2": "MERGED_ENCRYPTED_MALFORMED_WIRE_ARCHIVE_AND_BOUNDED_SHADOW_SUPERVISOR_CI_PASSED",
     "c4_07b2_sha": "655cfc0213f0425a7b5469c90691ec20e121e5ff",
     "c4_07b2_pr": "https://github.com/achirothmane/marketing-os/pull/35",
-    "c4_07b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38035922092"
+    "c4_07b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38035922092",
+    "c4_08b": "MERGED_BOUNDED_COMMITTED_SOURCE_TO_INBOX_COORDINATOR_CI_PASSED",
+    "c4_08b_sha": "7115710bc94780d1368a47abdeabdd80fe17cb49",
+    "c4_08b_pr": "https://github.com/achirothmane/marketing-os/pull/38",
+    "c4_08b_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38049177697"
   },
   "stages": {
     "C1": {
@@ -183,11 +187,10 @@
     }
   },
   "next_gates": [
-    "C4_08B_scheduled_source_scan_to_messenger_inbox_end_to_end",
     "C4_07B3_deployable_supervision_runbook_key_rotation_DLQ_review",
+    "C4_full_security_upgrade_deployment_and_upstream_regression",
     "C4_06B_source_mutation_authority_after_C5_C6",
-    "C4_full_security_upgrade_and_runtime_regression",
-    "C5_C6_C8_policy_and_external_effect_gates"
+    "C5_C6_C8_policy_consent_external_effect_gates"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -318,6 +321,21 @@
         "oversize payloads intentionally retained and block supervisor",
         "no full production-level authorization/queue fairness/recovery tests",
         "C5/C6/C8 business gates and actual campaign sends unimplemented"
+      ]
+    },
+    "C4_08B": {
+      "implemented": true,
+      "verified": true,
+      "scope": "One bounded operator-invoked SHADOW coordinator joining committed Mautic 7.2.1 leads scan, HMAC Evidence+Person+Outbox, encrypted wire quarantine, durable Symfony Messenger, Inbox and Projection across separate PHP child processes. MariaDB 11.4 integrated CI 13/13 PASS including source rollback, pointer replay, injected child exits and cross-workspace isolation. Test-only Mautic leads fixture via direct SQL, no real automatic LeadModel hook, no production deployment or sends.",
+      "evidence_sha": "7115710bc94780d1368a47abdeabdd80fe17cb49",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38049177697",
+      "tests": 13,
+      "limits": [
+        "No deployed scheduler or supervision service",
+        "Only operator-invoked finite SHADOW coordination",
+        "No per-channel real send/permission authorization",
+        "Live Mautic LeadModel save hook transaction ordering and production upgrade not fully verified",
+        "No rotation/redrive of ciphertext DLQ keys"
       ]
     }
   }
