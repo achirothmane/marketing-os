@@ -137,6 +137,9 @@ test08('missing transport ACK after enqueue: real process exits 77, Outbox remai
     yes08(queued08($db,$a)===1);
     $s=$db->prepare("SELECT published_at FROM mos_outbox WHERE workspace_id=? AND event_id=?");
     $s->execute([(string)$a,(string)$result->eventId]);yes08($s->fetchColumn()===null);
+    // Test-only clock jump: a killed process retains its outbox lease until expiry.
+    $q=$db->prepare("UPDATE mos_outbox SET lease_expires_at=DATE_SUB(UTC_TIMESTAMP(6),INTERVAL 5 SECOND) WHERE workspace_id=? AND event_id=? AND published_at IS NULL");
+    $q->execute([(string)$a,(string)$result->eventId]);yes08($q->rowCount()===1);
 });
 test08('publisher replay creates duplicate pointers but only one Inbox projection',function()use($db,$a){
     $pub=cli08($a,'PUBLISH');yes08($pub['published']===1 && queued08($db,$a)===2);
