@@ -42,3 +42,8 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 ## 2026-10-10 — C4-08 integrated Shadow proof
 - [x] Real Mautic 7.2.1 persisted Contact->Evidence/Event->Outbox->Messenger->Inbox/Projection, opt-in SHADOW across independent PHP subprocesses. PR #33, https://github.com/achirothmane/marketing-os/actions/runs/38028110845, 13/13 PASS.
 - [ ] Supervised background workers, invalid-wire DLQ, automatic LeadModel/sweeper pipeline, full production runbook, C5/C6/C8 controls. Therefore top-level C4 status remains NOT VERIFIED as a deployed operational system.
+
+## 2026-10-10 — C4-07B2 malformed wire encrypted quarantine
+- [x] Separate MariaDB migration 006, tenant-locked transactional encrypted archive for invalid Messenger JSON/header/wrong-workspace bytes, no deletion if archival fails; ciphertext hash avoids low-entropy plaintext digest leaks.
+- [x] Explicit bounded SHADOW supervisor and WIRE_SCAN/PUBLISH/CONSUME subprocess tests: PR #35, CI https://github.com/achirothmane/marketing-os/actions/runs/38035922092, 12/12 PASS. Previous M0/C4 tests passed on same PR head.
+- [ ] Real deployed worker supervisor, key-management rotation and archive review/redrive approval, oversized payload handling runbook, automatic sweeper→queue operations. Full C4 operational stage remains NOT VERIFIED.

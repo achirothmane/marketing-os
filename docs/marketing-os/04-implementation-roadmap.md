@@ -124,3 +124,9 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Child processes exit(77) after queue enqueue before outbox publication ACK and after Inbox commit before broker ACK: after simulated lease expiry, replay produces one local projection.
 - Source transaction rollback cannot be seen by independent observer, and changed source gets explicit BLOCK. Multi-workspace same Contact ID stays isolated. No external sends.
 - Boundaries: no actual persistent deployed worker orchestration, unsafe/malformed-wire DLQ, source field mutation reconciliation/consent or commercial sends. Full C4 and C5–C11 remain NOT SHIPPED; next C4-07B2 and C4-08B.
+
+## C4-07B2 encrypted wire quarantine and bounded coordination (2026-10-10)
+- PR #35 merged SHA `655cfc0213f0425a7b5469c90691ec20e121e5ff`; CI https://github.com/achirothmane/marketing-os/actions/runs/38035922092 **12/12** MariaDB 11.4 malformed-wire and bounded-supervisor tests PASS. Existing M0/C4-02/C4-03/04/C4-05/C4-07A/B1/C4-08 PR-head workflows ALL SUCCESS.
+- Schema 006 archives invalid header/body authenticated-encrypted via XChaCha20-Poly1305; archive+source-delete committed together, valid messages untouched, wrong Workspace quarantined and active leases respected; raw bytes never logged or hashed to public plaintext fingerprint.
+- Double-opt-in finite supervisor uses subprocesses with strict per-worker/cycle/time limits and at most one restart; oversized/unauditable items remain queued and halt safe processing. No production daemon deployed or real external email.
+- Next C4-08B: integrate source sweeper + queue publisher + consumer in a bounded restartable end-to-end driver. C4-07B3: key rotation/runbook, dead-letter review/redrive authorization and supervised deployment. C4 overall remains NOT VERIFIED.
