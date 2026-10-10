@@ -1,6 +1,6 @@
 # C4-08 — One contiguous real persisted Mautic Contact → Inbox acceptance
 
-**Status:** INTEGRATION TEST PRESENT; final state depends on actual CI result.
+**Status:** VERIFIED for narrow, opt-in SHADOW integration. PR #33 merged `6c298593c1a3d0165779c046819b9c9964dbf8b5`; https://github.com/achirothmane/marketing-os/actions/runs/38028110845 **13/13 PASS**. Full operational C4 and production shipping are NOT VERIFIED.
 
 ## Acceptance path under test
 
@@ -31,3 +31,9 @@ The test intentionally **inserts test-only fixtures directly into Mautic's real 
 - Upstream regression coverage, upgrade/rollback, secret rotation and deployment review are not implied by this integration test.
 
 Record exact PR merge SHA, CI run and count before marking **C4-08 verified in its SHADOW integration scope**. Do NOT mark full C4 or production SHIPPED on this evidence alone.
+
+## Verified evidence (2026-10-10)
+- Source PR #33 merge `6c298593c1a3d0165779c046819b9c9964dbf8b5`, CI https://github.com/achirothmane/marketing-os/actions/runs/38028110845 with 13/13 integrated cases.
+- All other PR-head checks M0, C4-02, C4-03/04, C4-05 and C4-07B passed.
+- Recovery used real independent PHP subprocess exits(77); clock/lease expiry accelerated explicitly in the disposable CI database.
+- SOURCE fixture is persisted directly in a real Mautic leads table (not a LeadModel call). Committed-read source bridge prevents phantom imports after rollback; operational automation and failed-message DLQ remain open.

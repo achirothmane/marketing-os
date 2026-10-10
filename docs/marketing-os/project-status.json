@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "Marketing Automation Suite / Marketing OS",
   "repository": "achirothmane/marketing-os",
-  "recorded_on": "2026-10-09",
+  "recorded_on": "2026-10-10",
   "repo_state_at_initial_inspection": "EMPTY",
   "upstream": {
     "project": "mautic/mautic",
@@ -82,7 +82,11 @@
     "c4_07b1": "MERGED_BOUNDED_OPTIN_MESSENGER_WORKERS_AND_VALID_POINTER_QUARANTINE_CI_PASSED",
     "c4_07b1_sha": "2ea70105f456e57c354bdbe67dabe7906b21a5fd",
     "c4_07b1_pr": "https://github.com/achirothmane/marketing-os/pull/30",
-    "c4_07b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38004029403"
+    "c4_07b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38004029403",
+    "c4_08": "MERGED_REAL_MAUTIC_PERSISTED_CONTACT_TO_DURABLE_MESSENGER_TO_INBOX_INTEGRATION_CI_PASSED",
+    "c4_08_sha": "6c298593c1a3d0165779c046819b9c9964dbf8b5",
+    "c4_08_pr": "https://github.com/achirothmane/marketing-os/pull/33",
+    "c4_08_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38028110845"
   },
   "stages": {
     "C1": {
@@ -175,11 +179,11 @@
     }
   },
   "next_gates": [
-    "C4_07B2_poison_wire_DLQ_worker_supervision_ops_readiness",
-    "C4_08_real_Mautic_Contact_to_Queue_to_Inbox_integration",
-    "C4_06B_authorized_mutation_after_C5_C6",
-    "C4_full_recovery_security_and_upstream_regression",
-    "production_deployment_approval"
+    "C4_07B2_malformed_wire_DLQ_and_supervised_workers",
+    "C4_08B_scheduled_source_to_queue_recovery_under_worker_supervision",
+    "C4_06B_source_mutation_authority_after_C5_C6",
+    "C4_full_security_upgrade_and_runbook_regression",
+    "C5_C6_C8_consent_and_external_effect_gates"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -281,6 +285,20 @@
         "undecodable wire messages fail closed but lack transport-level DLQ",
         "no deployed supervisor or automatic scheduler",
         "not full C4"
+      ]
+    },
+    "C4_08": {
+      "implemented": true,
+      "verified": true,
+      "scope": "One contiguous installed Mautic 7.2.1 persisted leads row -> committed-read HMAC -> atomic Person/Mapping/Evidence/Event/Outbox -> independent PHP PUBLISH -> actual MariaDB Messenger queue -> independent PHP CONSUME -> Inbox/Projection ACK; 13/13 CI tests; source fixture inserted by test-only SQL, not LeadModel; SHADOW only and no external sends",
+      "evidence_sha": "6c298593c1a3d0165779c046819b9c9964dbf8b5",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38028110845",
+      "tests": 13,
+      "remaining": [
+        "supervised queue worker and malformed-wire DLQ not yet demonstrated",
+        "automatic Mautic event ingestion and global operational recovery unverified",
+        "C5/C6/C8 authorization and sending gates unimplemented",
+        "full upstream regression and deployment not verified"
       ]
     }
   }
