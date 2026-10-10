@@ -68,7 +68,7 @@ function queued08(PDO $db,WorkspaceId $w):int{
 test08('installed Mautic 7.2.1 contains genuine leads table and five MOS migrations',function()use($db){
     $n=(int)$db->query("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name='leads'")->fetchColumn();
     $versions=(int)$db->query("SELECT COUNT(*) FROM mos_schema_migration")->fetchColumn();
-    yes08($n===1 && $versions===5);
+    yes08($n===1 && $versions===6);
 });
 test08('rolled-back Mautic source Contact is invisible to independent bridge',function()use($db,$bridge,$a,$observer){
     $db->beginTransaction();$id=seed08($db,'rollback');

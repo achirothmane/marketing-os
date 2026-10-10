@@ -9,6 +9,8 @@ use MarketingOS\Identity\Transport\MosDoctrineTransportFactory;
 use MarketingOS\Identity\Transport\MosMessengerRelay;
 use MarketingOS\Identity\Transport\MosBoundedReceiver;
 use MarketingOS\Identity\Transport\MosFailureLedger;
+use MarketingOS\Identity\Transport\MosEncryptedWireQuarantine;
+use MarketingOS\Identity\Transport\MosMessengerJsonSerializer;
 use MarketingOS\Identity\Persistence\PdoOutboxPublisher;
 use MarketingOS\Identity\Persistence\PdoInboxConsumer;
 
@@ -20,7 +22,7 @@ try {
     if(getenv('MOS_QUEUE_ENABLED')!=='1'||getenv('MOS_QUEUE_MODE')!=='SHADOW') {
         throw new RuntimeException('DISABLED');
     }
-    if($argc!==4||!in_array($argv[2],['PUBLISH','CONSUME','HEALTH'],true)||
+    if($argc!==4||!in_array($argv[2],['PUBLISH','CONSUME','HEALTH','WIRE_SCAN'],true)||
        !preg_match('/^[1-9][0-9]*$/D',$argv[3]))throw new InvalidArgumentException('INVALID_ARGS');
     $workspace=WorkspaceId::fromString($argv[1]);
     $limit=(int)$argv[3];
@@ -58,6 +60,12 @@ try {
             $q->execute([$queue]);$results['queue_pending']=(int)$q->fetchColumn();
             $q=$db->prepare("SELECT COUNT(*) FROM mos_messenger_failure WHERE workspace_id=? AND quarantined_at IS NOT NULL");
             $q->execute([(string)$workspace]);$results['quarantine_depth']=(int)$q->fetchColumn();
+        }elseif($argv[2]==='WIRE_SCAN'){
+            $encoded=getenv('MOS_DLQ_KEY_B64');
+            $key=is_string($encoded)?base64_decode($encoded,true):false;
+            if(!is_string($key)||strlen($key)!==32)throw new RuntimeException('DLQ_KEY_MISSING');
+            $scanner=new MosEncryptedWireQuarantine($db,new MosMessengerJsonSerializer(),$key);
+            $results['wire_scan']=$scanner->scan($workspace,$limit);
         }elseif($argv[2]==='PUBLISH'){
             $relay=new MosMessengerRelay(new PdoOutboxPublisher($db),$transport);
             for($i=0;$i<$limit;$i++){
@@ -89,6 +97,6 @@ try {
     // Fail closed. No raw SQL, passwords or Person attributes in stderr.
     fwrite(STDERR,"MOS Messenger SHADOW worker blocked: ".(
         in_array($e->getMessage(),['DISABLED','INVALID_ARGS','LIMIT_EXCEEDED',
-        'INVALID_DSN','UNKNOWN_WORKSPACE','WORKER_LOCKED'],true)?$e->getMessage():'WORKER_FAILURE')."\n");
+        'INVALID_DSN','UNKNOWN_WORKSPACE','WORKER_LOCKED','DLQ_KEY_MISSING'],true)?$e->getMessage():'WORKER_FAILURE')."\n");
     exit(2);
 }

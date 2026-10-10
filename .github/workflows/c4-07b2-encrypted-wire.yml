@@ -1,0 +1,63 @@
+name: C4-07B2 Encrypted Wire Quarantine
+on:
+  pull_request:
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b2-encrypted-wire.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b2-encrypted-wire.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  encrypted-wire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-root-password
+          MARIADB_DATABASE: mautic_ci
+          MARIADB_USER: mautic_ci
+          MARIADB_PASSWORD: ci-only-mautic-password
+        ports: [3306:3306]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+    env:
+      COMPOSER_MEMORY_LIMIT: '-1'
+      MOS_TEST_DSN: mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4
+      MOS_TEST_DB_USER: mautic_ci
+      MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+      MOS_QUEUE_ENABLED: '0'
+      MOS_QUEUE_MODE: OFF
+      MOS_SUPERVISOR_ENABLED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: bcmath, ctype, curl, dom, exif, fileinfo, gd, iconv, intl, mbstring, mysqli, pdo_mysql, sodium, xml, zip
+          coverage: none
+      - name: Install pinned dependencies
+        run: composer install --prefer-dist --no-progress --no-scripts --no-interaction --no-ansi
+      - name: PHP syntax and sodium requirements
+        run: |
+          find packages/identity/src/Transport packages/identity/bin -name '*.php' -print0 | xargs -0 -n1 php -l
+          php -l packages/identity/tests/c4_07b2_encrypted_wire.php
+          php -r 'if (!function_exists("sodium_crypto_aead_xchacha20poly1305_ietf_encrypt")) exit(1);'
+      - name: Canonical contract and Identity regression
+        run: |
+          php packages/contracts/tests/run.php
+          php packages/identity/tests/run.php
+      - name: MariaDB encrypted wire quarantine and bounded SHADOW supervisor falsification
+        run: php packages/identity/tests/c4_07b2_encrypted_wire.php
