@@ -40,7 +40,7 @@ function okWire(bool $condition):void{if(!$condition)throw new RuntimeException(
 function insertWire(PDO $db,string $queue,string $body,string $headers,?string $delivered=null):int{
     $s=$db->prepare("INSERT INTO mos_messenger_messages
        (body,headers,queue_name,created_at,available_at,delivered_at)
-       VALUES(?,?,?,UTC_TIMESTAMP(),UTC_TIMESTAMP(),".$delivered.")");
+       VALUES(?,?,?,UTC_TIMESTAMP(),UTC_TIMESTAMP(),".($delivered??"NULL").")");
     $s->execute([$body,$headers,$queue]);
     return (int)$db->lastInsertId();
 }
