@@ -11,9 +11,9 @@ use MarketingOS\Contracts\Id\WorkspaceId;
  * Single workspace. Source conflicts block downstream queue execution.
  * Durable Outbox and Inbox provide replay safety if a child stops.
  */
-function mosPipelineChild(string $script,array $args,int $timeoutSeconds):array {
+function mosPipelineChild(string $script,array $args,int $timeoutSeconds,array $envOverrides=[]):array {
     $proc=proc_open(array_merge([PHP_BINARY,$script],$args),
-      [0=>['pipe','r'],1=>['pipe','w'],2=>['pipe','w']],$pipes);
+      [0=>['pipe','r'],1=>['pipe','w'],2=>['pipe','w']],$pipes,null,array_merge(getenv(),$envOverrides));
     if(!is_resource($proc))throw new RuntimeException('CHILD_START_FAILURE');
     fclose($pipes[0]);
     stream_set_blocking($pipes[1],false);
@@ -85,7 +85,11 @@ try{
         // A failed child may already have committed Person/Outbox, but never
         // produces a false pipeline success receipt.
         $scanScript=__DIR__.'/run_scheduled_shadow_scan.php';
-        [$scanExit,$scanText]=mosPipelineChild($scanScript,[(string)$workspace],90);
+        [$scanExit,$scanText]=mosPipelineChild($scanScript,[(string)$workspace],90,[
+           'MOS_SCAN_BATCH_SIZE'=>(string)$scanBatch,
+           'MOS_SCAN_MAX_BATCHES'=>(string)$scanBatches,
+           'MOS_SCAN_MAX_SECONDS'=>'30'
+        ]);
         if($scanExit!==0)throw new RuntimeException('SOURCE_SCAN_FAILED');
         $scan=json_decode($scanText,true,16,JSON_THROW_ON_ERROR);
         if(!is_array($scan)||
