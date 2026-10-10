@@ -64,7 +64,7 @@ try {
             $encoded=getenv('MOS_DLQ_KEY_B64');
             $key=is_string($encoded)?base64_decode($encoded,true):false;
             if(!is_string($key)||strlen($key)!==32)throw new RuntimeException('DLQ_KEY_MISSING');
-            $scanner=new MosEncryptedWireQuarantine($db,new MosMessengerJsonSerializer(),$key);
+            $scanner=new MosEncryptedWireQuarantine($db,new MosMessengerJsonSerializer(),$key,getenv('MOS_DLQ_ACTIVE_KEY_ID')?:'manual-v1');
             $results['wire_scan']=$scanner->scan($workspace,$limit);
         }elseif($argv[2]==='PUBLISH'){
             $relay=new MosMessengerRelay(new PdoOutboxPublisher($db),$transport);

@@ -1,0 +1,66 @@
+name: C4-07B3A Encrypted Quarantine Key Lifecycle
+on:
+  pull_request:
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b3a-dlq-keys.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b3a-dlq-keys.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dlq-key-lifecycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-root-password
+          MARIADB_DATABASE: mautic_ci
+          MARIADB_USER: mautic_ci
+          MARIADB_PASSWORD: ci-only-mautic-password
+        ports: [3306:3306]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+    env:
+      COMPOSER_MEMORY_LIMIT: '-1'
+      MOS_TEST_DSN: mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4
+      MOS_TEST_DB_USER: mautic_ci
+      MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+      MOS_QUEUE_ENABLED: '0'
+      MOS_QUEUE_MODE: OFF
+      MOS_DLQ_MAINTENANCE_ENABLED: '0'
+      MOS_DLQ_ROTATE_APPROVED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: bcmath, ctype, curl, dom, exif, fileinfo, gd, iconv, intl, mbstring, mysqli, pdo_mysql, sodium, xml, zip
+          coverage: none
+      - name: Install composer lock
+        run: composer install --prefer-dist --no-progress --no-scripts --no-interaction --no-ansi
+      - name: PHP lint + sodium and base contracts
+        run: |
+          php -l packages/identity/src/Transport/MosWireQuarantineKeyManager.php
+          php -l packages/identity/bin/dlq_key_maintenance.php
+          php -l packages/identity/bin/messenger_shadow_worker.php
+          php -l packages/identity/tests/c4_07b3a_key_rotation.php
+          php -r 'if (!function_exists("sodium_crypto_aead_xchacha20poly1305_ietf_decrypt")) exit(1);'
+          php packages/contracts/tests/run.php
+          php packages/identity/tests/run.php
+      - name: Verify and rotate MariaDB encrypted wire quarantine without PII output
+        run: php packages/identity/tests/c4_07b3a_key_rotation.php
+      - name: Confirm opt-in flags are still disabled in CI
+        run: |
+          test "$MOS_DLQ_MAINTENANCE_ENABLED" = '0'
+          test "$MOS_DLQ_ROTATE_APPROVED" = '0'
