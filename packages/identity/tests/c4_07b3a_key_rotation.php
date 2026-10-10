@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__.'/bootstrap.php';
+require dirname(__DIR__,3).'/vendor/autoload.php';
 
 use MarketingOS\Contracts\Id\WorkspaceId;
 use MarketingOS\Identity\Persistence\PdoPersonStore;
