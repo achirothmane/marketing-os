@@ -1,6 +1,6 @@
 # C4-07B3A — Encrypted DLQ key verification and rotation
 
-**Status:** PR stage; do not treat as production key management or deployment until accepted by CI.
+**Status:** C4-07B3A scope VERIFIED on MariaDB 11.4; PR #41 merged `63713aa2b1ca451d7083c43cbfeb55cb3d8c4be2`, [CI https://github.com/achirothmane/marketing-os/actions/runs/38058452138](https://github.com/achirothmane/marketing-os/actions/runs/38058452138) **14/14 PASS**. This remains operator-only SHADOW and NOT production-ready.
 
 ## What changes
 
@@ -29,3 +29,8 @@ Ciphertext SHA256 is the integrity marker, never a deterministic hash of low-ent
 ## CI acceptance
 
 MariaDB 11.4 tests must prove bounded paginated verification, wrong-key rejection without mutation, partial rotation/restart and authenticated new bytes, multi-workspace isolation, tampered ciphertext rollback, invalid bounds/same-key rejection, safe inventory, disabled-by-default/approval-gated CLI, CLI advisory lock and new active key usage by the existing wire scanner. All old C4 test workflows remain required. On success record exact PR merge SHA and run in project status and handoff.
+
+## Verified acceptance evidence — 2026-10-10
+- Source PR #41 merged `63713aa2b1ca451d7083c43cbfeb55cb3d8c4be2`; https://github.com/achirothmane/marketing-os/actions/runs/38058452138 14/14 cryptographic and CLI integration cases successful. All other PR-head M0/C4 workflows successful.
+- Maintains archive digest on ciphertext and authenticates original Workspace/queue/message identity before per-row re-encryption. Reads and rotations are bounded to 1–100 records. All decrypted content remains in-process, not returned to operators or telemetry.
+- C4-07B3B production secret escrow, security controls, actual service supervisor and approved DLQ review/redrive are still OPEN. No marketing send authorization.

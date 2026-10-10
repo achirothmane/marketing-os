@@ -52,3 +52,7 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 - [x] Bounded source scan → encrypted-wire check → Messenger publish → Inbox consume integrated in one explicit SHADOW coordinator, PR #38, CI https://github.com/achirothmane/marketing-os/actions/runs/38049177697 (13/13 PASS).
 - [x] Five/six independent operator opt-ins, per-Workspace advisory lock, bounded batches/cycles/time, safe replay after three simulated process failures, no raw PII output, no provider sends.
 - [ ] Deployed scheduler/system supervisor, external key lifecycle, DLQ human redrive, production auth/fairness and C5/C6/C8 effects remain open; full C4 operational acceptance NOT VERIFIED.
+
+## 2026-10-10 — C4-07B3A encrypted DLQ verification and key rotation
+- [x] Operator-only per-Workspace inventory, paginated authenticated verification and recoverable key rotation; MariaDB 11.4 [CI](https://github.com/achirothmane/marketing-os/actions/runs/38058452138) 14/14 PASS, PR #41 merged `63713aa2b1ca451d7083c43cbfeb55cb3d8c4be2`.
+- [ ] Production key escrow, secret manager and rotation/backup drills, deployed supervised worker, DLQ review/redrive with approval and operator audit. C4 overall remains NOT VERIFIED; no customer sends.
