@@ -12,6 +12,7 @@ final readonly class PdoSchemaMigrator {
         '003_contact_scan_cursor' => ['mos_contact_scan_cursor'],
         '004_contact_source_reconciliation' => ['mos_source_reconciliation_case','mos_source_reconciliation_observation'],
         '005_messenger_worker_runtime' => ['mos_messenger_messages','mos_identity_projection','mos_messenger_failure'],
+        '006_encrypted_wire_quarantine' => ['mos_messenger_wire_quarantine'],
     ];
     public function __construct(private PDO $db) {}
     public function migrate(): void {

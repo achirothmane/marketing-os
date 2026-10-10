@@ -42,7 +42,7 @@ c404('migrations 001 to 005 replay with immutable checksums',function()use($db){
     $m=new PdoSchemaMigrator($db);
     $m->migrate();$m->migrate();
     $q=$db->query("SELECT COUNT(*) FROM mos_schema_migration")->fetchColumn();
-    assert404((int)$q===5);
+    assert404((int)$q===6);
 });
 c404('new isolated workspace',function()use($store,$w){
     $store->createWorkspace($w);

@@ -51,7 +51,7 @@ function countB(PDO $db,string $table):int{
 $ea=null;$eb=null;$poison=null;
 caseB('migration 005 and worker tables are checksum pinned',function()use($db){
     $v=(int)$db->query('SELECT COUNT(*) FROM mos_schema_migration')->fetchColumn();
-    verifyB($v===5);
+    verifyB($v===6);
     foreach(['mos_messenger_messages','mos_identity_projection','mos_messenger_failure'] as $table) {
       $s=$db->prepare('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name=?');
       $s->execute([$table]);verifyB((int)$s->fetchColumn()===1);
