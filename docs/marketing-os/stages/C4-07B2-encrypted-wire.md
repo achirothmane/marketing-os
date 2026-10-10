@@ -8,7 +8,7 @@ Symfony Doctrine Messenger reads queue rows and decodes wire headers/envelopes *
 
 ## New capability and boundary
 
-- Explicit migration 006 introduces \`mos_messenger_wire_quarantine\`: tenant + immutable queue row identity, reason code, SHA-256 of original raw wire bytes, key identifier and **authenticated encrypted original body+headers**; never plaintext wire content. No event FK is required because a malformed pointer may lack a valid EventId.
+- Explicit migration 006 introduces \`mos_messenger_wire_quarantine\`: tenant + immutable queue row identity, reason code, SHA-256 of ciphertext (not enumerable raw Contact data), key identifier and **authenticated encrypted original body+headers**; never plaintext wire content. No event FK is required because a malformed pointer may lack a valid EventId.
 - \`MosEncryptedWireQuarantine\` scans at most 100 available queue rows per call; locks each row within a MariaDB transaction. It verifies the exact versioned \`MosMessengerJsonSerializer\`, and for corrupted rows seals the unmodified header/body bytes using XChaCha20-Poly1305 with a **separate, externally provided 32-byte secret**.
 - The archive INSERT and source DELETE happen in one transaction; if encryption/storage/deletion fails, the entire transaction rolls back, leaving the original queued bytes in place. A unique archive key prevents unsafe overwrite.
 - Valid pointer bytes stay untouched. Recently claimed messages are skipped; a stale claim may be inspected only after the current 60s visibility bound. Oversized wires above 256KiB are not deleted or silently truncated: stop the supervised workflow and require manual review.

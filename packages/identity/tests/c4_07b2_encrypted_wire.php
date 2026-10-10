@@ -99,7 +99,7 @@ checkWire('invalid wire moves atomically to encrypted DLQ without plaintext PII'
     okWire(is_string($raw));
     $headerLength=unpack('N',substr($raw,0,4))[1];
     okWire(substr($raw,4,$headerLength)===$headers && substr($raw,4+$headerLength)===$body);
-    okWire(hash_equals($archived['payload_sha256'],hash('sha256',$raw)));
+    okWire(hash_equals($archived['payload_sha256'],hash('sha256',$archived['sealed_payload'])));
     $tampered=$archived['sealed_payload'];$tampered[0]=chr(ord($tampered[0])^1);
     okWire(sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
       $tampered,$aad,$archived['sealed_nonce'],$key)===false);

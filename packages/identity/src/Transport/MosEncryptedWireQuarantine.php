@@ -74,7 +74,7 @@ final readonly class MosEncryptedWireQuarantine {
                 $insert->bindValue(3,$queue);
                 $insert->bindValue(4,$this->keyId);
                 $insert->bindValue(5,$reason);
-                $insert->bindValue(6,hash('sha256',$wire));
+                $insert->bindValue(6,hash('sha256',$sealed));
                 $insert->bindValue(7,$nonce,PDO::PARAM_LOB);
                 $insert->bindValue(8,$sealed,PDO::PARAM_LOB);
                 $insert->bindValue(9,strlen($wire),PDO::PARAM_INT);
