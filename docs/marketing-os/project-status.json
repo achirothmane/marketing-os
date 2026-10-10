@@ -94,7 +94,11 @@
     "c4_08b": "MERGED_BOUNDED_COMMITTED_SOURCE_TO_INBOX_COORDINATOR_CI_PASSED",
     "c4_08b_sha": "7115710bc94780d1368a47abdeabdd80fe17cb49",
     "c4_08b_pr": "https://github.com/achirothmane/marketing-os/pull/38",
-    "c4_08b_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38049177697"
+    "c4_08b_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38049177697",
+    "c4_07b3a": "MERGED_BOUNDED_ENCRYPTED_DLQ_INVENTORY_AUTHENTICATED_VERIFICATION_AND_RESUMABLE_KEY_ROTATION_CI_PASSED",
+    "c4_07b3a_sha": "63713aa2b1ca451d7083c43cbfeb55cb3d8c4be2",
+    "c4_07b3a_pr": "https://github.com/achirothmane/marketing-os/pull/41",
+    "c4_07b3a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38058452138"
   },
   "stages": {
     "C1": {
@@ -187,8 +191,8 @@
     }
   },
   "next_gates": [
-    "C4_07B3_deployable_supervision_runbook_key_rotation_DLQ_review",
-    "C4_full_security_upgrade_deployment_and_upstream_regression",
+    "C4_07B3B_deployed_supervision_and_secrets_escrow_quarantine_review",
+    "C4_full_security_upgrade_deployment_runtime_regression",
     "C4_06B_source_mutation_authority_after_C5_C6",
     "C5_C6_C8_policy_consent_external_effect_gates"
   ],
@@ -336,6 +340,21 @@
         "No per-channel real send/permission authorization",
         "Live Mautic LeadModel save hook transaction ordering and production upgrade not fully verified",
         "No rotation/redrive of ciphertext DLQ keys"
+      ]
+    },
+    "C4_07B3A": {
+      "implemented": true,
+      "verified": true,
+      "scope": "MariaDB 11.4 bounded workspace-scoped encrypted wire archive inventory, paginated authenticated VERIFY and resumable per-record XChaCha20-Poly1305 ROTATE. Explicit double opt-in with additional ROTATE approval and wire scanner advisory lock, no plaintext output or automatic redrive. CI 14/14 PASS; all PR-head M0/C4 workflows green.",
+      "evidence_sha": "63713aa2b1ca451d7083c43cbfeb55cb3d8c4be2",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38058452138",
+      "tests": 14,
+      "boundaries": [
+        "No production secrets manager, escrow or key distribution",
+        "No deployed persistent supervised runtime",
+        "No key-rotation backfill over historical backups/tenant estate",
+        "No automatic quarantined-wire redrive or external effects",
+        "C4 overall NOT operationally verified"
       ]
     }
   }
