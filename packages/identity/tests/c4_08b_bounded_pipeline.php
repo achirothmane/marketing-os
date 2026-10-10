@@ -182,7 +182,7 @@ pb08('process death after Messenger commit before outbox ACK yields one eventual
     require08b(countTenant08b($db,'mos_identity_projection',$d)===1 && queued08b($db,$d)===0);
 });
 pb08('process death after Inbox commit before Messenger ACK replays without duplicate projection',function()use($db,$e){
-    [$status]=$source=sourceOnly08b($e);
+    [$status,$out,$err]=sourceOnly08b($e);
     require08b($status===0 && countTenant08b($db,'mos_outbox',$e)===1);
     [$status,$out,$err]=worker08b($e,'PUBLISH');
     require08b($status===0 && queued08b($db,$e)===1);
