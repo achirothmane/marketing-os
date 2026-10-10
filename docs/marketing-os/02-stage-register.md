@@ -47,3 +47,8 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 - [x] Separate MariaDB migration 006, tenant-locked transactional encrypted archive for invalid Messenger JSON/header/wrong-workspace bytes, no deletion if archival fails; ciphertext hash avoids low-entropy plaintext digest leaks.
 - [x] Explicit bounded SHADOW supervisor and WIRE_SCAN/PUBLISH/CONSUME subprocess tests: PR #35, CI https://github.com/achirothmane/marketing-os/actions/runs/38035922092, 12/12 PASS. Previous M0/C4 tests passed on same PR head.
 - [ ] Real deployed worker supervisor, key-management rotation and archive review/redrive approval, oversized payload handling runbook, automatic sweeper→queue operations. Full C4 operational stage remains NOT VERIFIED.
+
+## 2026-10-10 — C4-08B finite orchestration proof
+- [x] Bounded source scan → encrypted-wire check → Messenger publish → Inbox consume integrated in one explicit SHADOW coordinator, PR #38, CI https://github.com/achirothmane/marketing-os/actions/runs/38049177697 (13/13 PASS).
+- [x] Five/six independent operator opt-ins, per-Workspace advisory lock, bounded batches/cycles/time, safe replay after three simulated process failures, no raw PII output, no provider sends.
+- [ ] Deployed scheduler/system supervisor, external key lifecycle, DLQ human redrive, production auth/fairness and C5/C6/C8 effects remain open; full C4 operational acceptance NOT VERIFIED.
