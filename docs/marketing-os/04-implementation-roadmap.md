@@ -165,3 +165,9 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - [PR #50](https://github.com/achirothmane/marketing-os/pull/50) merge 76ac79742fe0f85ec941f2331f1d433f9dcb01fd; https://github.com/achirothmane/marketing-os/actions/runs/38148508716 **16/16 PASS**, all older 10 PR-head workflows green.
 - Application-level fixture copies encrypted quarantine records to a second disposable MariaDB schema and checks exact row identity, ciphertext, AEAD, key IDs and pagination. The read-only DLQ review CLI emits authenticated case identifiers and hold disposition, not authorized redrive. Wrong/missing keys, tampering, missing restored rows and fake same-database recovery all fail closed.
 - Next: C4-07B3B3B2 restore real backup media to independent host and attest full durable state including sources/Outbox/Inbox; C4-07B3B3B3 verify actual systemd service, secrets backup/recovery and operator-approved audited disposition. No provider effect or commercial sends.
+
+
+## C4-07B3B3B2 full disposable SQL DB restore checkpoint — 2026-10-11
+- [PR #52](https://github.com/achirothmane/marketing-os/pull/52) merged cbfa3051c2b124f0309cccd6d3065de52dc225bd, [Mautic/MariaDB CI 38149136108](https://github.com/achirothmane/marketing-os/actions/runs/38149136108): 8/8 PASS and 11 prior PR-head workflows green.
+- Real private SQL backup-media file created by mariadb-dump after internal contact/event/queue runs, restored into isolated database schema on same disposable server; exact names, schema column metadata, per-row bytes and historical DLQ ciphertext verified. Tamper tests reject invalid restored Person/archive state.
+- Next C4-07B3B3B3 requires distinct host/service identity, independently stored backup/media/secret escrow, actual systemd install and recovery with network/health/rollback drills and recorded human disposition control. C4 not deployed or commercially authorized.
