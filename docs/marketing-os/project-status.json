@@ -118,7 +118,11 @@
     "c4_07b3b3b2": "MERGED_ACTUAL_DISPOSABLE_SQL_DUMP_IMPORT_FULL_DATABASE_STATE_ATTESTATION",
     "c4_07b3b3b2_sha": "cbfa3051c2b124f0309cccd6d3065de52dc225bd",
     "c4_07b3b3b2_pr": "https://github.com/achirothmane/marketing-os/pull/52",
-    "c4_07b3b3b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38149136108"
+    "c4_07b3b3b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38149136108",
+    "c4_07b3b3b3a": "MERGED_DUAL_SIGNED_ED25519_NO_EFFECT_DLQ_REVIEW_LOCAL_JOURNAL_CI_PASSED",
+    "c4_07b3b3b3a_sha": "441a76ee5b31ebda4e293d49feacbf921b46d722",
+    "c4_07b3b3b3a_pr": "https://github.com/achirothmane/marketing-os/pull/54",
+    "c4_07b3b3b3a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38178823499"
   },
   "stages": {
     "C1": {
@@ -211,8 +215,8 @@
     }
   },
   "next_gates": [
-    "C4_07B3B3B3_separate_host_deployment_secret_restore_systemd_and_operator_audit",
-    "C4_full_security_upgrade_live_runtime_recovery",
+    "C4_07B3B3B3B_live_host_supervision_offsite_secrets_audit_witness_and_disaster_recovery",
+    "C4_full_security_upgrade_live_runtime_proof",
     "C5_C6_C8_consent_contactability_and_authorized_effects"
   ],
   "coordination": {
@@ -460,6 +464,23 @@
         "No installed service/timer with operator observation, alerts, rollback drills",
         "No audited authorization for manual DLQ disposition; no external effects",
         "Overall C4 and C5/C6/C8 production controls NOT VERIFIED"
+      ]
+    },
+    "C4_07B3B3B3A": {
+      "implemented": true,
+      "verified": true,
+      "scope": "MariaDB 11.4 proof of separate Ed25519 reviewer and approver signatures over authenticated encrypted quarantine case metadata; HOLD/ESCALATE/REJECT_REPLAY remain NO-EFFECT recommendations. Protected local chained journal with external-prior-head check, offline per-role signer helper, fail-closed CLI. 15/15 CI acceptance PASS, 11 other PR-head M0/C4 workflows SUCCESS. No message re-drive, send, deletion or consent effects.",
+      "evidence_sha": "441a76ee5b31ebda4e293d49feacbf921b46d722",
+      "pr": "https://github.com/achirothmane/marketing-os/pull/54",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38178823499",
+      "tests": 15,
+      "other_pr_head_workflows": "11/11 SUCCESS",
+      "boundaries": [
+        "True operator identity/key-to-human binding and production key custody are not established by two cryptographic signatures alone",
+        "External independently protected journal-head witness is required but not deployed; local journal is not immutable",
+        "No distinct host, offsite secret escrow, systemd service installation or production backup/restore drill",
+        "No authorized manual queue replay, deletion or external effects; quarantine remains HOLD",
+        "Overall C4 NOT VERIFIED, C5/C6/C8 marketing contactability and effect gates not implemented"
       ]
     }
   }
