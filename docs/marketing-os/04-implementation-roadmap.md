@@ -171,3 +171,9 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - [PR #52](https://github.com/achirothmane/marketing-os/pull/52) merged cbfa3051c2b124f0309cccd6d3065de52dc225bd, [Mautic/MariaDB CI 38149136108](https://github.com/achirothmane/marketing-os/actions/runs/38149136108): 8/8 PASS and 11 prior PR-head workflows green.
 - Real private SQL backup-media file created by mariadb-dump after internal contact/event/queue runs, restored into isolated database schema on same disposable server; exact names, schema column metadata, per-row bytes and historical DLQ ciphertext verified. Tamper tests reject invalid restored Person/archive state.
 - Next C4-07B3B3B3 requires distinct host/service identity, independently stored backup/media/secret escrow, actual systemd install and recovery with network/health/rollback drills and recorded human disposition control. C4 not deployed or commercially authorized.
+
+
+## C4-07B3B3B3A two-operator signed journal — scoped acceptance (2026-10-11)
+- [PR #54](https://github.com/achirothmane/marketing-os/pull/54) merged `441a76ee5b31ebda4e293d49feacbf921b46d722`, [MariaDB CI 38178823499](https://github.com/achirothmane/marketing-os/actions/runs/38178823499): **15/15 PASS**, other eleven M0/C4 workflows green.
+- Signed case metadata is bound to matching archived ciphertext and two independently registered Ed25519 public-key roles. An offline per-operator signer and protected chained local journal with externally supplied witness head refuse signature forgery, replay, history rewrites and unsupported human decisions. All decisions are strictly non-operational HOLD/ESCALATE/REJECT_REPLAY recommendations.
+- Next C4-07B3B3B3B: independent live host installation, actual managed secrets and human identities, protected remote log-head witness, offsite DB+file+key restore, systemd lifecycle/alert/rollback drills. Full C4 and C5/C6/C8 external-effect authorization still NOT VERIFIED.
