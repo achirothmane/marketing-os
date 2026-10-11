@@ -178,6 +178,38 @@ try {
         $head=$receipt['result']['head_hash'];
         journalAssert($journal->inspect($trust,$head)['entry_count']===3);
     });
+    proveJournal('separate offline signer validates protected key, identity and explicit opt-in',function()use($first,$dir,$reviewerSecret,$reviewerKey){
+        $claim=$first;$claim['review_id']=bin2hex(random_bytes(16));
+        $claimPath=$dir.'/offline-unsigned.json';$secretPath=$dir.'/reviewer-private.key';
+        file_put_contents($claimPath,json_encode($claim,JSON_THROW_ON_ERROR));
+        file_put_contents($secretPath,base64_encode($reviewerSecret)."\n");
+        chmod($claimPath,0600);chmod($secretPath,0600);
+        $invoke=function(array $changes)use($claimPath,$secretPath):array {
+            $env=array_merge(getenv(),[
+                'MOS_REVIEW_SIGN_ENABLED'=>'1',
+                'MOS_REVIEW_SIGNER_ID'=>'reviewer-01',
+                'MOS_REVIEW_SIGNING_KEY_FILE'=>$secretPath
+            ],$changes);
+            $proc=proc_open([PHP_BINARY,dirname(__DIR__).'/bin/dlq_sign_review_offline.php',
+                $claimPath,'REVIEWER'],
+                [0=>['pipe','r'],1=>['pipe','w'],2=>['pipe','w']],$pipes,null,$env);
+            if(!is_resource($proc))throw new RuntimeException('Sign process start failed');
+            fclose($pipes[0]);$out=stream_get_contents($pipes[1]);$err=stream_get_contents($pipes[2]);
+            fclose($pipes[1]);fclose($pipes[2]);
+            return [proc_close($proc),trim($out),trim($err)];
+        };
+        [$exit,$out,$err]=$invoke(['MOS_REVIEW_SIGN_ENABLED'=>'0']);
+        journalAssert($exit===2&&$out===''&&str_contains($err,'SIGN_DISABLED'));
+        [$exit,$out,$err]=$invoke(['MOS_REVIEW_SIGNER_ID'=>'approver-02']);
+        journalAssert($exit===2&&$out===''&&str_contains($err,'SIGN_IDENTITY_MISMATCH'));
+        [$exit,$out,$err]=$invoke([]);
+        journalAssert($exit===0&&$err==='');
+        $r=json_decode($out,true,16,JSON_THROW_ON_ERROR);
+        journalAssert($r['role']==='REVIEWER'&&$r['signer_id']==='reviewer-01');
+        journalAssert(sodium_crypto_sign_verify_detached(base64_decode($r['signature'],true),
+            MosDLQReviewJournal::message($claim),sodium_crypto_sign_publickey($reviewerKey)));
+        journalAssert(!str_contains($out,base64_encode($reviewerSecret)));
+    });
     proveJournal('all reviewed ciphertext stays quarantined and is never replayed',function()use($db,$w,$id,$evidence,$body){
         $q=$db->prepare('SELECT reason_code,payload_sha256,sealed_payload FROM mos_messenger_wire_quarantine WHERE workspace_id=? AND source_message_id=?');
         $q->execute([(string)$w,$id]);$row=$q->fetch(PDO::FETCH_ASSOC);
