@@ -51,6 +51,7 @@ jobs:
         run: |
           php -l packages/identity/src/Runtime/MosDLQReviewJournal.php
           php -l packages/identity/bin/dlq_record_dual_review.php
+          php -l packages/identity/bin/dlq_sign_review_offline.php
           php -l packages/identity/tests/c4_07b3b3b3a_review_journal.php
           php -r 'if(!function_exists("sodium_crypto_sign_verify_detached")) exit(1);'
           php packages/contracts/tests/run.php
