@@ -62,7 +62,7 @@ checkFullRestore('archived ciphertext retains original authentication under sepa
     foreach($workspaces as $uuid){
         $cursor=0;
         do{
-            $receipt=$proof->verifyPage(WorkspaceId::fromString($uuid),['manual-v1'=>str_repeat('Q',32)],100,$cursor);
+            $receipt=$proof->verifyPage(WorkspaceId::fromString($uuid),['manual-v1'=>str_repeat('Q',32),'ci-shadow-v1'=>str_repeat('Q',32)],100,$cursor);
             $cursor=$receipt['next_cursor'];$sum+=$receipt['verified'];
         }while($receipt['has_more']);
     }
