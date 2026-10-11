@@ -147,3 +147,9 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - [PR #44](https://github.com/achirothmane/marketing-os/pull/44) merged `24c15f7e8aa49ad90a54000d6464f32ba77a01e2`, [CI 38138667408](https://github.com/achirothmane/marketing-os/actions/runs/38138667408) **12/12 PASS** on MariaDB 11.4. Eight previous M0/C4 workflows also PASS.
 - Per-Workspace explicit key and operator opt-in; verify six schema checksums, authenticate encrypted quarantine in bounded pages, distinguish unverifiable retired keys, queue/broker poison/oversized wire and backpressure using PII-free, read-only receipts.
 - Next engineering: C4-07B3B2 remove runtime reliance on `tests/bootstrap.php` / `MOS_TEST_DSN` and verify least-privileged deployed DB access contract; C4-07B3B3 implement and test supervised service, external secrets backup/recovery, manual DLQ review and approval. No provider sends. Full C4 remains NOT VERIFIED.
+
+
+## C4-07B3B2 runtime role separation — proven local database account scope (2026-10-11)
+- [PR #46](https://github.com/achirothmane/marketing-os/pull/46) merge `40624cd65cb9cc56858142100fc902dfab5392de`, [MariaDB CI 38143962328](https://github.com/achirothmane/marketing-os/actions/runs/38143962328): 9/9 new role-boundary tests PASS, all nine existing M0/C4 PR-head workflows green.
+- Replace test-only runtime DSN bootstrap with strict explicit READ for preflight/key archive inventory/verification, WRITE for bounded SHADOW operations, MIGRATE for separately approved DDL. Ephemeral privilege tests demonstrate SELECT denied UPDATE, WRITE denied CREATE TABLE and refused absent role/unsafe DSN.
+- Next C4-07B3B3: actual managed secrets/backup and restoration, supervised service, DLQ operator review, runtime deployment and complete least-privilege integration. External send and C5/C6/C8 remain unauthorized. Overall C4 NOT VERIFIED.

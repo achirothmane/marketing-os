@@ -102,7 +102,11 @@
     "c4_07b3b1": "MERGED_READ_ONLY_LOCAL_SHADOW_PREFLIGHT_MARIADB_CI_PASSED",
     "c4_07b3b1_sha": "24c15f7e8aa49ad90a54000d6464f32ba77a01e2",
     "c4_07b3b1_pr": "https://github.com/achirothmane/marketing-os/pull/44",
-    "c4_07b3b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38138667408"
+    "c4_07b3b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38138667408",
+    "c4_07b3b2": "MERGED_ROLE_SEPARATED_RUNTIME_BOOTSTRAP_REAL_MARIADB_GRANTS_CI_PASSED",
+    "c4_07b3b2_sha": "40624cd65cb9cc56858142100fc902dfab5392de",
+    "c4_07b3b2_pr": "https://github.com/achirothmane/marketing-os/pull/46",
+    "c4_07b3b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38143962328"
   },
   "stages": {
     "C1": {
@@ -195,8 +199,7 @@
     }
   },
   "next_gates": [
-    "C4_07B3B2_runtime_database_bootstrap_and_least_privilege",
-    "C4_07B3B3_deployed_supervision_and_secrets_escrow_quarantine_review",
+    "C4_07B3B3_external_secrets_escrow_deployed_supervised_SHADOW_and_quarantine_review",
     "C4_full_security_upgrade_deployment_runtime_regression",
     "C4_06B_source_mutation_authority_after_C5_C6",
     "C5_C6_C8_policy_consent_external_effect_gates"
@@ -377,6 +380,23 @@
         "Production secret escrow, backups and recovery drills",
         "Manual encrypted DLQ review and authorized disposition/redrive",
         "All external sends and C5/C6/C8 prohibited"
+      ]
+    },
+    "C4_07B3B2": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Role-isolated runtime PHP bootstrap for MOS identity CLI; READ preflight/DLQ verification, WRITE scoped SHADOW DML, MIGRATE explicit gated schema administration. Real disposable MariaDB 11.4 GRANTs prove SELECT-only account cannot UPDATE, DML-only account cannot DDL, missing profile/unsafe DSN/disabled migrate fail closed; 9/9 tests PASS, nine other PR-head workflows PASS. CI test bootstrap maps only disposable test credentials, never runtime fallback.",
+      "evidence_sha": "40624cd65cb9cc56858142100fc902dfab5392de",
+      "pr": "https://github.com/achirothmane/marketing-os/pull/46",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38143962328",
+      "tests": 9,
+      "other_pr_head_workflows": "9/9 SUCCESS",
+      "boundaries": [
+        "Grants tested with disposable CI accounts, not provisioned on production host",
+        "Actual deployed secrets management and credential rotation not implemented",
+        "No deployed supervised worker and no authenticated DLQ disposition/redrive",
+        "No comprehensive production least-privilege end-to-end Mautic pipeline",
+        "C4 overall and external C5/C6/C8 effects NOT VERIFIED"
       ]
     }
   }
