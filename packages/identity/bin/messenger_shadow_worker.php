@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require dirname(__DIR__).'/tests/bootstrap.php';
+require dirname(__DIR__).'/bootstrap/runtime.php';
 require dirname(__DIR__,3).'/vendor/autoload.php';
 
 use Doctrine\DBAL\DriverManager;
@@ -27,18 +27,8 @@ try {
     $workspace=WorkspaceId::fromString($argv[1]);
     $limit=(int)$argv[3];
     if($limit<1||$limit>100)throw new InvalidArgumentException('LIMIT_EXCEEDED');
-    $db=mos_test_connection();
-    $raw=(string)getenv('MOS_TEST_DSN');
-    if(!preg_match('/^mysql:host=([^;]+);port=([0-9]+);dbname=([^;]+)(?:;.*)?$/D',$raw,$parts)) {
-        throw new RuntimeException('INVALID_DSN');
-    }
-    $params=[
-      'driver'=>'pdo_mysql','host'=>$parts[1],'port'=>(int)$parts[2],
-      'dbname'=>$parts[3],
-      'user'=>(string)getenv('MOS_TEST_DB_USER'),
-      'password'=>(string)getenv('MOS_TEST_DB_PASSWORD'),
-      'charset'=>'utf8mb4'
-    ];
+    $db=mos_runtime_connection('WRITE');
+    $params=mos_runtime_transport_params();
     $q=$db->prepare('SELECT id FROM mos_workspace WHERE id=?');
     $q->execute([(string)$workspace]);
     if($q->fetchColumn()===false)throw new RuntimeException('UNKNOWN_WORKSPACE');
