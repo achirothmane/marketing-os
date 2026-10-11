@@ -17,6 +17,16 @@ The signing message is the domain-prefixed canonical JSON produced by MosDLQRevi
 
 This proof supports **two distinct key holders**; it cannot prove that different people actually control those keys or that keys were issued after HR/organization identity checks. That is an external operator identity and key escrow requirement.
 
+## Offline signing by separate operators
+
+An operator can produce their own detached signature without giving their private key to the runtime service. The offline helper is:
+
+php packages/identity/bin/dlq_sign_review_offline.php /absolute/path/unsigned-claim.json REVIEWER
+
+For the second operator, use APPROVER instead. Each person separately sets MOS_REVIEW_SIGN_ENABLED=1, their own MOS_REVIEW_SIGNER_ID, and a protected MOS_REVIEW_SIGNING_KEY_FILE holding a base64-encoded Ed25519 64-byte private signing key (never committed). The unsigned claim is canonicalized identically by the helper; both outputs provide a role, signer ID and detached signature. Combine signatures into the record artifact with exact keys reviewer_sig and approver_sig. The author of the running service must not obtain or generate the operators' private keys.
+
+The key registry and the key-to-person assignment remain externally provisioned and independently controlled. CI generates only disposable private keys. A signature proves possession of a registered key, not a verified human identity or organizational approval authority.
+
 ## CLI, default OFF
 
 Run: php packages/identity/bin/dlq_record_dual_review.php WORKSPACE_UUID /absolute/path/signed-review.json
