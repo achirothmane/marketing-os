@@ -142,3 +142,8 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - Bounded per-Workspace INVENTORY/VERIFY/ROTATE on encrypted malformed Messenger wire archives: ciphertext integrity digest + authenticated AAD, pagination, fresh nonce per rotation, durable per-row commit, resumable old-key drain, wrong-key/tampering failure, independent tenant preservation and explicit operator approval.
 - Queue scanner now supports `MOS_DLQ_ACTIVE_KEY_ID`. Key material remains outside CLI arguments and repository; stable PII-free JSON/error codes only.
 - Outstanding C4-07B3B: external secrets/backup rotation, actual deployed supervision and review/redrive playbook with operator control. Whole C4 not yet operationally complete.
+
+## C4-07B3B1 read-only operational preflight — verified LOCAL scope (2026-10-11)
+- [PR #44](https://github.com/achirothmane/marketing-os/pull/44) merged `24c15f7e8aa49ad90a54000d6464f32ba77a01e2`, [CI 38138667408](https://github.com/achirothmane/marketing-os/actions/runs/38138667408) **12/12 PASS** on MariaDB 11.4. Eight previous M0/C4 workflows also PASS.
+- Per-Workspace explicit key and operator opt-in; verify six schema checksums, authenticate encrypted quarantine in bounded pages, distinguish unverifiable retired keys, queue/broker poison/oversized wire and backpressure using PII-free, read-only receipts.
+- Next engineering: C4-07B3B2 remove runtime reliance on `tests/bootstrap.php` / `MOS_TEST_DSN` and verify least-privileged deployed DB access contract; C4-07B3B3 implement and test supervised service, external secrets backup/recovery, manual DLQ review and approval. No provider sends. Full C4 remains NOT VERIFIED.
