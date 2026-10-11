@@ -73,3 +73,9 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 - [x] [PR #48](https://github.com/achirothmane/marketing-os/pull/48) merged 2064ae495e0cbe4ed36aa14b75b399a74983b9ea, [Mautic 7.2.1/MariaDB 11.4 CI](https://github.com/achirothmane/marketing-os/actions/runs/38146136473) **12/12 PASS**, other ten PR-head workflows SUCCESS.
 - [x] Protected credential-directory reader, fail-closed independent opt-ins, Workspace advisory lock, read-only pre/postflight, bounded source-to-Inbox SHADOW cycle, idempotent replay, malformed wire review, separate Workspace isolation.
 - [ ] Real deployed and enabled systemd supervision, secret escrow/restore, operator evidence/audit, manual DLQ disposition or redrive, full upstream security/regression, production access control, C5/C6/C8 effect authorization. **C4 overall NOT VERIFIED.**
+
+
+## 2026-10-11 — C4-07B3B3B1 encrypted archive-only recovery evidence
+- [x] PR #50 merge 76ac79742fe0f85ec941f2331f1d433f9dcb01fd, https://github.com/achirothmane/marketing-os/actions/runs/38148508716 **16/16 PASS** on MariaDB 11.4, other 10/10 PR-head workflows SUCCESS.
+- [x] Bounded cryptographic comparison between two independent disposable schemas, missing/corrupt/key-mismatch refusal, PII-free authenticated HOLD-only review.
+- [ ] Not a physical backup restore; full Contact/Person/Outbox/Inbox, actual host and systemd, independent key escrow, dual-authority disposition, C5/C6/C8 policy and effects all unverified or absent. **C4 remains NOT VERIFIED.**
