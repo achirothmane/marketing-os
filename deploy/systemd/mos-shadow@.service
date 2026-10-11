@@ -1,0 +1,36 @@
+# C4-07B3B3A example only. Never installed by CI or by the repository.
+# Instance %i must be an explicit Workspace UUID; all effects are local SHADOW.
+[Unit]
+Description=Marketing OS bounded SHADOW cycle for workspace %i
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/opt/marketing-os/packages/identity/bin/run_credentialed_shadow_cycle.php
+
+[Service]
+Type=oneshot
+User=mos-shadow
+Group=mos-shadow
+WorkingDirectory=/opt/marketing-os
+Environment=MOS_SERVICE_ENABLED=0
+EnvironmentFile=/etc/marketing-os/shadow/%i.env
+LoadCredential=mos_read_db_password:/etc/marketing-os/secrets/%i/mos_read_db_password
+LoadCredential=mos_write_db_password:/etc/marketing-os/secrets/%i/mos_write_db_password
+LoadCredential=mos_snapshot_hmac_key:/etc/marketing-os/secrets/%i/mos_snapshot_hmac_key
+LoadCredential=mos_dlq_key_b64:/etc/marketing-os/secrets/%i/mos_dlq_key_b64
+ExecStart=/usr/bin/php /opt/marketing-os/packages/identity/bin/run_credentialed_shadow_cycle.php %i
+TimeoutStartSec=300
+KillMode=control-group
+Restart=no
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectHome=yes
+ProtectSystem=strict
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+LockPersonality=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+# No [Install]: instantiate only via an explicitly enabled timer.

@@ -1,0 +1,13 @@
+# OPERATOR OPT-IN REQUIRED. Do not enable until secrets, grants and restores are tested.
+[Unit]
+Description=Manual opt-in bounded Marketing OS SHADOW timer for %i
+
+[Timer]
+OnBootSec=10min
+OnUnitInactiveSec=15min
+AccuracySec=1min
+Persistent=false
+Unit=mos-shadow@%i.service
+
+[Install]
+WantedBy=timers.target
