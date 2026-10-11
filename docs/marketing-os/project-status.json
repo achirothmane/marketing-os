@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "Marketing Automation Suite / Marketing OS",
   "repository": "achirothmane/marketing-os",
-  "recorded_on": "2026-10-10",
+  "recorded_on": "2026-10-11",
   "repo_state_at_initial_inspection": "EMPTY",
   "upstream": {
     "project": "mautic/mautic",
@@ -98,7 +98,11 @@
     "c4_07b3a": "MERGED_BOUNDED_ENCRYPTED_DLQ_INVENTORY_AUTHENTICATED_VERIFICATION_AND_RESUMABLE_KEY_ROTATION_CI_PASSED",
     "c4_07b3a_sha": "63713aa2b1ca451d7083c43cbfeb55cb3d8c4be2",
     "c4_07b3a_pr": "https://github.com/achirothmane/marketing-os/pull/41",
-    "c4_07b3a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38058452138"
+    "c4_07b3a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38058452138",
+    "c4_07b3b1": "MERGED_READ_ONLY_LOCAL_SHADOW_PREFLIGHT_MARIADB_CI_PASSED",
+    "c4_07b3b1_sha": "24c15f7e8aa49ad90a54000d6464f32ba77a01e2",
+    "c4_07b3b1_pr": "https://github.com/achirothmane/marketing-os/pull/44",
+    "c4_07b3b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38138667408"
   },
   "stages": {
     "C1": {
@@ -191,7 +195,8 @@
     }
   },
   "next_gates": [
-    "C4_07B3B_deployed_supervision_and_secrets_escrow_quarantine_review",
+    "C4_07B3B2_runtime_database_bootstrap_and_least_privilege",
+    "C4_07B3B3_deployed_supervision_and_secrets_escrow_quarantine_review",
     "C4_full_security_upgrade_deployment_runtime_regression",
     "C4_06B_source_mutation_authority_after_C5_C6",
     "C5_C6_C8_policy_consent_external_effect_gates"
@@ -355,6 +360,23 @@
         "No key-rotation backfill over historical backups/tenant estate",
         "No automatic quarantined-wire redrive or external effects",
         "C4 overall NOT operationally verified"
+      ]
+    },
+    "C4_07B3B1": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Read-only, bounded, per-Workspace local SHADOW operational preflight. MariaDB 11.4 CI 12/12 PASS tests schema checksums, encrypted DLQ authentication/pagination, other keys, tamper, oversize, tenant isolation, secrets gate, default-off CLI and explicit review receipt. No schema writes, no transport action, no production deployment.",
+      "evidence_sha": "24c15f7e8aa49ad90a54000d6464f32ba77a01e2",
+      "pr": "https://github.com/achirothmane/marketing-os/pull/44",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38138667408",
+      "tests": 12,
+      "other_pr_head_workflows": "8/8 SUCCESS",
+      "outstanding": [
+        "Runtime-vs-test DB bootstrap separation and least-privilege credentials",
+        "Deployed supervised process, monitoring and restart/rollback",
+        "Production secret escrow, backups and recovery drills",
+        "Manual encrypted DLQ review and authorized disposition/redrive",
+        "All external sends and C5/C6/C8 prohibited"
       ]
     }
   }
