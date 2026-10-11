@@ -1,6 +1,6 @@
 # C4-07B3B3A — Protected-credential one-shot SHADOW cycle
 
-**Status: IMPLEMENTED ON FEATURE BRANCH; CI acceptance PENDING.** This is not a deployed service or a production key-management solution.
+**Status: MERGED AND VERIFIED for disposable Mautic 7.2.1 / MariaDB 11.4 CI scope only.** [PR #48](https://github.com/achirothmane/marketing-os/pull/48) merged at 2064ae495e0cbe4ed36aa14b75b399a74983b9ea; [CI run 38146136473](https://github.com/achirothmane/marketing-os/actions/runs/38146136473) **12/12 PASS**. All other 10 PR-head M0/C4 workflows passed. Templates are not deployed. This is not a deployed service or a production key-management solution.
 
 ## Executable behavior
 
@@ -34,3 +34,9 @@ An archived record is a **case for human review**, not permission to re-drive. N
 CI must install pinned Mautic 7.2.1 and disposable MariaDB 11.4, exercise a Contact through the real local queue and Inbox, prove repeat idempotency, reject environment secrets and unsafe credential files, refuse duplicate Workspace supervision, detect new and existing quarantines and preserve another Workspace's ability to run.
 
 Passing this CI is **not proof** of real systemd deployment, least-privileged production database provisioning, disaster recovery, security posture, external sending authorization or revenue. Overall C4 stays NOT VERIFIED, NOT SHIPPED; C5/C6/C8 effects remain OFF.
+
+## Verified checkpoint — 2026-10-11
+
+- Code PR #48 merge 2064ae495e0cbe4ed36aa14b75b399a74983b9ea; GitHub Actions run 38146136473 on installed pinned Mautic 7.2.1 with disposable MariaDB 11.4: 12/12 PASS. Ten other PR-head workflows successful.
+- Verified: inaccessible and insecure credential rejection, actual Contact->Messenger->Inbox one-shot internal flow, replay idempotence, duplicate Workspace supervisor lock, ciphertext quarantine requiring review after the cycle, and preflight blocking a following cycle; second Workspace remains isolated.
+- Not verified: actual installed and enabled systemd service/timer, managed escrow or backup restoration, human-approved DLQ re-drive, deployed tenant boundary and full C4 commercial effects. C4 NOT VERIFIED overall. C4-07B3B3B must resolve these before operating outside the test environment.

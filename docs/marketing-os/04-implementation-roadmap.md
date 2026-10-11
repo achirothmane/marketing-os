@@ -153,3 +153,9 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - [PR #46](https://github.com/achirothmane/marketing-os/pull/46) merge `40624cd65cb9cc56858142100fc902dfab5392de`, [MariaDB CI 38143962328](https://github.com/achirothmane/marketing-os/actions/runs/38143962328): 9/9 new role-boundary tests PASS, all nine existing M0/C4 PR-head workflows green.
 - Replace test-only runtime DSN bootstrap with strict explicit READ for preflight/key archive inventory/verification, WRITE for bounded SHADOW operations, MIGRATE for separately approved DDL. Ephemeral privilege tests demonstrate SELECT denied UPDATE, WRITE denied CREATE TABLE and refused absent role/unsafe DSN.
 - Next C4-07B3B3: actual managed secrets/backup and restoration, supervised service, DLQ operator review, runtime deployment and complete least-privilege integration. External send and C5/C6/C8 remain unauthorized. Overall C4 NOT VERIFIED.
+
+
+## C4-07B3B3A protected-credential one-shot supervision — verified narrow scope (2026-10-11)
+- [PR #48](https://github.com/achirothmane/marketing-os/pull/48) merged 2064ae495e0cbe4ed36aa14b75b399a74983b9ea. Real [Mautic 7.2.1/MariaDB 11.4 run 38146136473](https://github.com/achirothmane/marketing-os/actions/runs/38146136473) **12/12 PASS**, with ten older M0/C4 workflows green.
+- Runtime introduces protected credential-directory ingestion, scoped single-cycle locking, READ-only encrypted-archive preflight, bounded source/queue worker subprocesses and READ-only postflight; quarantine forces explicit review, never implicit re-drive or sends. systemd oneshot/timer templates are disabled/uninstalled.
+- Next C4-07B3B3B: actual host deployment and operators, secrets backup/restore evidence, key rotation drills, safe quarantined-message review/disposition and audit; staging/upgrades; then C5/C6/C8 contactability/effect gates. Overall C4 NOT VERIFIED, no commercial activity.
