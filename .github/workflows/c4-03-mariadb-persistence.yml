@@ -40,6 +40,10 @@ jobs:
       MOS_TEST_DSN: "mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4"
       MOS_TEST_DB_USER: mautic_ci
       MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+      MOS_RUNTIME_MIGRATE_DSN: "mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4"
+      MOS_RUNTIME_MIGRATE_DB_USER: mautic_ci
+      MOS_RUNTIME_MIGRATE_DB_PASSWORD: ci-only-mautic-password
+      MOS_SCHEMA_MIGRATION_ENABLED: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
