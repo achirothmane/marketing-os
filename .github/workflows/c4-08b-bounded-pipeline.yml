@@ -4,12 +4,20 @@ on:
     paths:
       - 'packages/identity/bin/run_shadow_pipeline.php'
       - 'packages/identity/tests/c4_08b_**'
+      - 'packages/identity/tests/c4_07b3b3a_**'
+      - 'packages/identity/bin/run_credentialed_shadow_cycle.php'
+      - 'packages/identity/src/Runtime/MosCredentialDirectory.php'
+      - 'deploy/systemd/**'
       - '.github/workflows/c4-08b-bounded-pipeline.yml'
   push:
     branches: [main]
     paths:
       - 'packages/identity/bin/run_shadow_pipeline.php'
       - 'packages/identity/tests/c4_08b_**'
+      - 'packages/identity/tests/c4_07b3b3a_**'
+      - 'packages/identity/bin/run_credentialed_shadow_cycle.php'
+      - 'packages/identity/src/Runtime/MosCredentialDirectory.php'
+      - 'deploy/systemd/**'
       - '.github/workflows/c4-08b-bounded-pipeline.yml'
   workflow_dispatch:
 permissions:
@@ -72,8 +80,13 @@ jobs:
         run: |
           php -l packages/identity/bin/run_shadow_pipeline.php
           php -l packages/identity/tests/c4_08b_bounded_pipeline.php
+          php -l packages/identity/bin/run_credentialed_shadow_cycle.php
+          php -l packages/identity/src/Runtime/MosCredentialDirectory.php
+          php -l packages/identity/tests/c4_07b3b3a_service.php
       - name: Real Mautic committed source to Inbox coordinated SHADOW cycles
         run: php packages/identity/tests/c4_08b_bounded_pipeline.php
+      - name: Credentialed service cycle including real Mautic Inbox, encrypted quarantine and refusal
+        run: php packages/identity/tests/c4_07b3b3a_service.php
       - name: Confirm CI never enabled real marketing effects
         run: |
           test "$MOS_PIPELINE_ENABLED" = '0'
