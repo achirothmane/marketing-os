@@ -1,6 +1,6 @@
 # C4-07B3B3B3A — Dual-signed encrypted-quarantine review evidence
 
-**Status: IMPLEMENTED ON PR BRANCH; MariaDB 11.4 acceptance PENDING.** This is a no-effect human review journal, NOT live deployment, true durable external witness, authenticated operator identity, or permission to replay/send.
+**Status: MERGED AND VERIFIED for disposable MariaDB 11.4 cryptographic no-effect journal only.** [PR #54](https://github.com/achirothmane/marketing-os/pull/54) merged at `441a76ee5b31ebda4e293d49feacbf921b46d722`; [CI run 38178823499](https://github.com/achirothmane/marketing-os/actions/runs/38178823499) **15/15 PASS** with all 11 other PR-head M0/C4 workflows SUCCESS. This is a no-effect human review journal, NOT live deployment, true durable external witness, authenticated operator identity, or permission to replay/send.
 
 ## Audited recommendation contract
 
@@ -44,3 +44,9 @@ An append requires the immediately prior trusted head from **separate storage**.
 The CI tests disposable MariaDB encrypted evidence, signed no-effect review, malformed signatures, forged claims, altered history, missing old head, and absence of replay. It does not establish remote separate-host deployment, operator key provisioning/rotation, private-key custody, off-site witness, disaster recovery of this journal, filesystem crash durability, a human approval workflow with verified identities, or manual re-drive authority. The preflight continues to block quarantined evidence even after a journal recommendation.
 
 Full C4-07B3B3B3 and top-level C4 remain NOT VERIFIED; C5/C6/C8 external marketing effects remain disabled.
+
+## Verified checkpoint — 2026-10-11
+
+- Separate per-operator Ed25519 signing CLI and no-effect journal passed 15 adversarial MariaDB tests: forged reviewer/approver signatures, duplicate review IDs, wrong historical key, wrong Workspace, modified signed JSON, complete truncation relative to an independently held head, offline signer refusal, and no message replay/deletion.
+- The CI generated disposable keys and a disposable filesystem, and thus does not establish human identities, production key custody, a verified remote witness, externally durable append-only audit or any running systemd service.
+- Next C4-07B3B3B3B: explicitly provision and test on an independent server, restore protected backups and keys, anchor journal heads in a separate account/storage system, implement operator escalation procedures and recovery rehearsal. All C5/C6/C8 provider effects still OFF. C4 overall NOT VERIFIED.
