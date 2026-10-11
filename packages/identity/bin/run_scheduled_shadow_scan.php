@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require dirname(__DIR__).'/tests/bootstrap.php';
+require dirname(__DIR__).'/bootstrap/runtime.php';
 
 use MarketingOS\Contracts\Id\WorkspaceId;
 use MarketingOS\Identity\Bridge\{
@@ -32,7 +32,7 @@ try{
     $batchSize=$intEnv('MOS_SCAN_BATCH_SIZE',100,1,1000);
     $maxBatches=$intEnv('MOS_SCAN_MAX_BATCHES',5,1,100);
     $maxSeconds=$intEnv('MOS_SCAN_MAX_SECONDS',30,1,300);
-    $db=mos_test_connection(); // explicit DB credentials only; no default connection.
+    $db=mos_runtime_connection('WRITE'); // Explicit WRITE credentials; no test fallback.
     $reader=new PdoMauticContactSnapshotReader($db,$key,getenv('MOS_MAUTIC_TABLE_PREFIX')?:'');
     $bridge=new PdoMauticContactBridge($db,$reader,new PdoCanonicalContactImporter($db));
     $worker=new BoundedShadowScanWorker(new PdoMauticContactReconciler($db,$reader,$bridge));

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require dirname(__DIR__).'/tests/bootstrap.php';
+require dirname(__DIR__).'/bootstrap/runtime.php';
 use MarketingOS\Contracts\Id\WorkspaceId;
 use MarketingOS\Identity\Transport\MosWireQuarantineKeyManager;
 
@@ -31,7 +31,7 @@ try {
         if(!is_string($key)||strlen($key)!==32)throw new RuntimeException('KEY_MISSING');
         return $key;
     };
-    $db=mos_test_connection();
+    $db=mos_runtime_connection($operation==='ROTATE'?'WRITE':'READ');
     $q=$db->prepare('SELECT id FROM mos_workspace WHERE id=?');
     $q->execute([(string)$workspace]);
     if($q->fetchColumn()===false)throw new RuntimeException('UNKNOWN_WORKSPACE');

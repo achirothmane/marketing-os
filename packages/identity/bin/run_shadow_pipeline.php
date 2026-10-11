@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require dirname(__DIR__).'/tests/bootstrap.php';
+require dirname(__DIR__).'/bootstrap/runtime.php';
 
 use MarketingOS\Contracts\Id\WorkspaceId;
 
@@ -72,7 +72,7 @@ try{
     $encoded=getenv('MOS_DLQ_KEY_B64');
     $dlqKey=is_string($encoded)?base64_decode($encoded,true):false;
     if(!is_string($dlqKey)||strlen($dlqKey)!==32)throw new RuntimeException('DLQ_KEY_MISSING');
-    $db=mos_test_connection();
+    $db=mos_runtime_connection('WRITE');
     $exists=$db->prepare('SELECT id FROM mos_workspace WHERE id=?');
     $exists->execute([(string)$workspace]);
     if($exists->fetchColumn()===false)throw new RuntimeException('UNKNOWN_WORKSPACE');

@@ -1,0 +1,65 @@
+name: C4-07B3B2 Runtime DB Role Separation
+on:
+  pull_request:
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b3b2-runtime-roles.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b3b2-runtime-roles.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-role-boundaries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-root-password
+          MARIADB_DATABASE: mautic_ci
+          MARIADB_USER: mautic_ci
+          MARIADB_PASSWORD: ci-only-mautic-password
+        ports: [3306:3306]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+    env:
+      COMPOSER_MEMORY_LIMIT: '-1'
+      MOS_TEST_DSN: mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4
+      MOS_TEST_DB_USER: mautic_ci
+      MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+      MOS_CI_ALLOW_RUNTIME_ROLE_GRANTS: '1'
+      MOS_CI_ROOT_PASSWORD: ci-only-root-password
+      MOS_QUEUE_MODE: OFF
+      MOS_BRIDGE_MODE: OFF
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: bcmath, ctype, curl, dom, exif, fileinfo, gd, iconv, intl, mbstring, mysqli, pdo_mysql, sodium, xml, zip
+          coverage: none
+      - name: Install locked Composer packages
+        run: composer install --prefer-dist --no-progress --no-scripts --no-interaction --no-ansi
+      - name: Syntax checks and base contracts
+        run: |
+          php -l packages/identity/bootstrap/runtime.php
+          php -l packages/identity/tests/bootstrap.php
+          php -l packages/identity/tests/c4_07b3b2_runtime_roles.php
+          find packages/identity/bin -maxdepth 1 -name '*.php' -print0 | xargs -0 -n1 php -l
+          php packages/contracts/tests/run.php
+          php packages/identity/tests/run.php
+      - name: Verify ephemeral DB accounts enforce read-only vs DML without DDL
+        run: php packages/identity/tests/c4_07b3b2_runtime_roles.php
+      - name: Verify default-disabled runtime
+        run: |
+          test "$MOS_QUEUE_MODE" = 'OFF'
+          test "$MOS_BRIDGE_MODE" = 'OFF'

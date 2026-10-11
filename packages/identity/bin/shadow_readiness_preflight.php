@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require dirname(__DIR__).'/tests/bootstrap.php';
+require dirname(__DIR__).'/bootstrap/runtime.php';
 
 use MarketingOS\Contracts\Id\WorkspaceId;
 use MarketingOS\Identity\Runtime\MosShadowReadinessPreflight;
@@ -21,7 +21,7 @@ try {
     if (!is_string($key) || strlen($key) !== 32) throw new RuntimeException('KEY_MISSING');
     $hmac = getenv('MOS_SNAPSHOT_HMAC_KEY');
     if (!is_string($hmac) || strlen($hmac) < 32) throw new RuntimeException('SOURCE_KEY_MISSING');
-    $db = mos_test_connection(); // Temporary SHADOW-only connector; no production deployment claim.
+    $db = mos_runtime_connection('READ'); // Explicit READ credentials; no test/production fallback.
     $result = (new MosShadowReadinessPreflight($db))->assess($workspace,$active,$key,(int)$argv[3]);
     echo json_encode($result,JSON_THROW_ON_ERROR)."\n";
     exit($result['decision'] === 'LOCAL_PREFLIGHT_PASS' ? 0 : 3);

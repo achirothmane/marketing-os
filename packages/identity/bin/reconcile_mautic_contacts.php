@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require dirname(__DIR__).'/tests/bootstrap.php';
+require dirname(__DIR__).'/bootstrap/runtime.php';
 use MarketingOS\Contracts\Id\WorkspaceId;
 use MarketingOS\Identity\Bridge\PdoMauticContactSnapshotReader;
 use MarketingOS\Identity\Bridge\PdoMauticContactBridge;
@@ -13,7 +13,7 @@ try{
     $batch=isset($argv[2])?(int)$argv[2]:100;
     $key=getenv('MOS_SNAPSHOT_HMAC_KEY');
     if(!is_string($key)||strlen($key)<32)throw new RuntimeException('HMAC_KEY_REQUIRED');
-    $db=mos_test_connection();
+    $db=mos_runtime_connection('WRITE');
     $reader=new PdoMauticContactSnapshotReader($db,$key,getenv('MOS_MAUTIC_TABLE_PREFIX')?:'');
     $bridge=new PdoMauticContactBridge($db,$reader,new PdoCanonicalContactImporter($db));
     $result=(new PdoMauticContactReconciler($db,$reader,$bridge))->scanOnce($workspace,$batch);
