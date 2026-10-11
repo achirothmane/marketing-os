@@ -11,6 +11,23 @@ spl_autoload_register(static function(string $class): void {
         return;
     }
 });
+/**
+ * Test harness ONLY: explicit ephemeral MOS_TEST_* fixtures are passed into
+ * independently spawned runtime CLI processes. Runtime entrypoints never load
+ * this file and have NO fallback from MOS_RUNTIME_* to MOS_TEST_*.
+ * Tests that need least-privilege profiles override these settings explicitly.
+ */
+foreach (['READ','WRITE','MIGRATE'] as $role) {
+    foreach (['DSN'=>'MOS_TEST_DSN','DB_USER'=>'MOS_TEST_DB_USER',
+               'DB_PASSWORD'=>'MOS_TEST_DB_PASSWORD'] as $part=>$testVariable) {
+        $runtimeVariable='MOS_RUNTIME_'.$role.'_'.$part;
+        $fixture=getenv($testVariable);
+        if (getenv($runtimeVariable)===false && is_string($fixture) && $fixture!=='') {
+            putenv($runtimeVariable.'='.$fixture);
+        }
+    }
+}
+
 function mos_test_connection(): \PDO {
     $dsn=getenv('MOS_TEST_DSN');
     $user=getenv('MOS_TEST_DB_USER');
