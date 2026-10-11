@@ -1,6 +1,6 @@
 # C4-07B3B1 — Local read-only SHADOW readiness preflight
 
-**Status:** IMPLEMENTED ON FEATURE BRANCH; GitHub Actions MariaDB verification PENDING. This document does **not** claim any production deployment, operator secret manager, automated queue supervisor, authorized redrive or C4 completion.
+**Status:** MERGED AND VERIFIED for bounded LOCAL SHADOW preflight only. [PR #44](https://github.com/achirothmane/marketing-os/pull/44) merged `24c15f7e8aa49ad90a54000d6464f32ba77a01e2`, [MariaDB 11.4 CI](https://github.com/achirothmane/marketing-os/actions/runs/38138667408) **12/12 PASS**. All eight prior M0/C4 PR-head workflows PASS. This document does **not** claim any production deployment, operator secret manager, automated queue supervisor, authorized redrive or C4 completion.
 
 ## Intent
 
@@ -29,3 +29,9 @@ Result is PII-free JSON, with explicit:
 CI must prove checksum mismatch, corrupt AEAD, old key, pagination boundaries, oversized queue retention, tenant isolation, strict opt-in and safe receipt classification. The command must never replace the encrypted quarantine human review or authorize sending.
 
 Still open for C4-07B3B: an actual deployed service runner, runtime-vs-test DB bootstrap separation, least-privileged workspace credentials, external secrets escrow and recovery drills, key replacement across backups, approved/manual DLQ review and redrive workflow, staging upgrade/rollback and full upstream security/regression evidence. C5/C6/C8 policy and external marketing effects remain OFF.
+
+## Evidence checkpoint — 2026-10-11
+
+- PR #44 merge SHA `24c15f7e8aa49ad90a54000d6464f32ba77a01e2`; 12 adversarial tests passed and eight existing checks passed on identical PR head.
+- PASS means local read-only verification, not service readiness, live deployment, trusted production secrets or approval for any send.
+- Next: C4-07B3B2 separate runtime DB credentials from test bootstrap and implement least-privileged operational connection contract; C4-07B3B3 external operator supervision, secrets backup/recovery and quarantine review. C4 remains NOT VERIFIED overall.
