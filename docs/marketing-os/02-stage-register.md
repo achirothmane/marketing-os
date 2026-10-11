@@ -85,3 +85,9 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 - [x] [PR #52](https://github.com/achirothmane/marketing-os/pull/52) merged cbfa3051c2b124f0309cccd6d3065de52dc225bd, [CI](https://github.com/achirothmane/marketing-os/actions/runs/38149136108) **8/8 PASS**, eleven other PR-head workflows PASS.
 - [x] Actual SQL dump and import of populated installed Mautic 7.2.1/MOS DB to a second schema on the same MariaDB 11.4 CI server, with all table/column/row checks and restored encrypted archive authentication.
 - [ ] Different host backup restore, independent secret recovery, application files/volumes, production supervised service, authorized DLQ disposition and C5/C6/C8 permission/effect gates. C4 overall NOT VERIFIED.
+
+
+## 2026-10-11 — C4-07B3B3B3A dual-signed DLQ recommendation journal
+- [x] [PR #54](https://github.com/achirothmane/marketing-os/pull/54) merge `441a76ee5b31ebda4e293d49feacbf921b46d722`, [CI 38178823499](https://github.com/achirothmane/marketing-os/actions/runs/38178823499) **15/15 PASS** on MariaDB 11.4, other 11/11 M0/C4 PR-head workflows success.
+- [x] Separate offline signer roles, two verified signatures, authenticated per-Workspace encrypted evidence, protected chained journal with required external witness head and no-effect record CLI. Tamper, duplicate, wrong key, wrong identity/Workspace and history-truncation conditions tested.
+- [ ] Independently hosted append-only witness, actual operator identity enrollment, multi-host backup and secrets restore, installed/live systemd runtime and independently authorized disposition. No replay/send permissions; C4 overall NOT VERIFIED.
