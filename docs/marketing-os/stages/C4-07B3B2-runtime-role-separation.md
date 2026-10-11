@@ -1,6 +1,6 @@
 # C4-07B3B2 — Runtime database bootstrap and role boundary
 
-**Status:** IMPLEMENTED on a feature branch; MariaDB acceptance and all PR-head regressions PENDING. **No production deployment or claim of actual tenant isolation by database grants.**
+**Status:** MERGED AND VERIFIED for disposable MariaDB 11.4 **role-boundary scope** only. [PR #46](https://github.com/achirothmane/marketing-os/pull/46) merged `40624cd65cb9cc56858142100fc902dfab5392de`; [CI run 38143962328](https://github.com/achirothmane/marketing-os/actions/runs/38143962328) **9/9 PASS**, all **9/9** other PR-head workflows succeeded. **No production deployment or claim of actual tenant isolation by database grants.**
 
 ## Architectural change
 
@@ -29,3 +29,9 @@ The code rejects missing credentials even when `MOS_TEST_*` are present, unknown
 - C5/C6/C8 policy/contactability and external effects: all unauthorized and disabled.
 
 **C4 as a whole remains NOT VERIFIED, NOT SHIPPED.**
+
+## Verified acceptance — 2026-10-11
+
+- Test-only MariaDB accounts with real SELECT and DML grants prove least-privilege operation differences. READ cannot mutate; WRITE cannot DDL. Missing role and DSN injection scenarios fail closed. Separate MIGRATE opt-in verified.
+- Existing C4/M0 workflows green after runtime bootstrap separation. This does not attest to actual production database user provisioning, tenant row-level authorization or secrets escrow.
+- Next C4-07B3B3: external secrets, supervised runtime and human DLQ disposition, production staging and restore drills. No external sends permitted.
