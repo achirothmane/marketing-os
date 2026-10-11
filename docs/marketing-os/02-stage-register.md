@@ -56,3 +56,8 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 ## 2026-10-10 — C4-07B3A encrypted DLQ verification and key rotation
 - [x] Operator-only per-Workspace inventory, paginated authenticated verification and recoverable key rotation; MariaDB 11.4 [CI](https://github.com/achirothmane/marketing-os/actions/runs/38058452138) 14/14 PASS, PR #41 merged `63713aa2b1ca451d7083c43cbfeb55cb3d8c4be2`.
 - [ ] Production key escrow, secret manager and rotation/backup drills, deployed supervised worker, DLQ review/redrive with approval and operator audit. C4 overall remains NOT VERIFIED; no customer sends.
+
+## 2026-10-11 — C4-07B3B1 local operational preflight
+- [x] [PR #44](https://github.com/achirothmane/marketing-os/pull/44) merged `24c15f7e8aa49ad90a54000d6464f32ba77a01e2`, [MariaDB 11.4 run](https://github.com/achirothmane/marketing-os/actions/runs/38138667408) 12/12 PASS, all eight earlier PR-head workflows successful.
+- [x] Bounded read-only Workspace/DB migration checksum/DLQ authentication/backpressure/poison/oversize review with stable PII-free decision and no actions.
+- [ ] Production-safe runtime credential separation, least privilege, deployed supervision, external secret recovery, DLQ review/redrive and C5/C6/C8 policy/effect gates. **C4 overall NOT VERIFIED.**
