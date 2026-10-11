@@ -159,3 +159,9 @@ Record PR, author, SHA, affected domains, migrations, tests, results, known limi
 - [PR #48](https://github.com/achirothmane/marketing-os/pull/48) merged 2064ae495e0cbe4ed36aa14b75b399a74983b9ea. Real [Mautic 7.2.1/MariaDB 11.4 run 38146136473](https://github.com/achirothmane/marketing-os/actions/runs/38146136473) **12/12 PASS**, with ten older M0/C4 workflows green.
 - Runtime introduces protected credential-directory ingestion, scoped single-cycle locking, READ-only encrypted-archive preflight, bounded source/queue worker subprocesses and READ-only postflight; quarantine forces explicit review, never implicit re-drive or sends. systemd oneshot/timer templates are disabled/uninstalled.
 - Next C4-07B3B3B: actual host deployment and operators, secrets backup/restore evidence, key rotation drills, safe quarantined-message review/disposition and audit; staging/upgrades; then C5/C6/C8 contactability/effect gates. Overall C4 NOT VERIFIED, no commercial activity.
+
+
+## C4-07B3B3B1 encrypted archive-only restore comparison (2026-10-11)
+- [PR #50](https://github.com/achirothmane/marketing-os/pull/50) merge 76ac79742fe0f85ec941f2331f1d433f9dcb01fd; https://github.com/achirothmane/marketing-os/actions/runs/38148508716 **16/16 PASS**, all older 10 PR-head workflows green.
+- Application-level fixture copies encrypted quarantine records to a second disposable MariaDB schema and checks exact row identity, ciphertext, AEAD, key IDs and pagination. The read-only DLQ review CLI emits authenticated case identifiers and hold disposition, not authorized redrive. Wrong/missing keys, tampering, missing restored rows and fake same-database recovery all fail closed.
+- Next: C4-07B3B3B2 restore real backup media to independent host and attest full durable state including sources/Outbox/Inbox; C4-07B3B3B3 verify actual systemd service, secrets backup/recovery and operator-approved audited disposition. No provider effect or commercial sends.
