@@ -40,6 +40,9 @@ jobs:
       MOS_TEST_DSN: "mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4"
       MOS_TEST_DB_USER: mautic_ci
       MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+      MOS_RUNTIME_WRITE_DSN: "mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4"
+      MOS_RUNTIME_WRITE_DB_USER: mautic_ci
+      MOS_RUNTIME_WRITE_DB_PASSWORD: ci-only-mautic-password
       MOS_SNAPSHOT_HMAC_KEY: ci-only-snapshot-secret-32bytes-or-more-do-not-use-in-prod
       MOS_BRIDGE_MODE: SHADOW
     steps:
