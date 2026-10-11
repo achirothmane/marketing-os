@@ -67,3 +67,9 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 - [x] [PR #46](https://github.com/achirothmane/marketing-os/pull/46), merge `40624cd65cb9cc56858142100fc902dfab5392de`, [CI 38143962328](https://github.com/achirothmane/marketing-os/actions/runs/38143962328) **9/9 PASS**; nine older PR-head workflows PASS.
 - [x] Standalone READ/WRITE/MIGRATE runtime connection profiles, no test bootstrap dependency in CLI, real disposable MariaDB GRANT-denial acceptance and separate opt-in DDL.
 - [ ] Externally provisioned production accounts, credential escrow/recovery, supervised deployment, manual DLQ disposition and C5/C6/C8 authorization. C4 overall NOT VERIFIED.
+
+
+## 2026-10-11 — C4-07B3B3A bounded credentialed one-shot SHADOW supervisor
+- [x] [PR #48](https://github.com/achirothmane/marketing-os/pull/48) merged 2064ae495e0cbe4ed36aa14b75b399a74983b9ea, [Mautic 7.2.1/MariaDB 11.4 CI](https://github.com/achirothmane/marketing-os/actions/runs/38146136473) **12/12 PASS**, other ten PR-head workflows SUCCESS.
+- [x] Protected credential-directory reader, fail-closed independent opt-ins, Workspace advisory lock, read-only pre/postflight, bounded source-to-Inbox SHADOW cycle, idempotent replay, malformed wire review, separate Workspace isolation.
+- [ ] Real deployed and enabled systemd supervision, secret escrow/restore, operator evidence/audit, manual DLQ disposition or redrive, full upstream security/regression, production access control, C5/C6/C8 effect authorization. **C4 overall NOT VERIFIED.**
