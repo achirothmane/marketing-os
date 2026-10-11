@@ -106,7 +106,11 @@
     "c4_07b3b2": "MERGED_ROLE_SEPARATED_RUNTIME_BOOTSTRAP_REAL_MARIADB_GRANTS_CI_PASSED",
     "c4_07b3b2_sha": "40624cd65cb9cc56858142100fc902dfab5392de",
     "c4_07b3b2_pr": "https://github.com/achirothmane/marketing-os/pull/46",
-    "c4_07b3b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38143962328"
+    "c4_07b3b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38143962328",
+    "c4_07b3b3a": "MERGED_CREDENTIALED_ONESHOT_LOCAL_SHADOW_SERVICE_REAL_MAUTIC_MARIADB_CI_PASSED",
+    "c4_07b3b3a_sha": "2064ae495e0cbe4ed36aa14b75b399a74983b9ea",
+    "c4_07b3b3a_pr": "https://github.com/achirothmane/marketing-os/pull/48",
+    "c4_07b3b3a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38146136473"
   },
   "stages": {
     "C1": {
@@ -199,7 +203,7 @@
     }
   },
   "next_gates": [
-    "C4_07B3B3_external_secrets_escrow_deployed_supervised_SHADOW_and_quarantine_review",
+    "C4_07B3B3B_real_host_deployment_secrets_backup_restore_and_manual_DLQ_review",
     "C4_full_security_upgrade_deployment_runtime_regression",
     "C4_06B_source_mutation_authority_after_C5_C6",
     "C5_C6_C8_policy_consent_external_effect_gates"
@@ -397,6 +401,23 @@
         "No deployed supervised worker and no authenticated DLQ disposition/redrive",
         "No comprehensive production least-privilege end-to-end Mautic pipeline",
         "C4 overall and external C5/C6/C8 effects NOT VERIFIED"
+      ]
+    },
+    "C4_07B3B3A": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Explicitly opt-in, protected-credential-directory one-shot SHADOW supervisor with workspace advisory locking, READ-only preflight, fixed-budget C4-08B child pipeline, READ-only postflight, and PII-free PASS/REVIEW/REFUSED. Encrypted malformed-wire DLQ forces human review, not redrive. Real pinned Mautic 7.2.1 / MariaDB 11.4 acceptance verified 12/12 cases, 10 other PR-head M0/C4 workflows success. systemd example unit/timer added but NOT installed.",
+      "evidence_sha": "2064ae495e0cbe4ed36aa14b75b399a74983b9ea",
+      "pr": "https://github.com/achirothmane/marketing-os/pull/48",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38146136473",
+      "tests": 12,
+      "other_pr_head_workflows": "10/10 SUCCESS",
+      "boundaries": [
+        "Actual systemd service/timer installation, runtime health, host isolation and restart behavior NOT VERIFIED",
+        "Operator-managed production key escrow, rotation across backups, restore drills NOT IMPLEMENTED",
+        "Manual authenticated DLQ review and authorized disposition/redrive NOT IMPLEMENTED",
+        "No production full upstream regression or tenant row-level permissions assertion",
+        "C5/C6/C8 external effects not authorized; C4 overall NOT VERIFIED"
       ]
     }
   }
