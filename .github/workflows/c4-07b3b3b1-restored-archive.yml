@@ -1,0 +1,66 @@
+name: C4-07B3B3B1 Encrypted Archive Restore Evidence
+on:
+  pull_request:
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b3b3b1-restored-archive.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/identity/**'
+      - '.github/workflows/c4-07b3b3b1-restored-archive.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  archive-restore-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci-only-root-password
+          MARIADB_DATABASE: mautic_ci
+          MARIADB_USER: mautic_ci
+          MARIADB_PASSWORD: ci-only-mautic-password
+        ports: [3306:3306]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+    env:
+      COMPOSER_MEMORY_LIMIT: '-1'
+      MOS_TEST_DSN: mysql:host=127.0.0.1;port=3306;dbname=mautic_ci;charset=utf8mb4
+      MOS_TEST_DB_USER: mautic_ci
+      MOS_TEST_DB_PASSWORD: ci-only-mautic-password
+      MOS_CI_ALLOW_RESTORE_DRILL: '1'
+      MOS_CI_ROOT_PASSWORD: ci-only-root-password
+      MOS_QUEUE_MODE: OFF
+      MOS_DLQ_REVIEW_ENABLED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          extensions: bcmath, ctype, curl, dom, exif, fileinfo, gd, iconv, intl, mbstring, mysqli, pdo_mysql, sodium, xml, zip
+          coverage: none
+      - name: Install locked dependencies
+        run: composer install --prefer-dist --no-progress --no-scripts --no-interaction --no-ansi
+      - name: Syntax, base domain regression, and disabled behavior
+        run: |
+          php -l packages/identity/src/Runtime/MosRestoredArchiveVerifier.php
+          php -l packages/identity/bin/dlq_review_queue.php
+          php -l packages/identity/tests/c4_07b3b3b1_recovery.php
+          php packages/contracts/tests/run.php
+          php packages/identity/tests/run.php
+          test "$MOS_QUEUE_MODE" = 'OFF'
+          test "$MOS_DLQ_REVIEW_ENABLED" = '0'
+      - name: Compare encrypted archive source and independent restored MariaDB schema
+        run: php packages/identity/tests/c4_07b3b3b1_recovery.php
+      - name: Recheck opt-in is never globally enabled by tests
+        run: |
+          test "$MOS_QUEUE_MODE" = 'OFF'
+          test "$MOS_DLQ_REVIEW_ENABLED" = '0'
