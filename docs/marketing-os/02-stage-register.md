@@ -79,3 +79,9 @@ For every stage PR replace UNKNOWN placeholders in the stage spec with:
 - [x] PR #50 merge 76ac79742fe0f85ec941f2331f1d433f9dcb01fd, https://github.com/achirothmane/marketing-os/actions/runs/38148508716 **16/16 PASS** on MariaDB 11.4, other 10/10 PR-head workflows SUCCESS.
 - [x] Bounded cryptographic comparison between two independent disposable schemas, missing/corrupt/key-mismatch refusal, PII-free authenticated HOLD-only review.
 - [ ] Not a physical backup restore; full Contact/Person/Outbox/Inbox, actual host and systemd, independent key escrow, dual-authority disposition, C5/C6/C8 policy and effects all unverified or absent. **C4 remains NOT VERIFIED.**
+
+
+## 2026-10-11 — C4-07B3B3B2 real SQL dump and import in disposable CI
+- [x] [PR #52](https://github.com/achirothmane/marketing-os/pull/52) merged cbfa3051c2b124f0309cccd6d3065de52dc225bd, [CI](https://github.com/achirothmane/marketing-os/actions/runs/38149136108) **8/8 PASS**, eleven other PR-head workflows PASS.
+- [x] Actual SQL dump and import of populated installed Mautic 7.2.1/MOS DB to a second schema on the same MariaDB 11.4 CI server, with all table/column/row checks and restored encrypted archive authentication.
+- [ ] Different host backup restore, independent secret recovery, application files/volumes, production supervised service, authorized DLQ disposition and C5/C6/C8 permission/effect gates. C4 overall NOT VERIFIED.

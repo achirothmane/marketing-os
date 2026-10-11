@@ -114,7 +114,11 @@
     "c4_07b3b3b1": "MERGED_ISOLATED_ARCHIVE_RESTORE_COMPARISON_AND_AUTHENTICATED_HOLD_REVIEW_CI_PASSED",
     "c4_07b3b3b1_sha": "76ac79742fe0f85ec941f2331f1d433f9dcb01fd",
     "c4_07b3b3b1_pr": "https://github.com/achirothmane/marketing-os/pull/50",
-    "c4_07b3b3b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38148508716"
+    "c4_07b3b3b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38148508716",
+    "c4_07b3b3b2": "MERGED_ACTUAL_DISPOSABLE_SQL_DUMP_IMPORT_FULL_DATABASE_STATE_ATTESTATION",
+    "c4_07b3b3b2_sha": "cbfa3051c2b124f0309cccd6d3065de52dc225bd",
+    "c4_07b3b3b2_pr": "https://github.com/achirothmane/marketing-os/pull/52",
+    "c4_07b3b3b2_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38149136108"
   },
   "stages": {
     "C1": {
@@ -207,10 +211,9 @@
     }
   },
   "next_gates": [
-    "C4_07B3B3B2_backup_media_restore_on_independent_host_full_application_state",
-    "C4_07B3B3B3_operator_authorized_DLQ_disposition_audit_and_live_service_drills",
-    "C4_full_security_upgrade_runtime_deployment_proof",
-    "C5_C6_C8_contactability_policy_and_effect_authority"
+    "C4_07B3B3B3_separate_host_deployment_secret_restore_systemd_and_operator_audit",
+    "C4_full_security_upgrade_live_runtime_recovery",
+    "C5_C6_C8_consent_contactability_and_authorized_effects"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -439,6 +442,24 @@
         "No live host, systemd service, production operator privileges or external secrets escrow/backup",
         "No approval ledger or authorized/manual redrive: cases remain HOLD_FOR_OPERATOR only",
         "C4 overall NOT VERIFIED; C5/C6/C8 external effect controls NOT IMPLEMENTED"
+      ]
+    },
+    "C4_07B3B3B2": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Genuine consistent SQL dump and import of pinned Mautic 7.2.1 with full MOS durable DB state into separate disposable MariaDB 11.4 database on the same CI server. All table names, column metadata and byte-preserving per-row hashes compared; archive ciphertext separately authenticated with historical disposable keys. 8/8 CI PASS, 11 prior M0/C4 PR-head workflows SUCCESS.",
+      "evidence_sha": "cbfa3051c2b124f0309cccd6d3065de52dc225bd",
+      "pr": "https://github.com/achirothmane/marketing-os/pull/52",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38149136108",
+      "tests": 8,
+      "other_pr_head_workflows": "11/11 SUCCESS",
+      "boundaries": [
+        "Same CI database server, different schema; no remote host or offsite/production backup storage",
+        "No file uploads/object storage/volumes, encryption-key escrow or external runtime credential recovery",
+        "Snapshot taken after fixed tests with no concurrent writes; no point-in-time under live load proof",
+        "No installed service/timer with operator observation, alerts, rollback drills",
+        "No audited authorization for manual DLQ disposition; no external effects",
+        "Overall C4 and C5/C6/C8 production controls NOT VERIFIED"
       ]
     }
   }
