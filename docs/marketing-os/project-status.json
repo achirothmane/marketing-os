@@ -110,7 +110,11 @@
     "c4_07b3b3a": "MERGED_CREDENTIALED_ONESHOT_LOCAL_SHADOW_SERVICE_REAL_MAUTIC_MARIADB_CI_PASSED",
     "c4_07b3b3a_sha": "2064ae495e0cbe4ed36aa14b75b399a74983b9ea",
     "c4_07b3b3a_pr": "https://github.com/achirothmane/marketing-os/pull/48",
-    "c4_07b3b3a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38146136473"
+    "c4_07b3b3a_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38146136473",
+    "c4_07b3b3b1": "MERGED_ISOLATED_ARCHIVE_RESTORE_COMPARISON_AND_AUTHENTICATED_HOLD_REVIEW_CI_PASSED",
+    "c4_07b3b3b1_sha": "76ac79742fe0f85ec941f2331f1d433f9dcb01fd",
+    "c4_07b3b3b1_pr": "https://github.com/achirothmane/marketing-os/pull/50",
+    "c4_07b3b3b1_ci": "https://github.com/achirothmane/marketing-os/actions/runs/38148508716"
   },
   "stages": {
     "C1": {
@@ -203,10 +207,10 @@
     }
   },
   "next_gates": [
-    "C4_07B3B3B_real_host_deployment_secrets_backup_restore_and_manual_DLQ_review",
-    "C4_full_security_upgrade_deployment_runtime_regression",
-    "C4_06B_source_mutation_authority_after_C5_C6",
-    "C5_C6_C8_policy_consent_external_effect_gates"
+    "C4_07B3B3B2_backup_media_restore_on_independent_host_full_application_state",
+    "C4_07B3B3B3_operator_authorized_DLQ_disposition_audit_and_live_service_drills",
+    "C4_full_security_upgrade_runtime_deployment_proof",
+    "C5_C6_C8_contactability_policy_and_effect_authority"
   ],
   "coordination": {
     "model": "SINGLE_CENTRAL_DOTS",
@@ -418,6 +422,23 @@
         "Manual authenticated DLQ review and authorized disposition/redrive NOT IMPLEMENTED",
         "No production full upstream regression or tenant row-level permissions assertion",
         "C5/C6/C8 external effects not authorized; C4 overall NOT VERIFIED"
+      ]
+    },
+    "C4_07B3B3B1": {
+      "implemented": true,
+      "verified": true,
+      "scope": "Archive-only cryptographic comparison between independent disposable MariaDB 11.4 schemas with exact per-row metadata, ciphertext and historical key authentication. HOLD-only authenticated read-only encrypted quarantine case review. MariaDB CI 16/16 PASS; ten other M0/C4 PR-head CI workflows SUCCESS.",
+      "evidence_sha": "76ac79742fe0f85ec941f2331f1d433f9dcb01fd",
+      "pr": "https://github.com/achirothmane/marketing-os/pull/50",
+      "ci_run": "https://github.com/achirothmane/marketing-os/actions/runs/38148508716",
+      "tests": 16,
+      "other_pr_head_workflows": "10/10 SUCCESS",
+      "boundaries": [
+        "Not a physical/offsite backup-media restore; CI copies selected encrypted archive rows to a second schema",
+        "No complete Contact/Person/Outbox/Inbox/Queue restore attestation",
+        "No live host, systemd service, production operator privileges or external secrets escrow/backup",
+        "No approval ledger or authorized/manual redrive: cases remain HOLD_FOR_OPERATOR only",
+        "C4 overall NOT VERIFIED; C5/C6/C8 external effect controls NOT IMPLEMENTED"
       ]
     }
   }
