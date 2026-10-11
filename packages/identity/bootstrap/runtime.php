@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * Runtime-only bootstrap. Never import tests/bootstrap.php or read MOS_TEST_*.
+ * Runtime-only bootstrap. No imports or fallbacks from fixture connection sources.
  * Each operation must explicitly select READ, WRITE or MIGRATE credentials.
  */
 spl_autoload_register(static function(string $class): void {
