@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require dirname(__DIR__).'/tests/bootstrap.php';
+require dirname(__DIR__).'/bootstrap/runtime.php';
 
 use MarketingOS\Contracts\Id\WorkspaceId;
 use MarketingOS\Identity\Bridge\PdoMauticContactSnapshotReader;
@@ -18,7 +18,7 @@ try{
         (int)$limit>500)throw new InvalidArgumentException('Invalid bounded audit arguments.');
     $key=getenv('MOS_SNAPSHOT_HMAC_KEY');
     if(!is_string($key)||strlen($key)<32)throw new RuntimeException('HMAC secret required.');
-    $db=mos_test_connection();
+    $db=mos_runtime_connection('WRITE');
     $reader=new PdoMauticContactSnapshotReader($db,$key,getenv('MOS_MAUTIC_TABLE_PREFIX')?:'');
     $auditor=new PdoMauticSourceAuditor($db,$reader);
     $report=$auditor->auditMappedBatch($workspace,(int)$afterId,(int)$limit);
